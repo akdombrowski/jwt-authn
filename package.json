@@ -1,0 +1,29 @@
+{
+  "name": "jot",
+  "version": "1.0.0",
+  "description": "JWT decoder, encoder, and more.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/akdombrowski/jot.git"
+  },
+  "keywords": [
+    "jwt",
+    "decoder",
+    "encoder",
+    "jot",
+    "oauth",
+    "oauth2.0",
+    "authentication",
+    "authorization"
+  ],
+  "author": "Anthony Dombrowski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akdombrowski/jot/issues"
+  },
+  "homepage": "https://github.com/akdombrowski/jot#readme"
+}
