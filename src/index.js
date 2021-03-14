@@ -1,7 +1,5 @@
-export function printMsg() {
-  console.log('This is a message from the demo package');
-}
+export { default as jwtDecode } from './jwtDecode';
 
-export default function jwtDecode() {
-  console.log('jwtDecode');
+export function jwtEncode() {
+  console.log('this is the jwtEncode method');
 }
