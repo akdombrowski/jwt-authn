@@ -22,7 +22,7 @@
     "authorization"
   ],
   "author": "Anthony Dombrowski",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/akdombrowski/jot/issues"
   },
