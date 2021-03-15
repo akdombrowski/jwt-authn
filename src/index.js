@@ -1,5 +1,7 @@
-export { default as jwtDecode } from './jwtDecode';
+export function jwtDecode () {
+  console.log("jwtDecode here");
+}
 
 export function jwtEncode() {
-  console.log('this is the jwtEncode method');
+  console.log("jwtEncode here");
 }
