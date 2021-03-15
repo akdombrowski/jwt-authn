@@ -1,7 +1,7 @@
 export function jwtDecode () {
-  console.log("jwtDecode here");
+  console.log('jwtDecode here');
 }
 
 export function jwtEncode() {
-  console.log("jwtEncode here");
+  console.log('jwtEncode here');
 }

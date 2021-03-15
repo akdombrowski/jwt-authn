@@ -1,8 +1,8 @@
 {
   "name": "jwt-authn",
-  "version": "1.0.16",
+  "version": "1.0.25",
   "description": "JWT decoder, encoder, and more",
-  "main": "src/index.js",
+  "main": "./lib",
   "scripts": {
     "build": "babel ./src -d ./lib",
     "test": "nyc mocha --require babel-core/register",
