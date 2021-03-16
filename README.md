@@ -17,7 +17,7 @@ npm install jwt-authn
 import * as jwtAuthn from "jwt-authn"
 
 jwtAuthn.jwtDecode('word') # returns 'words'
-jwtAuthn.jwtDecode('goose') # returns 'geese'
+jwtAuthn.jwtEncode('goose') # returns 'geese'
 ```
 
 ## Contributing
