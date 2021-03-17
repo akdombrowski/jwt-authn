@@ -1,6 +1,6 @@
 {
   "name": "jwt-authn",
-  "version": "1.0.27",
+  "version": "1.0.29",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
   "scripts": {
