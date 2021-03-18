@@ -1,17 +1,17 @@
-import 'crypto';
-import base64url from 'base64url';
+import "crypto";
+import base64url from "base64url";
 
 export function jwtDecode(jwt) {
   try {
     // 1.   Verify that the JWT contains at least one period ('.')
     //        character.
-    if (!jwt.includes('.')) {
+    if (!jwt.includes(".")) {
       throw new Error("Need at least one '.'");
     }
 
     // 2.   Let the Encoded JOSE Header be the portion of the JWT before the
     //     first period ('.') character.
-    const components = jwt.split('.');
+    const components = jwt.split(".");
     const header = components[0];
 
     // 3.   Base64url decode the Encoded JOSE Header following the
@@ -19,7 +19,7 @@ export function jwtDecode(jwt) {
     // characters have been used.
     const base64DecodedHeader = base64url.decode(header);
     if (!base64DecodedHeader) {
-      console.err('base64DecodedHeader');
+      console.err("base64DecodedHeader");
       console.err(base64DecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
@@ -35,10 +35,10 @@ export function jwtDecode(jwt) {
     //     understood.
     const { typ, cty, alg } = jsonHeader;
 
-    if (typ && typ !== 'JWT') {
-      throw new Error('Need to be type jwt.');
+    if (typ && typ !== "JWT") {
+      throw new Error("Need to be type jwt.");
     }
-    if (cty && cty !== 'JWT') {
+    if (cty && cty !== "JWT") {
       throw new Error("Need a cty of 'JWT'");
     }
     if (!alg) {
@@ -56,11 +56,15 @@ export function jwtDecode(jwt) {
       const base64urlDecodedPayload = base64url.decode(payload);
       const jsonPayload = JSON.parse(base64urlDecodedPayload);
 
-      return { header: jsonHeader, payload: jsonPayload, signature: components[2] };
+      return {
+        header: jsonHeader,
+        payload: jsonPayload,
+        signature: components[2],
+      };
     }
 
     if (components.length === 5) {
-      throw new Error('JWE not currently supported.');
+      throw new Error("JWE not currently supported.");
       // TODO
       // // JWE
       // // 7b   Else, if the JWT is a JWE, follow the steps specified in
@@ -89,12 +93,13 @@ export function jwtDecode(jwt) {
 
       // }
     } else {
-      throw new Error('Not using compact serialization.');
+      throw new Error("Not using compact serialization.");
     }
   } catch (e) {
     console.error(e.message, e);
+    return { header: "header", payload: "payload", signature: "signature" };
   }
 }
 export function jwtEncode() {
-  console.log('jwtEncode here');
+  console.log("jwtEncode here");
 }

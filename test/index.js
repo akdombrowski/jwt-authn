@@ -1,9 +1,23 @@
-import assert from 'assert';
+const { expect } = require("chai");
+const jwtAuthn = require("../src");
 
-describe('Array', () => {
-  describe('#indexOf()', () => {
-    it('should return -1 when the value is not present', () => {
-      assert.strictEqual([1, 2, 3].indexOf(4), -1);
+describe("JWT decoding and encoding", () => {
+  describe("Decoding", () => {
+    // specification for decoding
+    it("decodes from encoded jwt", () => {
+      const jwt =
+        "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjAzMzc2MDExfQ.ixWwz6G_3K0y57BHRYpEh6yxMjxdekYgRQ2sOPCBF-Q";
+      const decoded = jwtAuthn.jwtDecode(jwt);
+      const expectedJWT = {
+        header: { alg: "HS256", cty: "JWT" },
+        payload: { sub: "1234567890", iat: 1603376011 },
+        signature: "ixWwz6G_3K0y57BHRYpEh6yxMjxdekYgRQ2sOPCBF-Q",
+      };
+      expect(JSON.stringify(decoded)).to.equal(JSON.stringify(expectedJWT));
     });
+  });
+
+  describe("Encoding", () => {
+    // specification for HEX to RGB converter
   });
 });
