@@ -3,6 +3,7 @@
   "version": "1.0.29",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
+  "tyoe": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
     "test": "nyc mocha --require babel-core/register",
@@ -20,7 +21,9 @@
     "oauth",
     "oauth2.0",
     "authentication",
-    "authorization"
+    "authorization",
+    "jwt-decoder",
+    "jwt-encoder"
   ],
   "author": "Anthony Dombrowski",
   "license": "MIT",

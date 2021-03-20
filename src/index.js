@@ -1,5 +1,5 @@
-import "crypto";
 import base64url from "base64url";
+import crypto from "crypto";
 
 export function jwtDecode(jwt) {
   try {
@@ -36,13 +36,13 @@ export function jwtDecode(jwt) {
     const { typ, cty, alg } = jsonHeader;
 
     if (typ && typ !== "JWT") {
-      throw new Error("Need to be type jwt.");
+      throw new Error(`Need to be type jwt. Received: ${typ}`);
     }
     if (cty && cty !== "JWT") {
-      throw new Error("Need a cty of 'JWT'");
+      throw new Error(`Need a cty of 'JWT'. Received: ${cty}`);
     }
     if (!alg) {
-      throw new Error(`Missing algorithm in JOSE header. alg: ${alg}`);
+      throw new Error("Missing algorithm in JOSE header.");
     }
 
     // 6.   Determine whether the JWT is a JWS or a JWE using any of the
@@ -100,6 +100,57 @@ export function jwtDecode(jwt) {
     return { header: "header", payload: "payload", signature: "signature" };
   }
 }
-export function jwtEncode() {
-  console.log("jwtEncode here");
+
+function hs256(value, key) {
+  const hmac = crypto.createHmac("sha256", key);
+  hmac.update(value);
+  return hmac.digest("utf8");
+}
+
+export function jwtEncode(header, payload, key) {
+  let jsonHeader;
+  try {
+    jsonHeader = JSON.parse(header);
+  } catch (e) {
+    // Is it invald json syntax or is it not a string
+    console.err(`${e.name}:${e.message}`);
+  }
+  console.log("jsonHeader");
+  console.log(jsonHeader);
+
+  const headerBase64URL = base64url.encode(header);
+  console.log("headerBase64URL");
+  console.log(headerBase64URL);
+  console.log("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9");
+  const payloadBase64URL = base64url.encode(JSON.stringify(payload));
+  console.log("payloadBase64URL");
+  console.log(payloadBase64URL);
+  console.log(
+    "eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ"
+  );
+  const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
+  console.log("headerPayload");
+  console.log(headerPayload);
+  const headerPayloadBuff = Buffer.from(headerPayload, "ascii");
+  console.log("headerPayloadBuff");
+  console.log(headerPayloadBuff);
+  const { alg } = JSON.parse(header);
+  console.log("alg");
+  console.log(alg);
+  let sig;
+  switch (alg) {
+    case "HS256":
+      sig = Buffer.from(hs256(headerPayload, key)).toString("utf8");
+      break;
+    default:
+      throw new Error(`Unsupported alg.${alg}`);
+  }
+  console.log("sig");
+  console.log(sig);
+  const sigBase64URL = base64url.encode(Buffer.from(sig, "ascii").toString());
+  console.log("sigBase64URL");
+  console.log(sigBase64URL);
+  const sigBase64URL2 = base64url.encode(Buffer.from(sig, "utf8").toString());
+  console.log("sigBase64URL2");
+  console.log(sigBase64URL2);
 }
