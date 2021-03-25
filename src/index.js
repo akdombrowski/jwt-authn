@@ -1,5 +1,6 @@
 import base64url from "base64url";
 import crypto from "crypto";
+import { StringDecoder } from "string_decoder";
 
 export function jwtDecode(jwt) {
   try {
@@ -102,55 +103,81 @@ export function jwtDecode(jwt) {
 }
 
 function hs256(value, key) {
-  const hmac = crypto.createHmac("sha256", key);
-  hmac.update(value);
-  return hmac.digest("utf8");
+  const secret = crypto.createSecretKey(key, "base64url");
+  const hmac = crypto.createHmac("sha256", secret);
+
+  // Is base64url encoding available?
+  console.log("Buffer.isEncoding('base64url')");
+  console.log();
+  console.log();
+
+  if (Buffer.isEncoding("base64url")) {
+    hmac.update(value, "ascii");
+    const h = hmac.digest();
+    const base64URLH = Buffer.from(h).toString("base64url");
+
+    return base64URLH;
+  }
+  return null;
 }
 
 export function jwtEncode(header, payload, key) {
-  let jsonHeader;
+  let headerBase64URL;
+  let payloadBase64URL;
+  let jsonHeader = header;
   try {
+    // headerBase64URL = base64url.encode(header);
+    headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
     jsonHeader = JSON.parse(header);
   } catch (e) {
     // Is it invald json syntax or is it not a string
-    console.err(`${e.name}:${e.message}`);
+    if (e instanceof TypeError) {
+      // not a string. convert to string
+      jsonHeader = header;
+      console.log("Using JSON.stringify() to convert to a string");
+      const stringifyHeader = JSON.stringify(header);
+      // headerBase64URL = base64url.encode(stringifyHeader);
+      headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
+        "base64url"
+      );
+    } else {
+      // syntax error or other
+      console.log(`${e.name}:${e.message}`);
+      return;
+    }
   }
-  console.log("jsonHeader");
-  console.log(jsonHeader);
 
-  const headerBase64URL = base64url.encode(header);
-  console.log("headerBase64URL");
-  console.log(headerBase64URL);
-  console.log("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9");
-  const payloadBase64URL = base64url.encode(JSON.stringify(payload));
-  console.log("payloadBase64URL");
-  console.log(payloadBase64URL);
-  console.log(
-    "eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ"
-  );
+  try {
+    // payloadBase64URL = base64url.encode(payload);
+    payloadBase64URL = Buffer.from(payload).toString("base64url");
+  } catch (e) {
+    if (e instanceof TypeError) {
+      // payloadBase64URL = base64url.encode(JSON.stringify(payload));
+      payloadBase64URL = Buffer.from(JSON.stringify(payload)).toString(
+        "base64url"
+      );
+    } else {
+      console.log(`${e.name}:${e.message}`);
+      return;
+    }
+  }
+
   const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
-  console.log("headerPayload");
-  console.log(headerPayload);
-  const headerPayloadBuff = Buffer.from(headerPayload, "ascii");
-  console.log("headerPayloadBuff");
-  console.log(headerPayloadBuff);
-  const { alg } = JSON.parse(header);
-  console.log("alg");
-  console.log(alg);
+
+  const { alg } = jsonHeader;
+
   let sig;
   switch (alg) {
     case "HS256":
-      sig = Buffer.from(hs256(headerPayload, key)).toString("utf8");
+      sig = hs256(headerPayload, key);
       break;
     default:
       throw new Error(`Unsupported alg.${alg}`);
   }
+  console.log();
   console.log("sig");
   console.log(sig);
-  const sigBase64URL = base64url.encode(Buffer.from(sig, "ascii").toString());
-  console.log("sigBase64URL");
-  console.log(sigBase64URL);
-  const sigBase64URL2 = base64url.encode(Buffer.from(sig, "utf8").toString());
-  console.log("sigBase64URL2");
-  console.log(sigBase64URL2);
+  console.log("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+  console.log(sig === "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+  console.log();
 }
