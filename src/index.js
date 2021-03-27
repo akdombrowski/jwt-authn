@@ -1,8 +1,13 @@
-import base64url from "base64url";
 import crypto from "crypto";
-import { StringDecoder } from "string_decoder";
 
-export function jwtDecode(jwt) {
+/**
+ * Decodes a JWT that is in JWS format.
+ *
+ * @export
+ * @param {*} jwt JSON Web Token in JSON Web Signature format
+ * @returns
+ */
+export const jwtDecode = (jwt) => {
   try {
     // 1.   Verify that the JWT contains at least one period ('.')
     //        character.
@@ -18,17 +23,17 @@ export function jwtDecode(jwt) {
     // 3.   Base64url decode the Encoded JOSE Header following the
     // restriction that no line breaks, whitespace, or other additional
     // characters have been used.
-    const base64DecodedHeader = base64url.decode(header);
-    if (!base64DecodedHeader) {
-      console.err("base64DecodedHeader");
-      console.err(base64DecodedHeader);
+    const base64URLDecodedHeader = Buffer.from(header).toString("utf8");
+    if (!base64URLDecodedHeader) {
+      console.err("base64URLDecodedHeader");
+      console.err(base64URLDecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
 
     // 4.   Verify that the resulting octet sequence is a UTF-8-encoded
     //         representation of a completely valid JSON object conforming to
     //         RFC 7159 [RFC7159]; let the JOSE Header be this JSON object.
-    const jsonHeader = JSON.parse(base64DecodedHeader);
+    const jsonHeader = JSON.parse(base64URLDecodedHeader);
 
     // 5.   Verify that the resulting JOSE Header includes only parameters
     //     and values whose syntax and semantics are both understood and
@@ -54,7 +59,7 @@ export function jwtDecode(jwt) {
       // validating a JWS.  Let the Message be the result of base64url
       // decoding the JWS Payload.
       const payload = components[1];
-      const base64urlDecodedPayload = base64url.decode(payload);
+      const base64urlDecodedPayload = Buffer.from(payload).toString("utf8");
       const jsonPayload = JSON.parse(base64urlDecodedPayload);
 
       return {
@@ -64,120 +69,238 @@ export function jwtDecode(jwt) {
       };
     }
 
-    if (components.length === 5) {
-      throw new Error("JWE not currently supported.");
-      // TODO
-      // // JWE
-      // // 7b   Else, if the JWT is a JWE, follow the steps specified in
-      // //      [JWE] for validating a JWE.  Let the Message be the resulting
-      // //      plaintext.
-      // // When using the JWE Compact Serialization, the
-      // //   JWE Protected Header, the JWE Encrypted Key, the JWE
-      // //   Initialization Vector, the JWE Ciphertext, and the JWE
-      // //   Authentication Tag are represented as base64url-encoded values
-      // //   in that order, with each value being separated from the next by
-      // //   a single period ('.') character, resulting in exactly four
-      // //   delimiting period characters being used.
-      // // header = components[0]
-      // const key = components[1];
-      // const initVector = components[2];
-      // const ciphertext = components[3];
-      // const authnTag = components[4];
-
-      // // const base64urlDecodedKey = base64url.decode(key);
-      // const base64urlDecodedKey = base64url.toBuffer(key).toString();
-      // const base64urlDecodedInitVector = base64url.decode(initVector);
-      // const base64urlDecodedCiphertext = base64url.decode(ciphertext);
-      // const base64urlDecodedAuthnTag = base64url.decode(authnTag);
-
-      // switch(alg) {
-
-      // }
-    } else {
-      throw new Error("Not using compact serialization.");
-    }
+    throw new Error("Not using compact serialization (JWS).");
   } catch (e) {
     console.error(e.message, e);
     return { header: "header", payload: "payload", signature: "signature" };
   }
-}
+};
 
-function hs256(value, key) {
+/**
+ * Uses HMAC with SHA256 to create the signature of a JWT.
+ *
+ * @param {*} jwt JSON Web Token in JSON Web Signature format
+ * @returns
+ */
+const hs256Sign = (headerPayload, key) => {
   const secret = crypto.createSecretKey(key, "base64url");
   const hmac = crypto.createHmac("sha256", secret);
 
-  // Is base64url encoding available?
-  console.log("Buffer.isEncoding('base64url')");
-  console.log();
-  console.log();
+  hmac.update(headerPayload, "ascii");
+  const hmacked = hmac.digest();
+  const base64URLHmacked = Buffer.from(hmacked).toString("base64url");
 
-  if (Buffer.isEncoding("base64url")) {
-    hmac.update(value, "ascii");
-    const h = hmac.digest();
-    const base64URLH = Buffer.from(h).toString("base64url");
+  return base64URLHmacked;
+};
 
-    return base64URLH;
+/**
+ * Uses RSA with SHA256 to create the signature of a JWT if key is in JWK format.
+ *
+ * @param {*} jwt JSON Web Token in JSON Web Signature format
+ * @returns
+ */
+const rs256JWKSign = (headerPayload, key) => {
+  const hashes = crypto.getHashes();
+  if (hashes.includes("RSA-SHA256")) {
+    let secret;
+    try {
+      secret = JSON.parse(key);
+
+      const keyObject = crypto.createPrivateKey({ key: secret, format: "jwk" });
+      const sig = crypto.sign("sha256", Buffer.from(headerPayload), {
+        key: keyObject,
+      });
+      const sigBase64URL = sig.toString("base64url");
+
+      return sigBase64URL;
+    } catch (e) {
+      if (e instanceof TypeError) {
+        secret = key;
+      } else {
+        console.log(e.message, e);
+      }
+    }
   }
-  return null;
-}
 
-export function jwtEncode(header, payload, key) {
+  if (!hashes.includes("RSA-256")) {
+    console.log("RSA-256 not found");
+  } else if (Buffer.isEncoding("base64url")) {
+    console.log("base64url encoding not found");
+  }
+
+  return null;
+};
+
+/**
+ * Uses RSA with SHA256 to create the signature of a JWT if key is in PEM format.
+ *
+ * @param {*} jwt JSON Web Token in JSON Web Signature format
+ * @returns
+ */
+const rs256PEMSign = (headerPayload, privateKey) => {
+  const hashes = crypto.getHashes();
+  if (!hashes.includes("RSA-SHA256")) {
+    console.log("Error: RSA-SHA256 not found");
+    return null;
+  }
+
+  const pemKey = crypto.createPrivateKey({ key: privateKey, format: "pem" });
+  const sig = crypto.sign("sha256", Buffer.from(headerPayload), {
+    key: pemKey,
+  });
+  const sigBase64URL = sig.toString("base64url");
+
+  return sigBase64URL;
+};
+
+/**
+ * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in PEM format.
+ *
+ * @param {*} headerPayload The combined header and payload in base64url format.
+ *
+ * @param {*} publicKey The public key used to verify.
+ * @param {*} signature The signature of the JWT.
+ * @returns
+ */
+const rs256PEMVerify = (headerPayload, publicKey, signature) => {
+  const keyObject = crypto.createPublicKey({
+    key: publicKey,
+    format: "pem",
+  });
+  const isVerified = crypto.verify(
+    null,
+    Buffer.from(headerPayload),
+    {
+      key: keyObject,
+    },
+    Buffer.from(signature)
+  );
+  return isVerified;
+};
+
+/**
+ * Encodes a JWT in JWS compact serialization.
+ *
+ * @export
+ * @param {*} header JWT header. Algorithms supported are RS256 and HS256.
+ * @param {*} payload JWT payload. The data to be included in the JWT.
+ * @param {*} privateKey The private key used to create the JWT signature.
+ * @param {*} keyFormat The format of the private key.
+ */ export const jwtEncode = (header, payload, privateKey, keyFormat) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
-  try {
-    // headerBase64URL = base64url.encode(header);
-    headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
-    jsonHeader = JSON.parse(header);
-  } catch (e) {
-    // Is it invald json syntax or is it not a string
-    if (e instanceof TypeError) {
-      // not a string. convert to string
-      jsonHeader = header;
-      console.log("Using JSON.stringify() to convert to a string");
-      const stringifyHeader = JSON.stringify(header);
-      // headerBase64URL = base64url.encode(stringifyHeader);
-      headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
-        "base64url"
-      );
-    } else {
-      // syntax error or other
-      console.log(`${e.name}:${e.message}`);
-      return;
+  if (Buffer.isEncoding("base64url")) {
+    try {
+      // headerBase64URL = base64url.encode(header);
+      headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
+      jsonHeader = JSON.parse(header);
+    } catch (e) {
+      // Is it invald json syntax or is it not a string
+      if (e instanceof TypeError) {
+        // not a string. convert to string
+        jsonHeader = header;
+        console.log("Using JSON.stringify() to convert to a string");
+        const stringifyHeader = JSON.stringify(header);
+        // headerBase64URL = base64url.encode(stringifyHeader);
+        headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
+          "base64url"
+        );
+      } else {
+        // syntax error or other
+        console.log(`${e.name}:${e.message}`);
+        return;
+      }
     }
-  }
 
-  try {
-    // payloadBase64URL = base64url.encode(payload);
-    payloadBase64URL = Buffer.from(payload).toString("base64url");
-  } catch (e) {
-    if (e instanceof TypeError) {
-      // payloadBase64URL = base64url.encode(JSON.stringify(payload));
-      payloadBase64URL = Buffer.from(JSON.stringify(payload)).toString(
-        "base64url"
-      );
-    } else {
-      console.log(`${e.name}:${e.message}`);
-      return;
+    try {
+      // payloadBase64URL = base64url.encode(payload);
+      payloadBase64URL = Buffer.from(payload).toString("base64url");
+    } catch (e) {
+      if (e instanceof TypeError) {
+        // payloadBase64URL = base64url.encode(JSON.stringify(payload));
+        payloadBase64URL = Buffer.from(JSON.stringify(payload)).toString(
+          "base64url"
+        );
+      } else {
+        console.log(`${e.name}:${e.message}`);
+        return;
+      }
     }
+
+    const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
+
+    const { alg } = jsonHeader;
+
+    let sig;
+    switch (alg) {
+      case "HS256":
+        sig = hs256Sign(headerPayload, privateKey);
+        break;
+      case "RS256":
+        if (keyFormat.toLowerCase() === "jwk") {
+          sig = rs256JWKSign(headerPayload, privateKey);
+        } else if (keyFormat.toLowerCase() === "pem") {
+          sig = rs256PEMSign(headerPayload, privateKey);
+          console.log();
+          console.log(
+            "rs256PEMVerify(headerPayload, -----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb\
++WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL5ZEf\
+ZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5\
+SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39BO7S3\
+AnR+XhjmEsAsudTAzCeEoW18VOP1EdjLoCzVPUYe6hYuHRT+v2NhZW9srCHp6WtQ\
+mh0GTz0d02l1Bbfws6e15lol9t91rlsxr8LxcWIWWzbKgSl8wJ1waR7CYtOWpSo3\
+XGuftu0Fi2aLrsV7wkHyksvf69XYOC9FyxhokfFPgvfYd6zveUAl/Fvl6qYgtbbS\
+fiNrKp3Rvd32hfBy4o7spKNGrTyQorWH8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2\
+mZTRpps06umVHZxibRiGf40WUMZHX/SzF+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMj\
+QvmGvt1b8L9FICp7dxcu/CWZE7xBgtYPcDUM9UwCdLBT8ObrLgv5rL/XNImAF8+l\
+UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA PUBLIC KEY-----, sig)"
+          );
+          console.log(
+            rs256PEMVerify(
+              headerPayload,
+              "-----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb\
++WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL5ZEf\
+ZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5\
+SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39BO7S3\
+AnR+XhjmEsAsudTAzCeEoW18VOP1EdjLoCzVPUYe6hYuHRT+v2NhZW9srCHp6WtQ\
+mh0GTz0d02l1Bbfws6e15lol9t91rlsxr8LxcWIWWzbKgSl8wJ1waR7CYtOWpSo3\
+XGuftu0Fi2aLrsV7wkHyksvf69XYOC9FyxhokfFPgvfYd6zveUAl/Fvl6qYgtbbS\
+fiNrKp3Rvd32hfBy4o7spKNGrTyQorWH8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2\
+mZTRpps06umVHZxibRiGf40WUMZHX/SzF+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMj\
+QvmGvt1b8L9FICp7dxcu/CWZE7xBgtYPcDUM9UwCdLBT8ObrLgv5rL/XNImAF8+l\
+UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA PUBLIC KEY-----",
+              sig
+            )
+          );
+        }
+        break;
+      default:
+        throw new Error(`Unsupported alg.${alg}`);
+    }
+    // console.log();
+    // console.log("sig");
+    // console.log(sig);
+    // console.log("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+    // console.log(sig === "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+    // console.log();
+    // }
+    // const rsa256Sig =
+    //   "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
+    // console.log();
+    // console.log("sig");
+    // console.log(sig);
+    // console.log(rsa256Sig);
+    // console.log(sig === rsa256Sig);
+    // console.log();
+
+    console.log();
+    console.log("sig");
+    console.log(sig);
+    console.log();
+    console.log();
+    console.log();
+  } else {
+    console.log("Error: Base64URL encoding isn't available.");
   }
-
-  const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
-
-  const { alg } = jsonHeader;
-
-  let sig;
-  switch (alg) {
-    case "HS256":
-      sig = hs256(headerPayload, key);
-      break;
-    default:
-      throw new Error(`Unsupported alg.${alg}`);
-  }
-  console.log();
-  console.log("sig");
-  console.log(sig);
-  console.log("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
-  console.log(sig === "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
-  console.log();
-}
+};
