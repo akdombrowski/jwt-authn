@@ -148,7 +148,7 @@ describe("JWT encoding", () => {
 
   describe("#jwtEncode()", () => {
     // specification for jwt encoding
-    context("when strict JSON objects are used", () => {
+    context("when JSON objects are used", () => {
       context("and when alg is HS256", () => {
         it("encodes a jwt.", () => {
           const decodedHeader = {typ: "JWT", alg: "HS256"};
