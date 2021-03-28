@@ -31,10 +31,7 @@ export const jwtDecode = (jwt) => {
       console.err(base64URLDecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
-    console.log();
-    console.log("base64URLDecodedHeader");
-    console.log(base64URLDecodedHeader);
-    console.log();
+
     // 4.   Verify that the resulting octet sequence is a UTF-8-encoded
     //         representation of a completely valid JSON object conforming to
     //         RFC 7159 [RFC7159]; let the JOSE Header be this JSON object.
@@ -80,7 +77,7 @@ export const jwtDecode = (jwt) => {
     throw new Error("Not using compact serialization (JWS).");
   } catch (e) {
     console.error(e.message, e);
-    return { header: "header", payload: "payload", signature: "signature" };
+    return { header: null, payload: null, signature: null };
   }
 };
 
@@ -125,15 +122,13 @@ const rs256JWKSign = (headerPayload, key) => {
       if (e instanceof TypeError) {
         secret = key;
       } else {
-        console.log(e.message, e);
+        console.error(e.message, e);
       }
     }
   }
 
   if (!hashes.includes("RSA-256")) {
-    console.log("RSA-256 not found");
-  } else if (Buffer.isEncoding("base64url")) {
-    console.log("base64url encoding not found");
+    console.err("RSA-256 not found");
   }
 
   return null;
@@ -148,7 +143,7 @@ const rs256JWKSign = (headerPayload, key) => {
 const rs256PEMSign = (headerPayload, privateKey) => {
   const hashes = crypto.getHashes();
   if (!hashes.includes("RSA-SHA256")) {
-    console.log("Error: RSA-SHA256 not found");
+    console.error("RSA-SHA256 not found");
     return null;
   }
 
@@ -190,12 +185,14 @@ const rs256PEMVerify = (headerPayload, publicKey, signature) => {
  * Encodes a JWT in JWS compact serialization.
  *
  * @export
- * @param {*} header JWT header. Algorithms supported are RS256 and HS256.
+ * @param {*} header JWT header. Algorithms supported are 'RS256' and 'HS256'.
  * @param {*} payload JWT payload. The data to be included in the JWT.
- * @param {*} privateKey The private key used to create the JWT signature.
- * @param {*} keyFormat The format of the private key.
+ * @param {*} key The private key used to create the JWT signature.
+ *                    A JWK object or PEM formatted string.
+ * @param {*} keyFormat The format of the key if using the RS256 alg.
+ *                          Either 'pem' or 'jwk'. Not used if alg is HS256.
  */
-export const jwtEncode = (header, payload, privateKey, keyFormat) => {
+export const jwtEncode = (header, payload, key, keyFormat) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
@@ -217,7 +214,7 @@ export const jwtEncode = (header, payload, privateKey, keyFormat) => {
         );
       } else {
         // syntax error or other
-        console.log(`${e.name}:${e.message}`);
+        console.error(`${e.name}:${e.message}`);
         return null;
       }
     }
@@ -232,7 +229,7 @@ export const jwtEncode = (header, payload, privateKey, keyFormat) => {
           "base64url"
         );
       } else {
-        console.log(`${e.name}:${e.message}`);
+        console.error(`${e.name}:${e.message}`);
         return null;
       }
     }
@@ -244,13 +241,13 @@ export const jwtEncode = (header, payload, privateKey, keyFormat) => {
     let sig;
     switch (alg) {
       case "HS256":
-        sig = hs256Sign(headerPayload, privateKey);
+        sig = hs256Sign(headerPayload, key);
         break;
       case "RS256":
         if (keyFormat.toLowerCase() === "jwk") {
-          sig = rs256JWKSign(headerPayload, privateKey);
+          sig = rs256JWKSign(headerPayload, key);
         } else if (keyFormat.toLowerCase() === "pem") {
-          sig = rs256PEMSign(headerPayload, privateKey);
+          sig = rs256PEMSign(headerPayload, key);
           console.log();
           console.log(
             "rs256PEMVerify(headerPayload, -----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb\
@@ -303,12 +300,6 @@ UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA P
     // console.log(sig === rsa256Sig);
     // console.log();
 
-    console.log();
-    console.log("sig");
-    console.log(sig);
-    console.log();
-    console.log();
-    console.log();
     return headerPayload + "." + sig;
   } else {
     console.log("Error: Base64URL encoding isn't available.");
