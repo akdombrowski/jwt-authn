@@ -3,7 +3,7 @@
   "version": "1.0.29",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
-  "tyoe": "module",
+  "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
     "test": "nyc mocha --require @babel/register",
