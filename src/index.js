@@ -1,4 +1,4 @@
-import crypto from "crypto";
+const crypto = require("crypto");
 
 /**
  * Decodes a JWT that is in JWS format.
@@ -23,13 +23,18 @@ export const jwtDecode = (jwt) => {
     // 3.   Base64url decode the Encoded JOSE Header following the
     // restriction that no line breaks, whitespace, or other additional
     // characters have been used.
-    const base64URLDecodedHeader = Buffer.from(header).toString("utf8");
+    const base64URLDecodedHeader = Buffer.from(header, "base64url").toString(
+      "utf8"
+    );
     if (!base64URLDecodedHeader) {
       console.err("base64URLDecodedHeader");
       console.err(base64URLDecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
-
+    console.log();
+    console.log("base64URLDecodedHeader");
+    console.log(base64URLDecodedHeader);
+    console.log();
     // 4.   Verify that the resulting octet sequence is a UTF-8-encoded
     //         representation of a completely valid JSON object conforming to
     //         RFC 7159 [RFC7159]; let the JOSE Header be this JSON object.
@@ -59,7 +64,10 @@ export const jwtDecode = (jwt) => {
       // validating a JWS.  Let the Message be the result of base64url
       // decoding the JWS Payload.
       const payload = components[1];
-      const base64urlDecodedPayload = Buffer.from(payload).toString("utf8");
+      const base64urlDecodedPayload = Buffer.from(
+        payload,
+        "base64url"
+      ).toString("utf8");
       const jsonPayload = JSON.parse(base64urlDecodedPayload);
 
       return {
@@ -186,7 +194,8 @@ const rs256PEMVerify = (headerPayload, publicKey, signature) => {
  * @param {*} payload JWT payload. The data to be included in the JWT.
  * @param {*} privateKey The private key used to create the JWT signature.
  * @param {*} keyFormat The format of the private key.
- */ export const jwtEncode = (header, payload, privateKey, keyFormat) => {
+ */
+export const jwtEncode = (header, payload, privateKey, keyFormat) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
@@ -209,7 +218,7 @@ const rs256PEMVerify = (headerPayload, publicKey, signature) => {
       } else {
         // syntax error or other
         console.log(`${e.name}:${e.message}`);
-        return;
+        return null;
       }
     }
 
@@ -224,7 +233,7 @@ const rs256PEMVerify = (headerPayload, publicKey, signature) => {
         );
       } else {
         console.log(`${e.name}:${e.message}`);
-        return;
+        return null;
       }
     }
 
@@ -300,6 +309,7 @@ UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA P
     console.log();
     console.log();
     console.log();
+    return headerPayload + "." + sig;
   } else {
     console.log("Error: Base64URL encoding isn't available.");
   }
