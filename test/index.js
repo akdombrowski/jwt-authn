@@ -145,4 +145,32 @@ describe("JWT encoding", () => {
       });
     });
   });
+
+  describe("#jwtEncode()", () => {
+    // specification for jwt encoding
+    context("when strict JSON objects are used", () => {
+      context("and when alg is HS256", () => {
+        it("encodes a jwt.", () => {
+          const decodedHeader = {typ: "JWT", alg: "HS256"};
+          const decodedPayload = {
+            iss: "joe",
+            exp: 1300819380,
+            "http://example.com/is_root": true,
+          };
+          const passphrase =
+            "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
+
+          const expectedJWT =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
+          const encoded = jwtAuthn.jwtEncode(
+            decodedHeader,
+            decodedPayload,
+            passphrase
+          );
+
+          expect(encoded).to.equal(expectedJWT);
+        });
+      });
+    });
+  });
 });
