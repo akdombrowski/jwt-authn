@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
-    "test": "nyc mocha --require @babel/register",
+    "test": "nyc mocha -r @babel/register",
     "lint": "eslint ./src"
   },
   "repository": {
@@ -32,11 +32,14 @@
   },
   "homepage": "https://github.com/akdombrowski/jot#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.13",
+    "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.8",
-    "babel-cli": "^6.18.0",
-    "braces": ">=2.3.1",
+    "babel-cli": "^6.26.0",
+    "braces": ">=3.0.2",
     "chai": "^4.3.4",
+    "esm": "^3.2.25",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
@@ -46,5 +49,9 @@
       "text"
     ]
   },
-  "prepublishOnly": "npm run build"
+  "prepublishOnly": "npm run build",
+  "dependencies": {
+    "core-js": "^3.9.1",
+    "regenerator-runtime": "^0.13.7"
+  }
 }

@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+import crypto from "crypto";
 
 /**
  * Decodes a JWT that is in JWS format.
@@ -101,7 +101,8 @@ const hs256Sign = (headerPayload, key) => {
 /**
  * Uses RSA with SHA256 to create the signature of a JWT if key is in JWK format.
  *
- * @param {*} jwt JSON Web Token in JSON Web Signature format
+ * @param {*} headerPayload The combined header and payload in base64url encoding separated by a period.
+ * @param {*} key JSON Web Key used to sign the JWT.
  * @returns
  */
 const rs256JWKSign = (headerPayload, key) => {
@@ -109,7 +110,15 @@ const rs256JWKSign = (headerPayload, key) => {
   if (hashes.includes("RSA-SHA256")) {
     let secret;
     try {
-      secret = JSON.parse(key);
+      try {
+        secret = JSON.parse(key);
+      } catch (e) {
+        if (JSON.stringify(key)) {
+          secret = key;
+        } else {
+          throw new Error("Not valid JSON.");
+        }
+      }
 
       const keyObject = crypto.createPrivateKey({ key: secret, format: "jwk" });
       const sig = crypto.sign("sha256", Buffer.from(headerPayload), {
@@ -125,10 +134,8 @@ const rs256JWKSign = (headerPayload, key) => {
         console.error(e.message, e);
       }
     }
-  }
-
-  if (!hashes.includes("RSA-256")) {
-    console.err("RSA-256 not found");
+  } else {
+    console.error("RSA-256 not found");
   }
 
   return null;
@@ -197,41 +204,31 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
   let payloadBase64URL;
   let jsonHeader = header;
   if (Buffer.isEncoding("base64url")) {
-    try {
-      // headerBase64URL = base64url.encode(header);
-      headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
+    if (header instanceof Object) {
+      // not a string. convert to string
+      jsonHeader = header;
+      console.log("Using JSON.stringify() to convert to a string");
+      const stringifyHeader = JSON.stringify(header);
+      // headerBase64URL = base64url.encode(stringifyHeader);
+      headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
+        "base64url"
+      );
+    } else {
       jsonHeader = JSON.parse(header);
-    } catch (e) {
-      // Is it invald json syntax or is it not a string
-      if (e instanceof TypeError) {
-        // not a string. convert to string
-        jsonHeader = header;
-        console.log("Using JSON.stringify() to convert to a string");
-        const stringifyHeader = JSON.stringify(header);
-        // headerBase64URL = base64url.encode(stringifyHeader);
-        headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
-          "base64url"
-        );
-      } else {
-        // syntax error or other
-        console.error(`${e.name}:${e.message}`);
-        return null;
-      }
+
+      headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
     }
 
-    try {
-      // payloadBase64URL = base64url.encode(payload);
-      payloadBase64URL = Buffer.from(payload).toString("base64url");
-    } catch (e) {
-      if (e instanceof TypeError) {
-        // payloadBase64URL = base64url.encode(JSON.stringify(payload));
-        payloadBase64URL = Buffer.from(JSON.stringify(payload)).toString(
-          "base64url"
-        );
-      } else {
-        console.error(`${e.name}:${e.message}`);
-        return null;
-      }
+    if (payload instanceof Object) {
+      // not a string. convert to string
+      console.log("Using JSON.stringify() to convert to a string");
+      const stringifyHeader = JSON.stringify(payload);
+      // headerBase64URL = base64url.encode(stringifyHeader);
+      payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
+        "base64url"
+      );
+    } else {
+      payloadBase64URL = Buffer.from(payload, "ascii").toString("base64url");
     }
 
     const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
@@ -239,11 +236,11 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
     const { alg } = jsonHeader;
 
     let sig;
-    switch (alg) {
-      case "HS256":
+    switch (alg.toLowerCase()) {
+      case "hs256":
         sig = hs256Sign(headerPayload, key);
         break;
-      case "RS256":
+      case "rs256":
         if (keyFormat.toLowerCase() === "jwk") {
           sig = rs256JWKSign(headerPayload, key);
         } else if (keyFormat.toLowerCase() === "pem") {
@@ -282,7 +279,7 @@ UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA P
         }
         break;
       default:
-        throw new Error(`Unsupported alg.${alg}`);
+        throw new Error(`Unsupported alg: ${alg}`);
     }
     // console.log();
     // console.log("sig");
@@ -305,3 +302,5 @@ UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA P
     console.log("Error: Base64URL encoding isn't available.");
   }
 };
+
+export default jwtDecode;
