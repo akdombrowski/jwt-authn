@@ -261,22 +261,6 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
       default:
         throw new Error(`Unsupported alg: ${alg}`);
     }
-    // console.log();
-    // console.log("sig");
-    // console.log(sig);
-    // console.log("dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
-    // console.log(sig === "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
-    // console.log();
-    // }
-    // const rsa256Sig =
-    //   "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
-    // console.log();
-    // console.log("sig");
-    // console.log(sig);
-    // console.log(rsa256Sig);
-    // console.log(sig === rsa256Sig);
-    // console.log();
-
     return headerPayload + "." + sig;
   } else {
     console.log("Error: Base64URL encoding isn't available.");
