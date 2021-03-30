@@ -166,25 +166,33 @@ const rs256PEMSign = (headerPayload, privateKey) => {
 /**
  * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in PEM format.
  *
- * @param {*} headerPayload The combined header and payload in base64url format.
- *
+ * @param {*} jwt The JSON web token.
  * @param {*} publicKey The public key used to verify.
- * @param {*} signature The signature of the JWT.
  * @returns
  */
-const rs256PEMVerify = (headerPayload, publicKey, signature) => {
+export const rs256PEMVerify = (jwt, publicKey) => {
+  const jwtComponents = jwt.split(".");
+  const headerPayload = jwtComponents[0] + "." + jwtComponents[1];
+  const signature = jwtComponents[2];
   const keyObject = crypto.createPublicKey({
     key: publicKey,
     format: "pem",
   });
   const isVerified = crypto.verify(
     null,
-    Buffer.from(headerPayload),
+    Buffer.from(headerPayload, "ascii"),
     {
       key: keyObject,
     },
-    Buffer.from(signature)
+    Buffer.from(signature, "base64url")
   );
+
+  // Could also use this:
+  // const verify = crypto.createVerify("SHA256");
+  // verify.update(headerPayload, "ascii");
+  // verify.end();
+  // verify.verify(keyObject, signature, "base64")
+
   return isVerified;
 };
 
@@ -197,7 +205,7 @@ const rs256PEMVerify = (headerPayload, publicKey, signature) => {
  * @param {*} key The private key used to create the JWT signature.
  *                    A JWK object or PEM formatted string.
  * @param {*} keyFormat The format of the key if using the RS256 alg.
- *                          Either 'pem' or 'jwk'. Not used if alg is HS256.
+ *                          Either 'pem' (default) or 'jwk'. Not used if alg is HS256.
  */
 export const jwtEncode = (header, payload, key, keyFormat) => {
   let headerBase64URL;
@@ -245,37 +253,9 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
           sig = rs256JWKSign(headerPayload, key);
         } else if (keyFormat.toLowerCase() === "pem") {
           sig = rs256PEMSign(headerPayload, key);
-          console.log();
-          console.log(
-            "rs256PEMVerify(headerPayload, -----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb\
-+WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL5ZEf\
-ZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5\
-SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39BO7S3\
-AnR+XhjmEsAsudTAzCeEoW18VOP1EdjLoCzVPUYe6hYuHRT+v2NhZW9srCHp6WtQ\
-mh0GTz0d02l1Bbfws6e15lol9t91rlsxr8LxcWIWWzbKgSl8wJ1waR7CYtOWpSo3\
-XGuftu0Fi2aLrsV7wkHyksvf69XYOC9FyxhokfFPgvfYd6zveUAl/Fvl6qYgtbbS\
-fiNrKp3Rvd32hfBy4o7spKNGrTyQorWH8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2\
-mZTRpps06umVHZxibRiGf40WUMZHX/SzF+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMj\
-QvmGvt1b8L9FICp7dxcu/CWZE7xBgtYPcDUM9UwCdLBT8ObrLgv5rL/XNImAF8+l\
-UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA PUBLIC KEY-----, sig)"
-          );
-          console.log(
-            rs256PEMVerify(
-              headerPayload,
-              "-----BEGIN RSA PUBLIC KEY-----\nMIICCgKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb\
-+WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL5ZEf\
-ZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5\
-SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39BO7S3\
-AnR+XhjmEsAsudTAzCeEoW18VOP1EdjLoCzVPUYe6hYuHRT+v2NhZW9srCHp6WtQ\
-mh0GTz0d02l1Bbfws6e15lol9t91rlsxr8LxcWIWWzbKgSl8wJ1waR7CYtOWpSo3\
-XGuftu0Fi2aLrsV7wkHyksvf69XYOC9FyxhokfFPgvfYd6zveUAl/Fvl6qYgtbbS\
-fiNrKp3Rvd32hfBy4o7spKNGrTyQorWH8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2\
-mZTRpps06umVHZxibRiGf40WUMZHX/SzF+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMj\
-QvmGvt1b8L9FICp7dxcu/CWZE7xBgtYPcDUM9UwCdLBT8ObrLgv5rL/XNImAF8+l\
-UG3k8WPupzOtDQxcAC7J+inb65HDSkK9JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END RSA PUBLIC KEY-----",
-              sig
-            )
-          );
+        } else {
+          // Default to "pem"
+          sig = rs256PEMSign(headerPayload, key);
         }
         break;
       default:
