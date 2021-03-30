@@ -244,26 +244,30 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
     const { alg } = jsonHeader;
 
     let sig;
-    switch (alg.toLowerCase()) {
-      case "hs256":
-        sig = hs256Sign(headerPayload, key);
-        break;
-      case "rs256":
-        if (keyFormat.toLowerCase() === "jwk") {
-          sig = rs256JWKSign(headerPayload, key);
-        } else if (keyFormat.toLowerCase() === "pem") {
-          sig = rs256PEMSign(headerPayload, key);
-        } else {
-          // Default to "pem"
-          sig = rs256PEMSign(headerPayload, key);
-        }
-        break;
-      default:
-        throw new Error(`Unsupported alg: ${alg}`);
+    if (alg) {
+      switch (alg.toLowerCase()) {
+        case "hs256":
+          sig = hs256Sign(headerPayload, key);
+          break;
+        case "rs256":
+          if (keyFormat.toLowerCase() === "jwk") {
+            sig = rs256JWKSign(headerPayload, key);
+          } else if (keyFormat.toLowerCase() === "pem") {
+            sig = rs256PEMSign(headerPayload, key);
+          } else {
+            // Default to "pem"
+            sig = rs256PEMSign(headerPayload, key);
+          }
+          break;
+        default:
+          throw new Error(`Unsupported alg: ${alg}`);
+      }
+      return headerPayload + "." + sig;
+    } else {
+      throw new Error("Algorithm couldn't be determined. alg:" + alg);
     }
-    return headerPayload + "." + sig;
   } else {
-    console.log("Error: Base64URL encoding isn't available.");
+    throw new Error("Error: Base64URL encoding isn't available.");
   }
 };
 
