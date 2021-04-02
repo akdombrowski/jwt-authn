@@ -1,5 +1,11 @@
 import chai from "chai";
-import { jwtDecode, jwtEncode, rs256PEMVerify } from "../src/index.js";
+import {
+  jwtDecode,
+  jwtEncode,
+  rs256PEMVerify,
+  rs256JWKVerify,
+} from "../src/index.js";
+import crypto from "crypto";
 
 const expect = chai.expect;
 chai.config.includeStack = true;
@@ -263,7 +269,10 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
             // Check if the encoded JWT is equal to what we expect
             expect(encoded).to.equal(expectedJWT);
             // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
-            expect(rs256PEMVerify(encoded, "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoDEmXwa0fhiB6EA33u8q\
+            expect(
+              rs256PEMVerify(
+                encoded,
+                "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoDEmXwa0fhiB6EA33u8q\
 SIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb+WudOINw6BmNcHfapLJm1XJxGOqQrbOe\
 j1R513z+1GGZH+Ib94RQeQZRdReL5ZEfZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wc\
 GwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5SGY5WWF+mKvsbGzen290f4tZ29j8yM3R\
@@ -274,7 +283,107 @@ yxhokfFPgvfYd6zveUAl/Fvl6qYgtbbSfiNrKp3Rvd32hfBy4o7spKNGrTyQorWH\
 8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2mZTRpps06umVHZxibRiGf40WUMZHX/Sz\
 F+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMjQvmGvt1b8L9FICp7dxcu/CWZE7xBgtYP\
 cDUM9UwCdLBT8ObrLgv5rL/XNImAF8+lUG3k8WPupzOtDQxcAC7J+inb65HDSkK9\
-JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----")).to.be.true;
+JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
+              )
+            ).to.be.true;
+          });
+        });
+      });
+    });
+
+    context("when JSON objects are used", () => {
+      context("and when alg is RS256", () => {
+        context("and jwk is object", () => {
+          it("encodes a jwt. and verifies with public key", () => {
+            const decodedHeader = '{"alg":"RS256"}';
+            const decodedPayload = {
+              iss: "joe",
+              exp: 1300819380,
+              "http://example.com/is_root": true,
+            };
+            const privateKey = {
+              kty: "RSA",
+              n:
+                "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+              e: "AQAB",
+              d:
+                "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
+              p:
+                "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
+              q:
+                "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
+              dp:
+                "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
+              dq:
+                "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
+              qi:
+                "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
+            };
+
+            const expectedJWT =
+              "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.el3lmx2zFYSGmoOC5sJFjV4nCFyb6_2nY5WDSv_d9L2cw857vQBhjV2xybTQz5_4IIVLxpollxyomEQpC1xwZSZoU9lrmNau2TGg1iFGjyIXrtZy-UxV0t_xSwujFlA_WNFjw6eLI00ji3EcuOiMpqPa8IOTfXijtgkCx7oVweb2IVO6ZjMcssvhA7s3ezF8YHf6ewHK74UF4o0RuKn4K1PjBbmxDu3TXMOp69IvbnCj2ku--9QI7H9DFjiNVyWWnpz3wekGZuUePAj5GkrbPgvwhVVUiTcczYy55MUaF7mPjkb7JGEk2sH4lCa1Jlvz9xgYMdYTfbwmT9Wgvq_Usg";
+            const encoded = jwtEncode(
+              decodedHeader,
+              decodedPayload,
+              privateKey,
+              "jwk"
+            );
+
+            // Check if the encoded JWT is equal to what we expect
+            expect(encoded).to.equal(expectedJWT);
+            // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
+            expect(
+              rs256JWKVerify(encoded, {
+                kty: "RSA",
+                n:
+                  "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+                e: "AQAB",
+              })
+            ).to.be.true;
+          });
+        });
+      });
+    });
+
+    context("when JSON objects are used", () => {
+      context("and when alg is RS256", () => {
+        context("and public and private keys are generated", () => {
+          it("encodes a jwt. and verifies with public key", () => {
+            const decodedHeader = '{"alg":"RS256"}';
+            const decodedPayload = {
+              iss: "joe",
+              exp: 1300819380,
+              "http://example.com/is_root": true,
+            };
+            const { publicKey, privateKey } = crypto.generateKeyPairSync(
+              "rsa",
+              {
+                modulusLength: 4096,
+                publicKeyEncoding: {
+                  type: "spki",
+                  format: "pem",
+                },
+                privateKeyEncoding: {
+                  type: "pkcs8",
+                  format: "pem",
+                  cipher: "aes-256-cbc",
+                  passphrase: "top secret",
+                },
+              }
+            );
+
+            const encoded = jwtEncode(
+              decodedHeader,
+              decodedPayload,
+              privateKey,
+              "pem",
+              "top secret"
+            );
+
+            // Check if the encoded JWT is equal to what we expect
+            // expect(encoded).to.equal(expectedJWT);
+            // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
+            expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
           });
         });
       });

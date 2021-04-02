@@ -147,20 +147,74 @@ const rs256JWKSign = (headerPayload, key) => {
  * @param {*} jwt JSON Web Token in JSON Web Signature format
  * @returns
  */
-const rs256PEMSign = (headerPayload, privateKey) => {
+const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
   const hashes = crypto.getHashes();
+  let pemKey;
+
   if (!hashes.includes("RSA-SHA256")) {
     console.error("RSA-SHA256 not found");
     return null;
   }
 
-  const pemKey = crypto.createPrivateKey({ key: privateKey, format: "pem" });
+  console.log("privateKey");
+  console.log(privateKey);
+  try {
+    pemKey = crypto.createPrivateKey({ key: privateKey, format: "pem" });
+  } catch (e) {
+    if (
+      e instanceof TypeError &&
+      e.message.includes("Passphrase required for encrypted key")
+    ) {
+      if (passphrase) {
+        pemKey = crypto.createPrivateKey({
+          key: privateKey,
+          format: "pem",
+          passphrase: passphrase,
+        });
+      } else {
+        throw new Error("Need a passphrase since private key is encrypted");
+      }
+    }
+  }
   const sig = crypto.sign("sha256", Buffer.from(headerPayload), {
     key: pemKey,
   });
   const sigBase64URL = sig.toString("base64url");
 
   return sigBase64URL;
+};
+
+/**
+ * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in PEM format.
+ *
+ * @param {*} jwt The JSON web token.
+ * @param {*} publicKey The public key used to verify.
+ * @returns
+ */
+export const rs256JWKVerify = (jwt, publicKey) => {
+  const jwtComponents = jwt.split(".");
+  const headerPayload = jwtComponents[0] + "." + jwtComponents[1];
+  const signature = jwtComponents[2];
+  const keyObject = crypto.createPublicKey({
+    key: publicKey,
+    format: "jwk",
+  });
+  const isVerified = crypto.verify(
+    null,
+    Buffer.from(headerPayload, "ascii"),
+    {
+      key: keyObject,
+    },
+    Buffer.from(signature, "base64url")
+  );
+
+  // Could also use this:
+  // const verify = crypto.createVerify("SHA256");
+  // verify.update(headerPayload, "ascii");
+  // verify.end();
+  // verify.verify(keyObject, signature, "base64")
+
+  return isVerified;
 };
 
 /**
@@ -207,7 +261,7 @@ export const rs256PEMVerify = (jwt, publicKey) => {
  * @param {*} keyFormat The format of the key if using the RS256 alg.
  *                          Either 'pem' (default) or 'jwk'. Not used if alg is HS256.
  */
-export const jwtEncode = (header, payload, key, keyFormat) => {
+export const jwtEncode = (header, payload, key, keyFormat, passphrase) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
@@ -253,10 +307,10 @@ export const jwtEncode = (header, payload, key, keyFormat) => {
           if (keyFormat.toLowerCase() === "jwk") {
             sig = rs256JWKSign(headerPayload, key);
           } else if (keyFormat.toLowerCase() === "pem") {
-            sig = rs256PEMSign(headerPayload, key);
+            sig = rs256PEMSign(headerPayload, key, passphrase);
           } else {
             // Default to "pem"
-            sig = rs256PEMSign(headerPayload, key);
+            sig = rs256PEMSign(headerPayload, key, passphrase);
           }
           break;
         default:
