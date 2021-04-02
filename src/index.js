@@ -259,7 +259,7 @@ export const rs256PEMVerify = (jwt, publicKey) => {
  * @param {*} keyFormat The format of the key if using the RS256 alg.
  *                          Either 'pem' (default) or 'jwk'. Not used if alg is HS256.
  */
-export const jwtEncode = (header, payload, key, keyFormat, passphrase) => {
+export const jwtEncode = (header, payload, key, options) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
@@ -302,13 +302,22 @@ export const jwtEncode = (header, payload, key, keyFormat, passphrase) => {
           sig = hs256Sign(headerPayload, key);
           break;
         case "rs256":
-          if (keyFormat.toLowerCase() === "jwk") {
-            sig = rs256JWKSign(headerPayload, key);
-          } else if (keyFormat.toLowerCase() === "pem") {
-            sig = rs256PEMSign(headerPayload, key, passphrase);
+          if (options && options.keyFormat) {
+            const keyFormat = options.keyFormat;
+            if (keyFormat.toLowerCase() === "jwk") {
+              sig = rs256JWKSign(headerPayload, key);
+            } else if (keyFormat.toLowerCase() === "pem") {
+              if (options.passphrase) {
+                sig = rs256PEMSign(headerPayload, key, options.passphrase);
+              } else {
+                sig = rs256PEMSign(headerPayload, key);
+              }
+            }
           } else {
             // Default to "pem"
-            sig = rs256PEMSign(headerPayload, key, passphrase);
+            throw new Error(
+              "Need to specify keyFormat in options for RS256 algorithm as either jwk or pem."
+            );
           }
           break;
         default:

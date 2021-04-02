@@ -64,6 +64,8 @@ jwtAuthn.jwtDecode(
 
 Encoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.1).
 
+jwtEncode(header, payload, key[, options])
+
 ```javascript
 import * as jwtAuthn from "jwt-authn";
 
