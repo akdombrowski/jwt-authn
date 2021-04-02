@@ -64,8 +64,12 @@ jwtAuthn.jwtDecode(
 
 Encoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.1).
 
-jwtEncode(header, payload, key[, options])
+**jwtEncode(header, payload, key[, options])**
 
+where *options* contains:
+
+- keyFormat - format of the rs256 private key
+- passphrase - if using an encrypted private key, passphrase is also required
 ```javascript
 import * as jwtAuthn from "jwt-authn";
 
@@ -85,7 +89,7 @@ jwt.jwtEncode(
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ```
 
-### Changing public key generated with ssh-keygen into PEM format
+### Changing public key generated with ssh-keygen (the above command) into PEM format
 *You need to do this to use it as the public key to verify a signed JWT.
 ```Shell
 ssh-keygen -f jwtRS256.key.pub -e -m pem
