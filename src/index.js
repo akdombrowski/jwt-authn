@@ -156,8 +156,6 @@ const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
     return null;
   }
 
-  console.log("privateKey");
-  console.log(privateKey);
   try {
     pemKey = crypto.createPrivateKey({ key: privateKey, format: "pem" });
   } catch (e) {
