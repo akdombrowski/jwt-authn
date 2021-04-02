@@ -6,12 +6,12 @@
   "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
-    "test": "nyc mocha -r @babel/register",
-    "lint": "eslint ./src"
+    "test": "cross-env NODE_ENV=test nyc mocha",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/akdombrowski/jot.git"
+    "url": "git+ssh://git@github.com/akdombrowski/jwt-authn.git"
   },
   "keywords": [
     "jwt",
@@ -28,26 +28,34 @@
   "author": "Anthony Dombrowski",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/akdombrowski/jot/issues"
+    "url": "https://github.com/akdombrowski/jwt-authn/issues"
   },
-  "homepage": "https://github.com/akdombrowski/jot#readme",
+  "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
   "devDependencies": {
+    "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.13",
     "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
-    "@babel/register": "^7.13.8",
+    "@babel/register": "^7.13.14",
     "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^6.0.0",
     "braces": ">=3.0.2",
     "chai": "^4.3.4",
+    "cross-env": "^7.0.3",
     "esm": "^3.2.25",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
   "nyc": {
+    "require": [
+      "@babel/register"
+    ],
     "reporter": [
       "lcov",
       "text"
-    ]
+    ],
+    "sourceMap": false,
+    "instrument": false
   },
   "prepublishOnly": "npm run build",
   "dependencies": {
