@@ -1,12 +1,12 @@
 {
   "name": "jwt-authn",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
   "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
-    "test": "cross-env NODE_ENV=test nyc mocha",
+    "test": "nyc mocha",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -33,11 +33,12 @@
   "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
   "devDependencies": {
     "@babel/cli": "^7.13.14",
-    "@babel/core": "^7.13.13",
+    "@babel/core": "^7.13.14",
+    "@babel/helper-plugin-utils": "^7.13.0",
     "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.14",
-    "babel-cli": "^6.26.0",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
     "babel-plugin-istanbul": "^6.0.0",
     "braces": ">=3.0.2",
     "chai": "^4.3.4",
@@ -46,20 +47,9 @@
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
-  "nyc": {
-    "require": [
-      "@babel/register"
-    ],
-    "reporter": [
-      "lcov",
-      "text"
-    ],
-    "sourceMap": false,
-    "instrument": false
-  },
   "prepublishOnly": "npm run build",
   "dependencies": {
-    "core-js": "^3.9.1",
+    "core-js": "^3.10.0",
     "regenerator-runtime": "^0.13.7"
   }
 }

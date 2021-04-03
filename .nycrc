@@ -1,0 +1,16 @@
+{
+  "include": [
+    "test/**.js"
+  ],
+  "exclude": [
+  ],
+  "cache": false,
+  "require": [
+      "@babel/register"
+  ],
+  "reporter": [
+      "lcov",
+      "text"
+  ],
+  "extends": "@istanbuljs/nyc-config-babel"
+}

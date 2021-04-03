@@ -43,11 +43,11 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
        BASE64URL(JWS Payload)))
                =
                dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
-
 ```
 
+---
 ### Decoding a JWT
-
+---
 Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
 ```javascript
@@ -68,8 +68,12 @@ jwtAuthn.jwtDecode(
 */
 ```
 
-### Encoding a JWT
 
+
+
+---
+### Encoding a JWT
+---
 Encoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.1).
 
 **jwtEncode(header, payload, key[, options])**
@@ -88,16 +92,19 @@ jwt.jwtEncode(
 );
 
 // returns
-// "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+"eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
 ```
 
 ## Appendix
+---
 ### Generating RSA256 private and public key pair
+---
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ```
-
+---
 ### Changing public key generated with ssh-keygen (the above command) into PEM format
+---
 *You need to do this to use it as the public key to verify a signed JWT.
 ```Shell
 ssh-keygen -f jwtRS256.key.pub -e -m pem
@@ -115,3 +122,5 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
