@@ -1,4 +1,12 @@
-[![install size](https://packagephobia.com/badge?p=jwt-authn)](https://packagephobia.com/result?p=jwt-authn)
+![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
+![npm bundle size](https://img.shields.io/bundlephobia/min/jwt-authn?style=for-the-badge&logo=npm)
+![codesize](https://img.shields.io/github/languages/code-size/akdombrowski/jwt-authn?&style=for-the-badge&logo=github)
+![npm](https://img.shields.io/npm/dw/jwt-authn?&style=for-the-badge&logo=npm)
+![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/akdombrowski?style=for-the-badge&logo=github)
+![GitHub Repo stars](https://img.shields.io/github/stars/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
+![GitHub forks](https://img.shields.io/github/forks/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
+![GitHub watchers](https://img.shields.io/github/watchers/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 
 # jwt-authn
 
