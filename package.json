@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
-    "test": "nyc mocha",
+    "test": "cross-env NODE_ENV=test nyc mocha test",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -51,5 +51,18 @@
   "dependencies": {
     "core-js": "^3.10.0",
     "regenerator-runtime": "^0.13.7"
+  },
+  "nyc": {
+    "cache": false,
+    "all": true,
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }
