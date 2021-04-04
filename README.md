@@ -10,7 +10,7 @@
 
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, and more coming.
+jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming.
 
 <br>
 <br>
