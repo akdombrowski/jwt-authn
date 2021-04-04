@@ -299,7 +299,6 @@ export const jwtEncode = (header, payload, key, options) => {
     if (header instanceof Object) {
       // not a string. convert to string
       jsonHeader = header;
-      console.log("Using JSON.stringify() to convert to a string");
       const stringifyHeader = JSON.stringify(header);
       // headerBase64URL = base64url.encode(stringifyHeader);
       headerBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
@@ -313,7 +312,6 @@ export const jwtEncode = (header, payload, key, options) => {
 
     if (payload instanceof Object) {
       // not a string. convert to string
-      console.log("Using JSON.stringify() to convert to a string");
       const stringifyHeader = JSON.stringify(payload);
       // headerBase64URL = base64url.encode(stringifyHeader);
       payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
