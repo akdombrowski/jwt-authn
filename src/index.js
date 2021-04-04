@@ -4,8 +4,9 @@ import crypto from "crypto";
  * Decodes a JWT that is in JWS format.
  *
  * @export
- * @param {*} jwt JSON Web Token in JSON Web Signature format
- * @returns
+ * @param {*} jwt JSON Web Token in JSON Web Signature format to decode.
+ * @returns The decoded JWT as an object with header, payload, and signature
+ *    as the keys.
  */
 export const jwtDecode = (jwt) => {
   try {
@@ -84,10 +85,13 @@ export const jwtDecode = (jwt) => {
 /**
  * Uses HMAC with SHA256 to create the signature of a JWT.
  *
- * @param {*} jwt JSON Web Token in JSON Web Signature format
- * @returns
+ * @export
+ * @param {*} headerPayload The combined header and payload separated
+ *    by a ".".
+ * @param {*} key The private key used to sign the JWT.
+ * @returns The signature in base64url encoding.
  */
-const hs256Sign = (headerPayload, key) => {
+export const hs256Sign = (headerPayload, key) => {
   const secret = crypto.createSecretKey(key, "base64url");
   const hmac = crypto.createHmac("sha256", secret);
 
@@ -99,22 +103,27 @@ const hs256Sign = (headerPayload, key) => {
 };
 
 /**
- * Uses RSA with SHA256 to create the signature of a JWT if key is in JWK format.
+ * Uses RSA with SHA256 to create the signature of a JWT if key is in JWK
+ *    format.
  *
- * @param {*} headerPayload The combined header and payload in base64url encoding separated by a period.
- * @param {*} key JSON Web Key used to sign the JWT.
- * @returns
+ * @export
+ * @param {*} headerPayload The combined header and payload in base64url
+ *    encoding separated by a period.
+ * @param {*} privateKey JSON Web Key used to sign the JWT. Must be in jwk
+ *    format.
+ * @returns Returns the signature in base64url encoding, or null if
+ *    failure occurs.
  */
-const rs256JWKSign = (headerPayload, key) => {
+export const rs256JWKSign = (headerPayload, privateKey) => {
   const hashes = crypto.getHashes();
   if (hashes.includes("RSA-SHA256")) {
     let secret;
     try {
       try {
-        secret = JSON.parse(key);
+        secret = JSON.parse(privateKey);
       } catch (e) {
-        if (JSON.stringify(key)) {
-          secret = key;
+        if (JSON.stringify(privateKey)) {
+          secret = privateKey;
         } else {
           throw new Error("Not valid JSON.");
         }
@@ -129,25 +138,34 @@ const rs256JWKSign = (headerPayload, key) => {
       return sigBase64URL;
     } catch (e) {
       if (e instanceof TypeError) {
-        secret = key;
+        secret = privateKey;
       } else {
         console.error(e.message, e);
       }
     }
   } else {
-    console.error("RSA-256 not found");
+    console.error("RSA-SHA256 not found");
+    throw new Error("RSA-SHA256 isn't available in the current system.")
   }
 
   return null;
 };
 
 /**
- * Uses RSA with SHA256 to create the signature of a JWT if key is in PEM format.
+ * Uses RSA with SHA256 to create the signature of a JWT if key is in PEM
+ *    format.
  *
- * @param {*} jwt JSON Web Token in JSON Web Signature format
- * @returns
+ * @export
+ * @param {*} headerPayload The combined header and payload. Each in base64url
+ *    format, concatenated by a
+ * @param {*} privateKey The private key that's used to sign the JWT.
+ * @param {*} passphrase If privateKey is encrypted, we need a passphrase to
+ *    decrypt.
+ * @returns The signature in base64url encoded format. Throws an error if
+ *    encrypted key is given with no passphrase. Returns null if RSA-SHA256
+ *    hash is unavailable in the currently used version of node.
  */
-const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
+export const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
   const hashes = crypto.getHashes();
   let pemKey;
 
@@ -183,11 +201,13 @@ const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
 };
 
 /**
- * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in PEM format.
+ * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in jwk format.
  *
+ * @export
  * @param {*} jwt The JSON web token.
- * @param {*} publicKey The public key used to verify.
- * @returns
+ * @param {*} publicKey The public key used to verify the signature of the JWT.
+ *    Must be in jwk format for this method.
+ * @returns True if the signature has been verified, false otherwise.
  */
 export const rs256JWKVerify = (jwt, publicKey) => {
   const jwtComponents = jwt.split(".");
@@ -197,6 +217,9 @@ export const rs256JWKVerify = (jwt, publicKey) => {
     key: publicKey,
     format: "jwk",
   });
+
+  // If `algorithm` (first argument) is `null` or `undefined`, then the
+  //    algorithm is dependent upon the key type
   const isVerified = crypto.verify(
     null,
     Buffer.from(headerPayload, "ascii"),
@@ -206,7 +229,9 @@ export const rs256JWKVerify = (jwt, publicKey) => {
     Buffer.from(signature, "base64url")
   );
 
-  // Could also use this:
+  /*
+   * Could also use this
+   */
   // const verify = crypto.createVerify("SHA256");
   // verify.update(headerPayload, "ascii");
   // verify.end();
@@ -218,9 +243,11 @@ export const rs256JWKVerify = (jwt, publicKey) => {
 /**
  * Verifies a jwt signed with RS256 (RSA with SHA256) if key is in PEM format.
  *
+ * @export
  * @param {*} jwt The JSON web token.
- * @param {*} publicKey The public key used to verify.
- * @returns
+ * @param {*} publicKey The public key used to verify. Must be in PEM format
+ *    for this method
+ * @returns True if verified, false otherwise.
  */
 export const rs256PEMVerify = (jwt, publicKey) => {
   const jwtComponents = jwt.split(".");
@@ -230,6 +257,9 @@ export const rs256PEMVerify = (jwt, publicKey) => {
     key: publicKey,
     format: "pem",
   });
+
+  // If `algorithm` (first argument) is `null` or `undefined`, then the
+  //    algorithm is dependent upon the key type
   const isVerified = crypto.verify(
     null,
     Buffer.from(headerPayload, "ascii"),
@@ -255,9 +285,11 @@ export const rs256PEMVerify = (jwt, publicKey) => {
  * @param {*} header JWT header. Algorithms supported are 'RS256' and 'HS256'.
  * @param {*} payload JWT payload. The data to be included in the JWT.
  * @param {*} key The private key used to create the JWT signature.
- *                    A JWK object or PEM formatted string.
- * @param {*} keyFormat The format of the key if using the RS256 alg.
- *                          Either 'pem' (default) or 'jwk'. Not used if alg is HS256.
+ *    A JWK object or PEM formatted string. Or a passphrase for HS256.
+ * @param {*} options Includes keyFormat and passphrase. keyFormat is the
+ *    format of the key if using the RS256 alg. Either 'pem' or 'jwk'. Not used
+ *    if alg is HS256. passphrase is to decrypt an encrypted PEM key.
+ * @returns The encoded JWT.
  */
 export const jwtEncode = (header, payload, key, options) => {
   let headerBase64URL;
@@ -332,4 +364,5 @@ export const jwtEncode = (header, payload, key, options) => {
   }
 };
 
+// Default use-case is to decode a JWT.
 export default jwtDecode;
