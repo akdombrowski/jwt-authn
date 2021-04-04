@@ -12,8 +12,8 @@ chai.config.includeStack = true;
 describe("JWT decoding", () => {
   describe("#jwtDecode()", () => {
     // specification for decoding
-    context("when using JSON.stringify() on output", function () {
-      context("and when alg is HS256", function () {
+    context("when alg is HS256", function () {
+      context("when using JSON.stringify() on output", function () {
         it("decodes from encoded jwt", () => {
           const jwt =
             "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjAzMzc2MDExfQ.ixWwz6G_3K0y57BHRYpEh6yxMjxdekYgRQ2sOPCBF-Q";
@@ -26,13 +26,9 @@ describe("JWT decoding", () => {
           expect(JSON.stringify(decoded)).to.equal(JSON.stringify(expectedJWT));
         });
       });
-    });
-  });
 
-  describe("#jwtDecode()", () => {
-    // specification for decoding
-    context("when using JSON.stringify() on output", function () {
-      context("and when alg is HS256", function () {
+      // specification for decoding
+      context("when using JSON.stringify() on output", function () {
         it("decodes from encoded jwt", () => {
           const jwt =
             "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
@@ -49,13 +45,10 @@ describe("JWT decoding", () => {
           expect(JSON.stringify(decoded)).to.equal(JSON.stringify(expectedJWT));
         });
       });
-    });
-  });
-  describe("#jwtDecode()", () => {
-    // specification for decoding
-    context("when using plain output", function () {
-      context("checks deep equal on json object output", function () {
-        context("and when alg is hs256.", function () {
+
+      // specification for decoding
+      context("when using plain output", function () {
+        context("checks deep equal on json object output", function () {
           it("decodes from encoded jwt.", () => {
             const jwt =
               "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
@@ -74,12 +67,11 @@ describe("JWT decoding", () => {
         });
       });
     });
-  });
-  describe("#jwtDecode()", () => {
-    // specification for decoding
-    context("when using plain output", function () {
-      context("checks deep equal on json object output", function () {
-        context("and when alg is rs256.", function () {
+
+    context("alg is rs256.", function () {
+      // specification for decoding
+      context("when using plain output", function () {
+        context("checks deep equal on json object output", function () {
           it("decodes from encoded jwt.", () => {
             const jwt =
               "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
@@ -98,13 +90,9 @@ describe("JWT decoding", () => {
           });
         });
       });
-    });
-  });
 
-  describe("#jwtDecode()", () => {
-    // specification for decoding
-    context("when using JSON.stringify on output", function () {
-      context("and when alg is rs256.", function () {
+      // specification for decoding
+      context("when using JSON.stringify on output", function () {
         it("decodes from encoded jwt.", () => {
           const jwt =
             "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
@@ -128,9 +116,9 @@ describe("JWT decoding", () => {
 
 describe("JWT encoding", () => {
   describe("#jwtEncode()", () => {
-    // specification for jwt encoding
-    context("when strict string inputs are used", () => {
-      context("and when alg is HS256", () => {
+    context("alg is HS256", () => {
+      // specification for jwt encoding
+      context("when strict string inputs are used", () => {
         it("encodes a jwt.", () => {
           const decodedHeader = '{"typ":"JWT",\r\n "alg":"HS256"}';
           const decodedPayload =
@@ -145,13 +133,9 @@ describe("JWT encoding", () => {
           expect(encoded).to.equal(expectedJWT);
         });
       });
-    });
-  });
 
-  describe("#jwtEncode()", () => {
-    // specification for jwt encoding
-    context("when JSON objects are used", () => {
-      context("and when alg is HS256", () => {
+      // specification for jwt encoding
+      context("when JSON objects are used", () => {
         it("encodes a jwt.", () => {
           const decodedHeader = { typ: "JWT", alg: "HS256" };
           const decodedPayload = {
@@ -171,8 +155,8 @@ describe("JWT encoding", () => {
       });
     });
     // specification for jwt encoding
-    context("when string literals are used", () => {
-      context("and when alg is RS256", () => {
+    context("alg is RS256", () => {
+      context("when string literals are used", () => {
         context("and jwk is strting literal", () => {
           it("encodes a jwt.", () => {
             const decodedHeader = '{"alg":"RS256"}';
@@ -195,10 +179,8 @@ describe("JWT encoding", () => {
           });
         });
       });
-    });
 
-    context("when JSON objects are used", () => {
-      context("and when alg is RS256", () => {
+      context("when JSON objects are used", () => {
         context("and key is pem string", () => {
           it("encodes a jwt. and verifies with public key", () => {
             const decodedHeader = '{"alg":"RS256"}';
@@ -209,9 +191,9 @@ describe("JWT encoding", () => {
             };
             const privateKey =
               "-----BEGIN RSA PRIVATE KEY-----\nMIIJKAIBAAKCAgEAoDEmXwa0fhiB6EA33u8qSIEkR8o26nzrOjLl0xpJ4hfjBMm+\
-izLb+WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL\
-5ZEfZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3\
-E/I5SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39B\
+            izLb+WudOINw6BmNcHfapLJm1XJxGOqQrbOej1R513z+1GGZH+Ib94RQeQZRdReL\
+            5ZEfZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wcGwbHBFXZBkc7F0Sumb+IE2kDGJm3\
+            E/I5SGY5WWF+mKvsbGzen290f4tZ29j8yM3RprwKx5TKG/bAf/GDgQFtk+VWv39B\
 O7S3AnR+XhjmEsAsudTAzCeEoW18VOP1EdjLoCzVPUYe6hYuHRT+v2NhZW9srCHp\
 6WtQmh0GTz0d02l1Bbfws6e15lol9t91rlsxr8LxcWIWWzbKgSl8wJ1waR7CYtOW\
 pSo3XGuftu0Fi2aLrsV7wkHyksvf69XYOC9FyxhokfFPgvfYd6zveUAl/Fvl6qYg\
@@ -291,10 +273,8 @@ JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
           });
         });
       });
-    });
 
-    context("when JSON objects are used", () => {
-      context("and when alg is RS256", () => {
+      context("when JSON objects are used", () => {
         context("and jwk is object", () => {
           it("encodes a jwt. and verifies with public key", () => {
             const decodedHeader = '{"alg":"RS256"}';
@@ -346,10 +326,8 @@ JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
           });
         });
       });
-    });
 
-    context("when JSON objects are used", () => {
-      context("and when alg is RS256", () => {
+      context("when JSON objects are used", () => {
         context("and public and private keys are generated", () => {
           it("encodes a jwt. and verifies with public key", () => {
             const decodedHeader = '{"alg":"RS256"}';
