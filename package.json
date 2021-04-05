@@ -34,16 +34,12 @@
   "devDependencies": {
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.14",
-    "@babel/helper-plugin-utils": "^7.13.0",
-    "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.14",
     "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.0.0",
     "braces": ">=3.0.2",
     "chai": "^4.3.4",
     "cross-env": "^7.0.3",
-    "esm": "^3.2.25",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
@@ -53,16 +49,12 @@
     "regenerator-runtime": "^0.13.7"
   },
   "nyc": {
-    "cache": false,
-    "all": true,
     "require": [
       "@babel/register"
     ],
     "reporter": [
-      "lcov",
-      "text"
-    ],
-    "sourceMap": false,
-    "instrument": false
+      "text",
+      "lcov"
+    ]
   }
 }

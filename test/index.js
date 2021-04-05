@@ -9,6 +9,7 @@ import crypto from "crypto";
 
 const expect = chai.expect;
 chai.config.includeStack = true;
+
 describe("JWT decoding", () => {
   describe("#jwtDecode()", () => {
     // specification for decoding
