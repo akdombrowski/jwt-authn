@@ -145,7 +145,7 @@ export const rs256JWKSign = (headerPayload, privateKey) => {
     }
   } else {
     console.error("RSA-SHA256 not found");
-    throw new Error("RSA-SHA256 isn't available in the current system.")
+    throw new Error("RSA-SHA256 isn't available in the current system.");
   }
 
   return null;
@@ -279,6 +279,129 @@ export const rs256PEMVerify = (jwt, publicKey) => {
 };
 
 /**
+ * VCreates the combined header payload portion of the JWT.
+ *
+ * @export
+ * @param {*} header The decoded header.
+ * @param {*} payload The decoded payload.
+ * @returns The combined the header payload portion of the JWT.
+ */
+export const createHeaderPayload = (header, payload) => {
+  if (Buffer.isEncoding("base64url")) {
+    let headerBase64URL;
+    let payloadBase64URL;
+
+    // use string literals
+    if (typeof header === "string") {
+      headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
+    } else {
+      const jsonHeader = parseHeaderToJSON(header);
+      headerBase64URL = createHeaderBase64URL(jsonHeader);
+    }
+
+    // use string literals
+    if (typeof payload === "string") {
+      payloadBase64URL = Buffer.from(payload, "ascii").toString("base64url");
+    } else {
+      const jsonPayload = parsePayloadToJSON(payload);
+      payloadBase64URL = createPayloadBase64URL(jsonPayload);
+    }
+
+    const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
+
+    return headerPayload;
+  }
+
+  throw new Error("Error: Base64URL encoding isn't available.");
+};
+
+/**
+ * Creates the base64URL encoding of the header. Header must be in JSON format.
+ *   Uses JSON stringify to convert jsonHeader input.
+ *
+ * @export
+ * @param {*} jsonHeader The header in JSON fromat.
+ * @returns The base64URL encoding of the header.
+ */
+export const createPayloadBase64URL = (jsonPayload) => {
+  if (Buffer.isEncoding("base64url")) {
+    // not a string. convert to string
+    const stringifyHeader = JSON.stringify(jsonPayload);
+    // headerBase64URL = base64url.encode(stringifyHeader);
+    const payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
+      "base64url"
+    );
+    return payloadBase64URL;
+  }
+
+  throw new Error("Error: Base64URL encoding isn't available");
+};
+
+/**
+ * Creates the base64URL encoding of the header. Header must be in JSON format.
+ *   Uses JSON stringify to convert jsonHeader input.
+ *
+ * @export
+ * @param {*} jsonHeader The header in JSON fromat.
+ * @returns The base64URL encoding of the header.
+ */
+export const createHeaderBase64URL = (jsonHeader) => {
+  if (Buffer.isEncoding("base64url")) {
+    const stringifyHeader = JSON.stringify(jsonHeader);
+    const headerBase64URL = Buffer.from(stringifyHeader).toString("base64url");
+    return headerBase64URL;
+  }
+
+  throw new Error("Error: Base64URL encoding isn't available");
+};
+
+/**
+ * Converts jwt header into a JSON object.
+ *
+ * @export
+ * @param {*} header The jwt header. Will try to take string or JSON object.
+ * @returns The header in JSON object format.
+ */
+export const parseHeaderToJSON = (header) => {
+  let jsonHeader = header;
+
+  if (Buffer.isEncoding("base64url")) {
+    if (header instanceof Object) {
+      // not a string. convert to string
+      jsonHeader = header;
+    } else {
+      jsonHeader = JSON.parse(header);
+    }
+    return jsonHeader;
+  }
+
+  throw new Error("Error: Base64URL encoding isn't available");
+};
+
+/**
+ * Converts decoded jwt payload into a JSON object.
+ *
+ * @export
+ * @param {*} payload The decoded jwt payload. Will try to take string or JSON object.
+ * @returns The decoded payload in JSON object format.
+ */
+export const parsePayloadToJSON = (payload) => {
+  let jsonPayload = payload;
+
+  if (Buffer.isEncoding("base64url")) {
+    if (payload instanceof Object) {
+      // not a string. convert to string
+      jsonPayload = payload;
+    } else {
+      jsonPayload = JSON.parse(payload);
+    }
+    return jsonPayload;
+  }
+
+  throw new Error("Error: Base64URL encoding isn't available");
+};
+
+/**
  * Encodes a JWT in JWS compact serialization.
  *
  * @export
@@ -295,6 +418,7 @@ export const jwtEncode = (header, payload, key, options) => {
   let headerBase64URL;
   let payloadBase64URL;
   let jsonHeader = header;
+
   if (Buffer.isEncoding("base64url")) {
     if (header instanceof Object) {
       // not a string. convert to string
@@ -310,18 +434,7 @@ export const jwtEncode = (header, payload, key, options) => {
       headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
     }
 
-    if (payload instanceof Object) {
-      // not a string. convert to string
-      const stringifyHeader = JSON.stringify(payload);
-      // headerBase64URL = base64url.encode(stringifyHeader);
-      payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
-        "base64url"
-      );
-    } else {
-      payloadBase64URL = Buffer.from(payload, "ascii").toString("base64url");
-    }
-
-    const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
+    const headerPayload = createHeaderPayload(header, payload);
 
     const { alg } = jsonHeader;
 
@@ -357,9 +470,9 @@ export const jwtEncode = (header, payload, key, options) => {
     } else {
       throw new Error("Algorithm couldn't be determined. alg:" + alg);
     }
-  } else {
-    throw new Error("Error: Base64URL encoding isn't available.");
   }
+
+  throw new Error("Error: Base64URL encoding isn't available.");
 };
 
 // Default use-case is to decode a JWT.

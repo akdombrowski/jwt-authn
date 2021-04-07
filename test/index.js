@@ -4,6 +4,8 @@ import {
   jwtEncode,
   rs256PEMVerify,
   rs256JWKVerify,
+  hs256Sign,
+  createHeaderPayload,
 } from "../src/index.js";
 import crypto from "crypto";
 
@@ -369,6 +371,37 @@ JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
           });
         });
       });
+    });
+  });
+});
+
+describe("JWT encoding then decoding", () => {
+  context("when deep equal used", () => {
+    it("they are equal when object input is used", () => {
+      const decodedHeader = { typ: "JWT", alg: "HS256" };
+      const decodedPayload = {
+        iss: "joe",
+        exp: 1300819380,
+        "http://example.com/is_root": true,
+      };
+      const passphrase =
+        "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
+
+      const expectedJWT =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
+      const encoded = jwtEncode(decodedHeader, decodedPayload, passphrase);
+
+      expect(encoded).to.equal(expectedJWT);
+
+      const headerPayload = createHeaderPayload(decodedHeader, decodedPayload);
+      const sig = hs256Sign(headerPayload, passphrase);
+      const objOutput = {
+        header: decodedHeader,
+        payload: decodedPayload,
+        signature: sig,
+      };
+      const decoded = jwtDecode(encoded);
+      expect(decoded).to.deep.equal(objOutput);
     });
   });
 });
