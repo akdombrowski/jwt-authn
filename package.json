@@ -62,8 +62,7 @@
   },
   "prepublishOnly": "npm run build",
   "dependencies": {
-    "core-js": "^3.10.0",
-    "regenerator-runtime": "^0.13.7"
+    "core-js": "^3.10.0"
   },
   "nyc": {
     "require": [
