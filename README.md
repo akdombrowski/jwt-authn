@@ -17,11 +17,20 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 <br>
 
 ### Index
-- [Usage](#usage)
-  - [Installation](#installation)
-  - [Accepted Form of JWts](#accepted-form-of-JWTs)
-  - [Decoding a JWT](#decoding-a-jwt)
-  - [Encoding a JWT](#encoding-a-jwt)
+- [jwt-authn](#jwt-authn)
+    - [Index](#index)
+  - [Usage⬆](#usage)
+    - [Installation:⬆](#installation)
+    - [Accepted Form of JWTs⬆](#accepted-form-of-jwts)
+    - [Decoding a JWT⬆](#decoding-a-jwt)
+      - [**jwtDecode(jwt)**⬆](#jwtdecodejwt)
+    - [Encoding a JWT⬆](#encoding-a-jwt)
+      - [**jwtEncode(header, payload, key[, options])**⬆](#jwtencodeheader-payload-key-options)
+  - [Appendix⬆](#appendix)
+    - [Generating RSA256 private and public key pair⬆](#generating-rsa256-private-and-public-key-pair)
+    - [Changing public key generated with ssh-keygen (the above command) into PEM format⬆](#changing-public-key-generated-with-ssh-keygen-the-above-command-into-pem-format)
+  - [Contributing⬆](#contributing)
+  - [License⬆](#license)
 
 ## Usage[⬆](#index)
 ### Installation:[⬆](#index)
@@ -68,7 +77,7 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 
 <br>
 
-#### **jwtDecode(jwt)**
+#### **jwtDecode(jwt)**[⬆](#index)
 
 *Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
@@ -102,7 +111,7 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 
 <br>
 
-#### **jwtEncode(header, payload, key[, options])**
+#### **jwtEncode(header, payload, key[, options])**[⬆](#index)
 
 
 where *options* contains:
@@ -131,10 +140,10 @@ jwt.jwtEncode(
 <br>
 
 ---
-## Appendix
+## Appendix[⬆](#index)
 <br>
 
-### Generating RSA256 private and public key pair
+### Generating RSA256 private and public key pair[⬆](#index)
 
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
@@ -145,7 +154,7 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 <br>
 
 
-### Changing public key generated with ssh-keygen (the above command) into PEM format
+### Changing public key generated with ssh-keygen (the above command) into PEM format[⬆](#index)
 
 *You need to do this to use it as the public key to verify a signed JWT.
 ```Shell
@@ -159,7 +168,7 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 <br>
 
 ---
-# Contributing
+## Contributing[⬆](#index)
 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -171,7 +180,7 @@ Please make sure to update tests as appropriate.
 <br>
 
 ---
-# License
+## License[⬆](#index)
 
 [MIT](https://choosealicense.com/licenses/gpl-3.0/)
 
