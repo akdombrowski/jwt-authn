@@ -3,7 +3,6 @@
   "version": "1.0.32",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
-  "type": "module",
   "scripts": {
     "build": "babel ./src -d ./lib",
     "test": "cross-env NODE_ENV=test nyc mocha test",
@@ -26,7 +25,7 @@
     "jwt-encoder"
   ],
   "author": "Anthony Dombrowski",
-  "license": "MIT",
+  "license": "GNU GPLv3",
   "bugs": {
     "url": "https://github.com/akdombrowski/jwt-authn/issues"
   },

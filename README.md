@@ -165,6 +165,6 @@ Please make sure to update tests as appropriate.
 ---
 # License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/gpl-3.0/)
 
 ![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
