@@ -20,6 +20,8 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 - [Usage](#usage)
   - [Installation](#installation)
   - [Accepted Form of JWts](#accepted-form-of-JWTs)
+  - [Decoding a JWT](#decoding-a-jwt)
+  - [Encoding a JWT](#encoding-a-jwt)
 
 ## Usage[⬆](#index)
 ### Installation:[⬆](#index)
@@ -62,7 +64,7 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 <br>
 
 ---
-### Decoding a JWT
+### Decoding a JWT[⬆](#index)
 
 <br>
 
@@ -96,7 +98,7 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 <br>
 
 ---
-### Encoding a JWT
+### Encoding a JWT[⬆](#index)
 
 <br>
 
