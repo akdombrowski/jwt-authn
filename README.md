@@ -15,6 +15,7 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 <br>
 <br>
 <br>
+
 ### Index
 - [Usage](#usage)
   - [Installation](#installation)
@@ -61,11 +62,11 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 <br>
 
 ---
-# Decoding a JWT
+### Decoding a JWT
 
 <br>
 
-## **jwtDecode(jwt)**
+#### **jwtDecode(jwt)**
 
 *Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
@@ -95,11 +96,11 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 <br>
 
 ---
-# Encoding a JWT
+### Encoding a JWT
 
 <br>
 
-## **jwtEncode(header, payload, key[, options])**
+#### **jwtEncode(header, payload, key[, options])**
 
 
 where *options* contains:
@@ -128,10 +129,10 @@ jwt.jwtEncode(
 <br>
 
 ---
-# Appendix
+## Appendix
 <br>
 
-## Generating RSA256 private and public key pair
+### Generating RSA256 private and public key pair
 
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
@@ -142,7 +143,7 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 <br>
 
 
-## Changing public key generated with ssh-keygen (the above command) into PEM format
+### Changing public key generated with ssh-keygen (the above command) into PEM format
 
 *You need to do this to use it as the public key to verify a signed JWT.
 ```Shell
