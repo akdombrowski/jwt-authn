@@ -33,6 +33,7 @@
     "authz",
     "sha256",
     "rs256",
+    "hs256",
     "jws",
     "alg",
     "verify",
