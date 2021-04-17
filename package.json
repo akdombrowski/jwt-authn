@@ -44,7 +44,7 @@
     "base64url"
   ],
   "author": "Anthony Dombrowski",
-  "license": "GNU GPLv3",
+  "license": "MIT-Modern-Variant",
   "bugs": {
     "url": "https://github.com/akdombrowski/jwt-authn/issues"
   },
@@ -72,5 +72,8 @@
       "text",
       "lcov"
     ]
+  },
+  "engines": {
+    "node": ">=15.0"
   }
 }
