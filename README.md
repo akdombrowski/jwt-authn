@@ -52,7 +52,7 @@ yarn add jwt-authn
 
 ### [⬆Accepted Form of JWTs](#index)
 
-**For JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+**This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -75,6 +75,9 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 <br>
 
 ---
+
+<br>
+
 ### [⬆Decoding a JWT](#index)
 
 <br>
@@ -109,6 +112,9 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 <br>
 
 ---
+
+<br>
+
 ### [⬆Encoding a JWT](#index)
 
 <br>
@@ -142,6 +148,9 @@ jwt.jwtEncode(
 <br>
 
 ---
+
+<br>
+
 ## [⬆Appendix](#index)
 <br>
 
@@ -170,6 +179,9 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 <br>
 
 ---
+
+<br>
+
 ## [⬆Contributing](#index)
 
 
@@ -182,8 +194,13 @@ Please make sure to update tests as appropriate.
 <br>
 
 ---
+
+<br>
+
 ## [⬆License](#index)
 
-[MIT](https://choosealicense.com/licenses/gpl-3.0/)
+<br>
+
+[GNU GPL3](https://choosealicense.com/licenses/gpl-3.0/)
 
 ![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
