@@ -10,13 +10,33 @@
 
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming.
+jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. No package dependencies! It's only dependency is the [Crypto](https://nodejs.org/api/crypto.html) module in Nodejs.
 
 <br>
 <br>
 <br>
 
-# Installation
+### Index
+- [jwt-authn](#jwt-authn)
+    - [Index](#index)
+  - [⬆Usage](#usage)
+    - [⬆Installation:](#installation)
+    - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
+    - [⬆ Decoding a JWT](#-decoding-a-jwt)
+      - [⬆ **jwtDecode(jwt)**](#-jwtdecodejwt)
+    - [⬆ Encoding a JWT](#-encoding-a-jwt)
+      - [⬆ **jwtEncode(header, payload, key[, options])**](#-jwtencodeheader-payload-key-options)
+  - [⬆ Appendix](#-appendix)
+    - [⬆ What is a JWT?](#-what-is-a-jwt)
+    - [⬆ Generating RSA256 private and public key pair](#-generating-rsa256-private-and-public-key-pair)
+    - [⬆ Changing public key generated with ssh-keygen (the above command) into PEM format](#-changing-public-key-generated-with-ssh-keygen-the-above-command-into-pem-format)
+  - [⬆ Contributing](#-contributing)
+  - [⬆ License](#-license)
+
+<br>
+
+## [⬆Usage](#index)
+### [⬆Installation:](#index)
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
 
@@ -31,9 +51,9 @@ yarn add jwt-authn
 <br>
 <br>
 
-# Usage
+### [⬆Accepted Form of JWTs](#index)
 
-**For JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+**This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -56,11 +76,14 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 <br>
 
 ---
-# Decoding a JWT
 
 <br>
 
-## **jwtDecode(jwt)**
+### [⬆](#index) Decoding a JWT
+
+<br>
+
+#### [⬆](#index) **jwtDecode(jwt)**
 
 *Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
@@ -90,11 +113,14 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 <br>
 
 ---
-# Encoding a JWT
 
 <br>
 
-## **jwtEncode(header, payload, key[, options])**
+### [⬆](#index) Encoding a JWT
+
+<br>
+
+#### [⬆](#index) **jwtEncode(header, payload, key[, options])**
 
 
 where *options* contains:
@@ -123,10 +149,18 @@ jwt.jwtEncode(
 <br>
 
 ---
-# Appendix
+
 <br>
 
-## Generating RSA256 private and public key pair
+## [⬆](#index) Appendix
+<br>
+
+### [⬆](#index) What is a JWT?
+A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information.
+
+<br>
+
+### [⬆](#index) Generating RSA256 private and public key pair
 
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
@@ -137,7 +171,7 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 <br>
 
 
-## Changing public key generated with ssh-keygen (the above command) into PEM format
+### [⬆](#index) Changing public key generated with ssh-keygen (the above command) into PEM format
 
 *You need to do this to use it as the public key to verify a signed JWT.
 ```Shell
@@ -151,7 +185,10 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 <br>
 
 ---
-# Contributing
+
+<br>
+
+## [⬆](#index) Contributing
 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -163,8 +200,13 @@ Please make sure to update tests as appropriate.
 <br>
 
 ---
-# License
 
-[MIT](https://choosealicense.com/licenses/gpl-3.0/)
+<br>
+
+## [⬆](#index) License
+
+<br>
+
+[GNU GPL3](https://choosealicense.com/licenses/gpl-3.0/)
 
 ![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)

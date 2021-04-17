@@ -1,6 +1,6 @@
 {
   "name": "jwt-authn",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "description": "JWT decoder, encoder, and more",
   "main": "./lib",
   "scripts": {
@@ -33,6 +33,7 @@
     "authz",
     "sha256",
     "rs256",
+    "hs256",
     "jws",
     "alg",
     "verify",
@@ -56,15 +57,12 @@
     "@istanbuljs/nyc-config-babel": "^3.0.0",
     "braces": ">=3.0.2",
     "chai": "^4.3.4",
+    "core-js": "^3.10.0",
     "cross-env": "^7.0.3",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
   "prepublishOnly": "npm run build",
-  "dependencies": {
-    "core-js": "^3.10.0",
-    "regenerator-runtime": "^0.13.7"
-  },
   "nyc": {
     "require": [
       "@babel/register"
