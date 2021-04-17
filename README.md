@@ -30,6 +30,8 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
       - [⬆ **jwtDecode(jwt)**](#-jwtdecodejwt)
     - [⬆ Encoding a JWT](#-encoding-a-jwt)
       - [⬆ **jwtEncode(header, payload, key[, options])**](#-jwtencodeheader-payload-key-options)
+    - [⬆ Signing (coming soon...)](#-signing-coming-soon)
+    - [⬆ Verifying a signature (coming soon...)](#-verifying-a-signature-coming-soon)
   - [⬆ Appendix](#-appendix)
     - [⬆ What is a JWT?](#-what-is-a-jwt)
     - [⬆ Generating RSA256 private and public key pair](#-generating-rsa256-private-and-public-key-pair)
@@ -148,6 +150,31 @@ jwt.jwtEncode(
 // returns
 "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
 ```
+<br>
+<br>
+<br>
+
+---
+
+<br>
+
+### [⬆](#index) Signing (coming soon...)
+
+<br>
+
+<br>
+<br>
+<br>
+
+---
+
+<br>
+
+### [⬆](#index) Verifying a signature (coming soon...)
+
+<br>
+
+
 <br>
 <br>
 <br>
