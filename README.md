@@ -10,9 +10,9 @@
 
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. No package dependencies! It's only dependency is the [Crypto](https://nodejs.org/api/crypto.html) module in Nodejs.
+jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). No package dependencies! It's only dependency is NodeJS itself.
 
-*must be on Node >=15.x
+*[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
 
 **If you get a base64url encoding not found error, it's likely you're using NodeJS version <15.x
 
