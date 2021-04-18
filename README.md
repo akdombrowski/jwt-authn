@@ -39,6 +39,8 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 <br>
 
 ## [⬆Usage](#index)
+
+---
 ### [⬆Installation:](#index)
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
@@ -50,8 +52,10 @@ npm install jwt-authn
 ```Shell
 yarn add jwt-authn
 ```
+
 <br>
-<br>
+
+---
 
 ### [⬆Accepted Form of JWTs](#index)
 
@@ -75,7 +79,6 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
                =
                dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
-<br>
 <br>
 
 ---
@@ -109,7 +112,6 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 *
 */
 ```
-<br>
 <br>
 
 ---
