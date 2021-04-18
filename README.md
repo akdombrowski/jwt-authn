@@ -16,13 +16,10 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 
 **If you get a base64url encoding not found error, it's likely you're using NodeJS version <15.x
 
-<br>
-<br>
-<br>
 
-### Index
+## Index
 - [jwt-authn](#jwt-authn)
-    - [Index](#index)
+  - [Index](#index)
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
@@ -55,11 +52,12 @@ yarn add jwt-authn
 ```
 <br>
 <br>
-<br>
 
 ### [⬆Accepted Form of JWTs](#index)
 
 **This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+
+*hint: read the two vertical bars/pipes "||" as AND operators.
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -79,11 +77,8 @@ JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Decoding a JWT
 
@@ -116,11 +111,8 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Encoding a JWT
 
@@ -152,11 +144,8 @@ jwt.jwtEncode(
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Signing (coming soon...)
 
@@ -164,11 +153,8 @@ jwt.jwtEncode(
 
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Verifying a signature (coming soon...)
 
@@ -177,11 +163,8 @@ jwt.jwtEncode(
 
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ## [⬆](#index) Appendix
 <br>
@@ -213,11 +196,8 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ## [⬆](#index) Contributing
 
@@ -228,18 +208,12 @@ Please make sure to update tests as appropriate.
 
 <br>
 <br>
-<br>
 
 ---
 
-<br>
-
 ## [⬆](#index) License
-
-<br>
-
-[MIT](https://choosealicense.com/licenses/mit/)
+![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
 
 [MIT-Modern-Variant](https://spdx.org/licenses/MIT-Modern-Variant.html)
 
-![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
+[MIT](https://choosealicense.com/licenses/mit/)
