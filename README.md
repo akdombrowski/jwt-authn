@@ -61,7 +61,7 @@ yarn add jwt-authn
 
 **This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
 
-*hint: read the two vertical bars/pipes "||" as AND operators.
+*[hint: read the two vertical bars/pipes "||" as AND operators.](https://tools.ietf.org/html/rfc7515#section-1.1)
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -75,9 +75,7 @@ where:
 JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
 JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
 JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
-       BASE64URL(JWS Payload)))
-               =
-               dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+       BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
 <br>
 
@@ -169,6 +167,7 @@ jwt.jwtEncode(
 ---
 
 ## [⬆](#index) Appendix
+
 <br>
 
 ### [⬆](#index) What is a JWT?
