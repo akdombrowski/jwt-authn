@@ -10,19 +10,18 @@
 
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). No package dependencies! It's only dependency is NodeJS itself.
+
+jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). No package dependencies! Its only dependency is NodeJS itself.
+
 
 *[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
 
 **If you get a base64url encoding not found error, it's likely you're using NodeJS version < 15.x
 
-<br>
-<br>
-<br>
 
-### Index
+## Index
 - [jwt-authn](#jwt-authn)
-    - [Index](#index)
+  - [Index](#index)
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
@@ -42,6 +41,8 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
 <br>
 
 ## [⬆Usage](#index)
+
+---
 ### [⬆Installation:](#index)
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
@@ -53,13 +54,16 @@ npm install jwt-authn
 ```Shell
 yarn add jwt-authn
 ```
+
 <br>
-<br>
-<br>
+
+---
 
 ### [⬆Accepted Form of JWTs](#index)
 
 **This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+
+*[hint: read the two vertical bars/pipes "||" as AND operators.](https://tools.ietf.org/html/rfc7515#section-1.1)
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -69,21 +73,15 @@ BASE64URL(JWS Signature)
 Ex:
 eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 
-where:
-JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
-JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
-JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
-       BASE64URL(JWS Payload)))
-               =
-               dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+  where:
+    JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
+    JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
+    JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
+       BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
-<br>
-<br>
 <br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Decoding a JWT
 
@@ -115,12 +113,8 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 */
 ```
 <br>
-<br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Encoding a JWT
 
@@ -152,11 +146,8 @@ jwt.jwtEncode(
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Signing (coming soon...)
 
@@ -164,11 +155,8 @@ jwt.jwtEncode(
 
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ### [⬆](#index) Verifying a signature (coming soon...)
 
@@ -177,18 +165,25 @@ jwt.jwtEncode(
 
 <br>
 <br>
-<br>
 
 ---
 
-<br>
-
 ## [⬆](#index) Appendix
+
 <br>
 
 ### [⬆](#index) What is a JWT?
-A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information.
+A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information across the internet. The cryptographic mechanisms of a JWS provide integrity protection as well.
 
+Resources:
+
+[RFC 7519 JSON Web Token (JWT)](https://tools.ietf.org/html/rfc7519)
+
+[RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515)
+
+[RFC 6749 The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
+
+<br>
 <br>
 
 ### [⬆](#index) Generating RSA256 private and public key pair
@@ -196,9 +191,8 @@ A JWT (JSON Web Token), pronounced like "jot", passes along information in the f
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ```
+
 <br>
-
-
 <br>
 
 
@@ -213,11 +207,8 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 ```
 <br>
 <br>
-<br>
 
 ---
-
-<br>
 
 ## [⬆](#index) Contributing
 
@@ -228,18 +219,12 @@ Please make sure to update tests as appropriate.
 
 <br>
 <br>
-<br>
 
 ---
 
-<br>
-
 ## [⬆](#index) License
-
-<br>
-
-[MIT](https://choosealicense.com/licenses/mit/)
+![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
 
 [MIT-Modern-Variant](https://spdx.org/licenses/MIT-Modern-Variant.html)
 
-![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
+[MIT](https://choosealicense.com/licenses/mit/)
