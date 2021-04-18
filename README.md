@@ -180,6 +180,8 @@ Resources:
 [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515)
 
 [RFC 6749 The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
+
+<br>
 <br>
 
 ### [⬆](#index) Generating RSA256 private and public key pair
@@ -187,9 +189,8 @@ Resources:
 ```Shell
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ```
+
 <br>
-
-
 <br>
 
 
