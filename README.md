@@ -71,10 +71,10 @@ BASE64URL(JWS Signature)
 Ex:
 eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 
-where:
-JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
-JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
-JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
+  where:
+    JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
+    JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
+    JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
        BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
 <br>
@@ -171,8 +171,15 @@ jwt.jwtEncode(
 <br>
 
 ### [⬆](#index) What is a JWT?
-A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information.
+A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information across the internet. The cryptographic mechanisms of a JWS provide integrity protection as well.
 
+Resources:
+
+[RFC 7519 JSON Web Token (JWT)](https://tools.ietf.org/html/rfc7519)
+
+[RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515)
+
+[RFC 6749 The OAuth 2.0 Authorization Framework](https://tools.ietf.org/html/rfc6749)
 <br>
 
 ### [⬆](#index) Generating RSA256 private and public key pair
