@@ -334,7 +334,7 @@ JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
 
       context("when JSON objects are used", () => {
         context("and public and private keys are generated", () => {
-          it("encodes a jwt. and verifies with public key", () => {
+          it("encodes a jwt. and verifies with public key", (done) => {
             const decodedHeader = '{"alg":"RS256"}';
             const decodedPayload = {
               iss: "joe",
@@ -370,7 +370,8 @@ JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\n-----END PUBLIC KEY-----"
             // expect(encoded).to.equal(expectedJWT);
             // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
             expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
-          });
+            done();
+          }).timeout(3000);
         });
       });
     });
