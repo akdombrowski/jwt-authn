@@ -381,11 +381,12 @@ export const base64URLEncode = (jsonObject) => {
 };
 
 /**
- * Converts jwt header into a JSON object.
+ * Converts input into a JSON object.
  *
  * @export
- * @param {*} input The jwt header. Will try to take string or JSON object.
- * @returns The header in JSON object format.
+ * @param {*} input The input to be parsed as JSON. Will try to take string or
+ *                  JSON object.
+ * @returns The input as a JSON object.
  */
 export const parseToJSON = (input) => {
   let json = input;

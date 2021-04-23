@@ -405,13 +405,25 @@ hs256Verify(encoded, passphrase)
 ### [⬆](#index) Utility Methods
 
 #### [⬆](#index) **createHeaderPayload(header, payload)**
-* header: the JWT header base64url encoded.
-* payload: the JWT payload base64url encoded.
+* header: the decoded JWT header either in JSON object or a string literal in json format.
+* payload: the decoded JWT payload either in JSON object or a string literal in json format.
 
 Use this to create the header and payload combined by a ".". Useful for signing functions.
 
 ```js
+import { createHeaderPayload } from "jwt-authn";
 
+const header = { alg: "RS256" },
+const payload = {
+  iss: "joe",
+  exp: 1300819380,
+  "http://example.com/is_root": true,
+}
+
+createHeaderPayload(header, payload);
+
+// expected output:
+// eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ
 ```
 
 <br>
