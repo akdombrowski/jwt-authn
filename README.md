@@ -31,7 +31,13 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
       - [⬆ **rs256PEMSign(headerPayload, privateKey, passphrase)**](#-rs256pemsignheaderpayload-privatekey-passphrase)
       - [⬆ **rs256JWKSign(headerPayload, privateKey)**](#-rs256jwksignheaderpayload-privatekey)
       - [⬆ **hs256Sign(headerPayload, key)**](#-hs256signheaderpayload-key)
-    - [⬆ Verifying a signature (coming soon...)](#-verifying-a-signature-coming-soon)
+    - [⬆ Verifying a signature](#-verifying-a-signature)
+      - [⬆ **rs256JWKVerify(jwt, publicKey)**](#-rs256jwkverifyjwt-publickey)
+      - [⬆ **rs256PEMVerify(jwt, publicKey)**](#-rs256pemverifyjwt-publickey)
+      - [⬆ **hs256Verify(jwt, passphrase, passphraseEncoding)**](#-hs256verifyjwt-passphrase-passphraseencoding)
+    - [⬆ Utility Methods](#-utility-methods)
+      - [⬆ **createHeaderPayload(header, payload)**](#-createheaderpayloadheader-payload)
+      - [⬆ **createPayloadBase64URL(jsonPayload)**](#-createpayloadbase64urljsonpayload)
   - [⬆ Appendix](#-appendix)
     - [⬆ What is a JWT?](#-what-is-a-jwt)
     - [⬆ Generating RSA256 private and public key pair](#-generating-rsa256-private-and-public-key-pair)
@@ -287,7 +293,6 @@ const sig = rs256JWKSign(headerPayload, privateKey);
 #### [⬆](#index) **hs256Sign(headerPayload, key)**
 
 * headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
-
 * key: The signing key or passphrase.
 
  ```javascript
@@ -318,9 +323,107 @@ const sig = hs256Sign(headerPayload, passphrase);
 
 ---
 
-### [⬆](#index) Verifying a signature (coming soon...)
+### [⬆](#index) Verifying a signature
 
 <br>
+
+#### [⬆](#index) **rs256JWKVerify(jwt, publicKey)**
+
+* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+* publicKey: the public key used to verify the signature of the JWT.
+
+```javascript
+import { rs256JWKVerify } from "jwt-authn";
+
+const encoded = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.el3lmx2zFYSGmoOC5sJFjV4nCFyb6_2nY5WDSv_d9L2cw857vQBhjV2xybTQz5_4IIVLxpollxyomEQpC1xwZSZoU9lrmNau2TGg1iFGjyIXrtZy-UxV0t_xSwujFlA_WNFjw6eLI00ji3EcuOiMpqPa8IOTfXijtgkCx7oVweb2IVO6ZjMcssvhA7s3ezF8YHf6ewHK74UF4o0RuKn4K1PjBbmxDu3TXMOp69IvbnCj2ku--9QI7H9DFjiNVyWWnpz3wekGZuUePAj5GkrbPgvwhVVUiTcczYy55MUaF7mPjkb7JGEk2sH4lCa1Jlvz9xgYMdYTfbwmT9Wgvq_Usg";
+
+rs256JWKVerify(encoded, {
+  kty: "RSA",
+  n: "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+  e: "AQAB",
+});
+
+// expected output: true
+```
+
+<br>
+
+#### [⬆](#index) **rs256PEMVerify(jwt, publicKey)**
+
+* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+* publicKey: the public key used to verify the signature of the JWT.
+
+```js
+import { rs256PEMVerify } from "jwt-authn";
+
+const encoded = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.UkNEGPn1I_xQg_ztCjwjzQXetpRMtuLOnGx-6lHB1UH3QE6s8kCkYJLOT1dGMuH_LCcJU41VfGoKTKvAT0ZzDu0Au7g8FL1DFj0HmflpoWsYcuKrSywvqwHL8KSJySYzbSBzNLAYOn1CxfNKRcQyVwRAXJUkZlIL2eE0LRhSwuwQdobHm_oyB4l4OhQSLVgehprGBRLyHxh2fAuyTb3dE2HBXta5YKSPVSbGIvv41KRdqoBoo3a2-GxEMjjS9W7xSjc7Pb7sOt1IJLXeFF5aULI8WsefaW5kPvcdYtGbphxK3qJItudmk_3IuQoMXAZVvLcbfsUu920-gYKKN_iWAb9VDP6WRVOOihTVi5dtFfdzJMfg7rRz2Vprly6fsIDDedERMR-4e6YNE4lmpjjkWx7Roj5xSH0EmfHIiQagwLZ4UYhTpLSYnp_y3Eh7lb7VsoNRBFj_c-26ofB3TLRKqSzJzNdzCJWTZeugYk8Rv75zyh7bGUtX_WmdgwWNKwi4df_nBltB5VZ-UzbQakmqWoZ-HrkkCXrrbooZIySzNBDJJc89rYilIlB3rLv8pu4aSXf8pBp2ii-GZYK4rONK9wPlzYgXa-wMcifUQ7j5bBB9njPITRcp6iT60bAf143vnzGaZ7IE-5GxZ3x8smnBCTqxtRU6cZ3yhXrX5dN9_BM"
+
+rs256PEMVerify(
+  encoded,
+  "-----BEGIN PUBLIC KEY-----\n\
+  MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAoDEmXwa0fhiB6EA33u8q\
+  SIEkR8o26nzrOjLl0xpJ4hfjBMm+izLb+WudOINw6BmNcHfapLJm1XJxGOqQrbOe\
+  j1R513z+1GGZH+Ib94RQeQZRdReL5ZEfZS4H8ONMxAWGfQU/WEaKrp5NgxjHK8wc\
+  GwbHBFXZBkc7F0Sumb+IE2kDGJm3E/I5SGY5WWF+mKvsbGzen290f4tZ29j8yM3R\
+  prwKx5TKG/bAf/GDgQFtk+VWv39BO7S3AnR+XhjmEsAsudTAzCeEoW18VOP1EdjL\
+  oCzVPUYe6hYuHRT+v2NhZW9srCHp6WtQmh0GTz0d02l1Bbfws6e15lol9t91rlsx\
+  r8LxcWIWWzbKgSl8wJ1waR7CYtOWpSo3XGuftu0Fi2aLrsV7wkHyksvf69XYOC9F\
+  yxhokfFPgvfYd6zveUAl/Fvl6qYgtbbSfiNrKp3Rvd32hfBy4o7spKNGrTyQorWH\
+  8whQlTavSDxzSRcWcNSkZkkAeMlCJjc2mZTRpps06umVHZxibRiGf40WUMZHX/Sz\
+  F+ba9fFgTFmfIYvGZ0Kv6AEtJkEzreMjQvmGvt1b8L9FICp7dxcu/CWZE7xBgtYP\
+  cDUM9UwCdLBT8ObrLgv5rL/XNImAF8+lUG3k8WPupzOtDQxcAC7J+inb65HDSkK9\
+  JsiBGcDuqIAroTwjs457N4UCAwEAAQ==\
+  \n-----END PUBLIC KEY-----"
+);
+
+// expected output: true
+```
+
+<br>
+
+#### [⬆](#index) **hs256Verify(jwt, passphrase, passphraseEncoding)**
+* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+* passphrase: the passphrase used when signing with HMAC (HS256).
+* passphraseEncoding: (optional) if specified and available, the encoding is used to read the passphrase. Otherwise, base64url encoding is assumed.
+
+```js
+import { hs256Verify } from "jwt-authn";
+
+const passphrase = "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
+
+const encoded = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
+
+hs256Verify(encoded, passphrase)
+
+// expected output: true
+```
+
+<br>
+<br>
+
+---
+### [⬆](#index) Utility Methods
+
+#### [⬆](#index) **createHeaderPayload(header, payload)**
+* header: the JWT header base64url encoded.
+* payload: the JWT payload base64url encoded.
+
+Use this to create the header and payload combined by a ".". Useful for signing functions.
+
+```js
+
+```
+
+<br>
+
+#### [⬆](#index) **createPayloadBase64URL(jsonPayload)**
+* jsonPayload: the payload of the JWT in JSON object format.
+
+Use to create the base64url encoding of the jsonPayload.
+
+```js
+
+```
 
 
 
@@ -348,8 +451,30 @@ Resources:
 <br>
 
 ### [⬆](#index) Generating RSA256 private and public key pair
+```javascript
+import crypto from "crypto";
 
-```Shell
+const { publicKey, privateKey } = crypto.generateKeyPairSync(
+  "rsa",
+  {
+    modulusLength: 4096,
+    publicKeyEncoding: {
+      type: "spki",
+      format: "pem",
+    },
+    privateKeyEncoding: {
+      type: "pkcs8",
+      format: "pem",
+      cipher: "aes-256-cbc",
+      passphrase: "top secret", // this creates an encrypted private key. Make sure to pass it in when trying to sign a JWT. Omit for an unencrypted private key.
+    },
+  }
+);
+```
+
+**or from a bash shell**
+
+```bash
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ```
 
@@ -360,10 +485,15 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 ### [⬆](#index) Changing public key generated with ssh-keygen (the above command) into PEM format
 
 *You need to do this to use it as the public key to verify a signed JWT.
-```Shell
+```bash
+# reads from file jwtRS256.key.pub
 ssh-keygen -f jwtRS256.key.pub -e -m pem
+```
 
-# or with openssl
+**or with openssl**
+
+```bash
+# reads from file jwtRS256.key.pub
 openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 ```
 <br>

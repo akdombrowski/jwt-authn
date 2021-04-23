@@ -245,7 +245,8 @@ export const rs256JWKVerify = (jwt, publicKey) => {
  *
  * @export
  * @param {*} jwt The JSON web token.
- * @param {*} publicKey The public key used to verify. Must be in PEM format
+ * @param {*} publicKey The public key used to verify. Must be a PEM formatted
+ *                      string.
  *    for this method
  * @returns True if verified, false otherwise.
  */
@@ -279,12 +280,54 @@ export const rs256PEMVerify = (jwt, publicKey) => {
 };
 
 /**
- * VCreates the combined header payload portion of the JWT.
+ * Verifies a jwt signed with HS256 (HMAC with SHA256) with a passphrase.
+ *
+ * @export
+ * @param {string} jwt The JSON web token.
+ * @param {string} passphrase The secret or passphrase used to sign the jwt.
+ * @param {string} passphraseEncoding The encoding of the passphrase or secret.
+ *
+ * @returns True if verified, false otherwise.
+ */
+export const hs256Verify = (jwt, passphrase, passphraseEncoding) => {
+  const jwtComponents = jwt.split(".");
+  const headerPayload = jwtComponents[0] + "." + jwtComponents[1];
+  const signature = jwtComponents[2];
+
+  let secret = crypto.createSecretKey(passphrase, "base64url");
+  if (passphraseEncoding && Buffer.isEncoding(passphraseEncoding)) {
+    secret = crypto.createSecretKey(passphrase, passphraseEncoding);
+  } else {
+    secret = crypto.createSecretKey(passphrase, "base64url");
+  }
+
+  const hmac = crypto.createHmac("sha256", secret);
+
+  hmac.update(headerPayload, "ascii");
+  const hmacked = hmac.digest();
+  const base64URLHmacked = Buffer.from(hmacked).toString("base64url");
+
+  // Check for equality between the signature in the jwt and what we just created.
+  const isVerified = base64URLHmacked === signature;
+
+  // Could also use this:
+  // const verify = crypto.createVerify("SHA256");
+  // verify.update(headerPayload, "ascii");
+  // verify.end();
+  // verify.verify(keyObject, signature, "base64")
+
+  return isVerified;
+};
+
+/**
+ * Creates the combined header payload portion of the JWT. Can accept JSON
+ * objects or string literals.
  *
  * @export
  * @param {*} header The decoded header.
  * @param {*} payload The decoded payload.
- * @returns The combined the header payload portion of the JWT.
+ * @returns The combined the header payload portion of the JWT. It is equal to
+ *          base64url(header) + "." + base64url(payload).
  */
 export const createHeaderPayload = (header, payload) => {
   if (Buffer.isEncoding("base64url")) {
@@ -295,16 +338,16 @@ export const createHeaderPayload = (header, payload) => {
     if (typeof header === "string") {
       headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
     } else {
-      const jsonHeader = parseHeaderToJSON(header);
-      headerBase64URL = createHeaderBase64URL(jsonHeader);
+      const jsonHeader = parseToJSON(header);
+      headerBase64URL = base64URLEncode(jsonHeader);
     }
 
-    // use string literals
     if (typeof payload === "string") {
+      // use string literals
       payloadBase64URL = Buffer.from(payload, "ascii").toString("base64url");
     } else {
-      const jsonPayload = parsePayloadToJSON(payload);
-      payloadBase64URL = createPayloadBase64URL(jsonPayload);
+      const jsonPayload = parseToJSON(payload);
+      payloadBase64URL = base64URLEncode(jsonPayload);
     }
 
     const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
@@ -316,14 +359,14 @@ export const createHeaderPayload = (header, payload) => {
 };
 
 /**
- * Creates the base64URL encoding of the header. Header must be in JSON format.
- *   Uses JSON stringify to convert jsonHeader input.
+ * Encodes the JSON object input in base64url format. Must be in JSON format.
+ *   Uses JSON stringify to convert jsonObject input.
  *
  * @export
- * @param {*} jsonHeader The header in JSON fromat.
- * @returns The base64URL encoding of the header.
+ * @param {*} jsonObject The header or payload (or anything) in JSON object fromat.
+ * @returns The base64URL encoding of the input.
  */
-export const createPayloadBase64URL = (jsonPayload) => {
+export const base64URLEncode = (jsonObject) => {
   if (Buffer.isEncoding("base64url")) {
     // not a string. convert to string
     const stringifyHeader = JSON.stringify(jsonPayload);
@@ -338,64 +381,24 @@ export const createPayloadBase64URL = (jsonPayload) => {
 };
 
 /**
- * Creates the base64URL encoding of the header. Header must be in JSON format.
- *   Uses JSON stringify to convert jsonHeader input.
- *
- * @export
- * @param {*} jsonHeader The header in JSON fromat.
- * @returns The base64URL encoding of the header.
- */
-export const createHeaderBase64URL = (jsonHeader) => {
-  if (Buffer.isEncoding("base64url")) {
-    const stringifyHeader = JSON.stringify(jsonHeader);
-    const headerBase64URL = Buffer.from(stringifyHeader).toString("base64url");
-    return headerBase64URL;
-  }
-
-  throw new Error("Error: Base64URL encoding isn't available");
-};
-
-/**
  * Converts jwt header into a JSON object.
  *
  * @export
- * @param {*} header The jwt header. Will try to take string or JSON object.
+ * @param {*} input The jwt header. Will try to take string or JSON object.
  * @returns The header in JSON object format.
  */
-export const parseHeaderToJSON = (header) => {
-  let jsonHeader = header;
+export const parseToJSON = (input) => {
+  let json = input;
 
   if (Buffer.isEncoding("base64url")) {
-    if (header instanceof Object) {
-      // not a string. convert to string
-      jsonHeader = header;
+    if (input instanceof Object) {
+      // already appears to be a JSON object.
+      json = input;
     } else {
-      jsonHeader = JSON.parse(header);
+      // received a string. convert to json object.
+      json = JSON.parse(input);
     }
-    return jsonHeader;
-  }
-
-  throw new Error("Error: Base64URL encoding isn't available");
-};
-
-/**
- * Converts decoded jwt payload into a JSON object.
- *
- * @export
- * @param {*} payload The decoded jwt payload. Will try to take string or JSON object.
- * @returns The decoded payload in JSON object format.
- */
-export const parsePayloadToJSON = (payload) => {
-  let jsonPayload = payload;
-
-  if (Buffer.isEncoding("base64url")) {
-    if (payload instanceof Object) {
-      // not a string. convert to string
-      jsonPayload = payload;
-    } else {
-      jsonPayload = JSON.parse(payload);
-    }
-    return jsonPayload;
+    return json;
   }
 
   throw new Error("Error: Base64URL encoding isn't available");
