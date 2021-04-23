@@ -369,7 +369,7 @@ export const createHeaderPayload = (header, payload) => {
 export const base64URLEncode = (jsonObject) => {
   if (Buffer.isEncoding("base64url")) {
     // not a string. convert to string
-    const stringifyHeader = JSON.stringify(jsonPayload);
+    const stringifyHeader = JSON.stringify(jsonObject);
     // headerBase64URL = base64url.encode(stringifyHeader);
     const payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
       "base64url"
