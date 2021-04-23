@@ -37,7 +37,7 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
       - [⬆ **hs256Verify(jwt, passphrase, passphraseEncoding)**](#-hs256verifyjwt-passphrase-passphraseencoding)
     - [⬆ Utility Methods](#-utility-methods)
       - [⬆ **createHeaderPayload(header, payload)**](#-createheaderpayloadheader-payload)
-      - [⬆ **createPayloadBase64URL(jsonPayload)**](#-createpayloadbase64urljsonpayload)
+      - [⬆ **base64URLEncode(json)**](#-base64urlencodejson)
   - [⬆ Appendix](#-appendix)
     - [⬆ What is a JWT?](#-what-is-a-jwt)
     - [⬆ Generating RSA256 private and public key pair](#-generating-rsa256-private-and-public-key-pair)
@@ -428,13 +428,24 @@ createHeaderPayload(header, payload);
 
 <br>
 
-#### [⬆](#index) **createPayloadBase64URL(jsonPayload)**
-* jsonPayload: the payload of the JWT in JSON object format.
+#### [⬆](#index) **base64URLEncode(json)**
+* json: the input in JSON object format.
 
-Use to create the base64url encoding of the jsonPayload.
+Use to create the base64url encoding of the the input.
 
 ```js
+import { base64urlEncode } from "jwt-authn";
 
+const payload = {
+  iss: "joe",
+  exp: 1300819380,
+  "http://example.com/is_root": true,
+}
+
+base64URLEncode(payload);
+
+// expected output:
+// eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ
 ```
 
 
