@@ -63,6 +63,11 @@ npm install jwt-authn
 yarn add jwt-authn
 ```
 
+Or from a cdn:
+```
+https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
+```
+
 <br>
 
 ---
