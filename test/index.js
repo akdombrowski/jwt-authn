@@ -376,7 +376,7 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
             // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
             expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
             done();
-          }).timeout(3000);
+          }).timeout(10000);
         });
       });
     });
