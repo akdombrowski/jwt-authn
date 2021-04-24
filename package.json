@@ -4,7 +4,7 @@
   "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
   "main": "./lib",
   "scripts": {
-    "build": "babel ./src -d ./lib",
+    "build": "babel ./src -d ./lib && minify ./lib/index.js > ./lib/index.min.js",
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "prepublish": "npm run build"
   },
@@ -60,6 +60,7 @@
     "chai": "^4.3.4",
     "core-js": "^3.10.0",
     "cross-env": "^7.0.3",
+    "minify": "^7.0.1",
     "mocha": "^8.3.2",
     "nyc": "^15.1.0"
   },
