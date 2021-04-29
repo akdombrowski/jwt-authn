@@ -8,7 +8,7 @@
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "cli-test": "jwt-authn \"abc\"",
     "prepublish": "npm run build",
-    "babelify": "babel ./src -d ./lib && babel ./cli -d ./cli_lib",
+    "babelify": "babel ./src/index.js -d ./lib/ && babel ./cli/index.js -d ./cli_lib/",
     "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
   },
   "repository": {
