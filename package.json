@@ -4,8 +4,9 @@
   "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
   "main": "./lib",
   "scripts": {
-    "build": "babel ./src -d ./lib && minify ./lib/index.js > ./lib/index.min.js",
+    "build": "babel ./src -d ./lib && babel ./cli -d ./cli_lib && minify ./lib/index.js > ./lib/index.min.js",
     "test": "cross-env NODE_ENV=test nyc mocha test",
+    "cli-test": "jwt-authn \"abc\"",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -76,5 +77,9 @@
   },
   "engines": {
     "node": ">=15.0"
+  },
+  "bin": "./cli_lib/index.js",
+  "dependencies": {
+    "clipboardy": "^2.3.0"
   }
 }
