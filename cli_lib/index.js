@@ -19,7 +19,6 @@ var arg2 = process.argv[2];
 
 var decode = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(jwt) {
-    var decoded;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -28,11 +27,9 @@ var decode = /*#__PURE__*/function () {
             return (0, _lib.jwtDecode)(jwt);
 
           case 2:
-            decoded = _context.sent;
-            console.log("Decoding: \n" + clipboard + "\n" + decoded);
-            return _context.abrupt("return", decoded);
+            return _context.abrupt("return", _context.sent);
 
-          case 5:
+          case 3:
           case "end":
             return _context.stop();
         }
@@ -47,6 +44,7 @@ var decode = /*#__PURE__*/function () {
 
 var cli = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(clipboard, arg2) {
+    var decoded;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -58,17 +56,17 @@ var cli = /*#__PURE__*/function () {
 
             console.log("use -c or --clipboard or call command with no arguments to decode the JWT in you clipboard");
             console.log("or call command with JWT as first argument");
-            _context2.next = 25;
+            _context2.next = 29;
             break;
 
           case 5:
             if (!(arg2 === "-c" || arg2 === "--clipboard" || !arg2)) {
-              _context2.next = 24;
+              _context2.next = 28;
               break;
             }
 
             if (!clipboard) {
-              _context2.next = 20;
+              _context2.next = 24;
               break;
             }
 
@@ -77,30 +75,34 @@ var cli = /*#__PURE__*/function () {
             return decode(clipboard);
 
           case 10:
-            _context2.next = 18;
+            decoded = _context2.sent;
+            console.log("Decoding: \n" + clipboard);
+            console.log(decoded);
+            _context2.next = 22;
             break;
 
-          case 12:
-            _context2.prev = 12;
+          case 15:
+            _context2.prev = 15;
             _context2.t0 = _context2["catch"](7);
             console.error("I found an error :(.");
             console.error("Couldn't decode what was in clipboard. Pass in a JWT as the first argument or copy a JWT to clipboard");
             console.error("what's on your clipboard? ");
             console.error(clipboard);
-
-          case 18:
-            _context2.next = 22;
-            break;
-
-          case 20:
-            console.error("I found an error :(.");
-            console.error("Nothing in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
+            console.error(_context2.t0, _context2.t0.message);
 
           case 22:
-            _context2.next = 25;
+            _context2.next = 26;
             break;
 
           case 24:
+            console.error("I found an error :(.");
+            console.error("Nothing in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
+
+          case 26:
+            _context2.next = 29;
+            break;
+
+          case 28:
             if (arg2) {
               try {
                 console.log("Decoding: \n" + arg2);
@@ -114,12 +116,12 @@ var cli = /*#__PURE__*/function () {
               console.error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
             }
 
-          case 25:
+          case 29:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[7, 12]]);
+    }, _callee2, null, [[7, 15]]);
   }));
 
   return function cli(_x2, _x3) {

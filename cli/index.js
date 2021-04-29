@@ -9,11 +9,7 @@ const clipboard = clipboardy.readSync();
 const arg2 = process.argv[2];
 
 const decode = async (jwt) => {
-  const decoded = await jwtDecode(jwt);
-
-  console.log("Decoding: \n" + clipboard + "\n" + decoded);
-
-  return decoded;
+  return await jwtDecode(jwt);
 };
 
 const cli = async (clipboard, arg2) => {
@@ -25,7 +21,9 @@ const cli = async (clipboard, arg2) => {
   } else if (arg2 === "-c" || arg2 === "--clipboard" || !arg2) {
     if (clipboard) {
       try {
-        await decode(clipboard);
+        const decoded = await decode(clipboard);
+        console.log("Decoding: \n" + clipboard);
+        console.log(decoded);
       } catch (e) {
         console.error("I found an error :(.");
         console.error(
@@ -33,6 +31,7 @@ const cli = async (clipboard, arg2) => {
         );
         console.error("what's on your clipboard? ");
         console.error(clipboard);
+        console.error(e, e.message);
       }
     } else {
       console.error("I found an error :(.");
