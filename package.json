@@ -4,10 +4,12 @@
   "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
   "main": "./lib",
   "scripts": {
-    "build": "babel ./src -d ./lib && babel ./cli -d ./cli_lib && minify ./lib/index.js > ./lib/index.min.js",
+    "build": "npm run babelify && npm run minify",
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "cli-test": "jwt-authn \"abc\"",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "babelify": "babel ./src -d ./lib && babel ./cli -d ./cli_lib",
+    "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@babel/cli": "^7.13.14",
     "@babel/core": "^7.13.14",
+    "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/preset-env": "^7.13.12",
     "@babel/register": "^7.13.14",
     "@istanbuljs/nyc-config-babel": "^3.0.0",

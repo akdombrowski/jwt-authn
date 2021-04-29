@@ -28,8 +28,8 @@ export const jwtDecode = (jwt) => {
       "utf8"
     );
     if (!base64URLDecodedHeader) {
-      console.err("base64URLDecodedHeader");
-      console.err(base64URLDecodedHeader);
+      console.error("base64URLDecodedHeader");
+      console.error(base64URLDecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
 
@@ -75,11 +75,26 @@ export const jwtDecode = (jwt) => {
       };
     }
 
-    throw new Error("Not using compact serialization (JWS).");
+    throw new SyntaxError("Not using compact serialization (JWS).");
   } catch (e) {
-    console.error(e.message, e);
-    return { header: null, payload: null, signature: null };
+    // debugging(e);
+
+    console.error("I found an error :(.");
+    throw e;
   }
+};
+
+const debugging = (e) => {
+  // debugging
+  console.error(e.message, e);
+  console.error("e instanceof SyntaxError");
+  console.error(e instanceof SyntaxError);
+  console.error(e.message);
+  console.error(e.name);
+  console.error(e.fileName);
+  console.error(e.lineNumber);
+  console.error(e.columnNumber);
+  console.error(e.stack);
 };
 
 /**
@@ -140,10 +155,12 @@ export const rs256JWKSign = (headerPayload, privateKey) => {
       if (e instanceof TypeError) {
         secret = privateKey;
       } else {
+        console.error("I found an error :(.");
         console.error(e.message, e);
       }
     }
   } else {
+    console.error("I found an error :(.");
     console.error("RSA-SHA256 not found");
     throw new Error("RSA-SHA256 isn't available in the current system.");
   }
