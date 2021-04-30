@@ -11,6 +11,9 @@ import {
   createHeaderPayload,
 } from "../src/index.js";
 import crypto from "crypto";
+import cli, { HELP_TEXT } from "../cli/index.js";
+import sinon from "sinon";
+import { spawn } from "child_process";
 
 const expect = chai.expect;
 chai.config.includeStack = true;
@@ -610,6 +613,62 @@ describe("Signing and Verification", () => {
             });
           });
         });
+      });
+    });
+  });
+});
+
+describe("#cli()", () => {
+  let sandbox;
+  before(() => {
+    sandbox = sinon.createSandbox();
+  });
+  beforeEach(() => {
+    sandbox.restore();
+  });
+
+  describe("using help", () => {
+    context("when argument is -h or --help", () => {
+      it("shows the help screen", () => {
+        const log = sandbox.spy(console, "log");
+        cli(null, "-h");
+        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+      });
+    });
+  });
+
+  describe("mock using clipboard", () => {
+    context("when 'clipboard' contains a jwt", () => {
+      it("decodes the jwt", async () => {
+        const log = sandbox.spy(console, "log");
+        const myCli = cli;
+        const spy = sandbox.spy(myCli);
+
+        const clipboard =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        const expectedOutput = {
+          header: { alg: "HS256", typ: "JWT" },
+          payload: { sub: "1234567890", name: "John Doe", iat: 1516239022 },
+          signature: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        };
+        const cliOutput = await spy(clipboard, null);
+
+        console.log(
+          spy.calledOnceWith(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          )
+        );
+        expect(log.calledWith("Decoding: ")).to.be.true;
+        expect(
+          log.calledWith(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          )
+        ).to.be.true;
+        expect(
+          log.getCall(2).firstArg,
+          "decoded jwt was logged to the console"
+        ).to.be.deep.equal(expectedOutput);
+        expect(expectedOutput).to.be.deep.equal(cliOutput);
       });
     });
   });
