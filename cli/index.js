@@ -13,7 +13,13 @@ use -c or --clipboard or call command with no arguments to decode the JWT in you
 or call command with JWT as first argument\n\
 ****************";
 
-export const cli = async (clipboard, arg2) => {
+export const cli = async (clipboard, argv) => {
+  // read passed in argument
+  let arg2;
+  if (argv) {
+    arg2 = argv[2];
+  }
+
   if (arg2 == "-h" || arg2 === "--help") {
     // Help display
     console.log(HELP_TEXT);
@@ -74,8 +80,8 @@ try {
 }
 
 // read passed in argument
-const arg2 = process.argv[2];
+const argv = process.argv;
 
-cli(clipboard, arg2);
+cli(clipboard, argv);
 
 export default cli;

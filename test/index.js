@@ -631,7 +631,9 @@ describe("#cli()", () => {
     context("when argument is -h or --help", () => {
       it("shows the help screen", () => {
         const log = sandbox.spy(console, "log");
-        cli(null, "-h");
+        // Mock process.argv
+        const processArgv = [0,0,"-h"];
+        cli(null, [0,0,"-h"]);
         expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
       });
     });
@@ -653,11 +655,11 @@ describe("#cli()", () => {
         };
         const cliOutput = await spy(clipboard, null);
 
-        console.log(
+        expect(
           spy.calledOnceWith(
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
           )
-        );
+        ).to.be.true;
         expect(log.calledWith("Decoding: ")).to.be.true;
         expect(
           log.calledWith(
