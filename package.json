@@ -7,7 +7,6 @@
     "prepare": "npm run build",
     "build": "npm run babelify && npm run minify",
     "test": "cross-env NODE_ENV=test nyc mocha test",
-    "cli-test": "jwt-authn \"abc\"",
     "babelify": "babel ./src/index.js -d ./lib/ && babel ./cli/index.js -d ./cli_lib/",
     "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
   },
