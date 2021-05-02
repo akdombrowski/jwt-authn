@@ -628,12 +628,22 @@ describe("#cli()", () => {
   });
 
   describe("using help", () => {
-    context("when argument is -h or --help", () => {
+    context("when argument is -h", () => {
       it("shows the help screen", () => {
         const log = sandbox.spy(console, "log");
         // Mock process.argv
-        const processArgv = [0,0,"-h"];
-        cli(null, [0,0,"-h"]);
+        const processArgv = [0, 0, "-h"];
+        cli(null, [0, 0, "-h"]);
+        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+      });
+    });
+
+    context("when argument is --help", () => {
+      it("shows the help screen", () => {
+        const log = sandbox.spy(console, "log");
+        // Mock process.argv
+        const processArgv = [0, 0, "-h"];
+        cli(null, [0, 0, "-h"]);
         expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
       });
     });
@@ -671,6 +681,30 @@ describe("#cli()", () => {
           "decoded jwt was logged to the console"
         ).to.be.deep.equal(expectedOutput);
         expect(expectedOutput).to.be.deep.equal(cliOutput);
+      });
+    });
+
+    context("when 'clipboard' doesn't contain a jwt", () => {
+      it("decodes the jwt", async () => {
+        const log = sandbox.spy(console, "log");
+        const err = sandbox.spy(console, "error");
+        const spy = sandbox.spy(cli);
+
+        const clipboard = "abc.abc.abc";
+
+        try {
+          await spy(clipboard, null);
+        } catch (e) {
+          try {
+            const syntaxErr = await spy.returnValues[0];
+          } catch (ex) {
+            expect(ex instanceof SyntaxError).to.be.true;
+          }
+        }
+
+        expect(err.calledWith("Need at least one '.'"));
+        expect(err.calledWith("I found an error :(."));
+        expect(spy.called).to.be.true;
       });
     });
   });

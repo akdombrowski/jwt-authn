@@ -78,8 +78,6 @@ export const jwtDecode = (jwt) => {
     throw new SyntaxError("Not using compact serialization (JWS).");
   } catch (e) {
     // debugging(e);
-
-    console.error("I found an error :(.");
     throw e;
   }
 };

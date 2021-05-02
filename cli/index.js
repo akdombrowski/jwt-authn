@@ -4,7 +4,13 @@ import { jwtDecode } from "../lib";
 import clipboardy from "clipboardy";
 
 const decode = async (jwt) => {
-  return await jwtDecode(jwt);
+  let decoded;
+  try {
+    decoded = await jwtDecode(jwt);
+    return decoded;
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const HELP_TEXT =
@@ -38,13 +44,13 @@ export const cli = async (clipboard, argv) => {
         console.log(decoded);
         return decoded;
       } catch (e) {
-        console.error("I found an error :(.");
+        console.error("I found an error :(");
         console.error(
           "Couldn't decode what was in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard"
         );
         console.error("what's on your clipboard? ");
         console.error(clipboard);
-        console.error(e, e.message);
+        throw e;
       }
     } else {
       console.error("I found an error :(.");
@@ -61,10 +67,14 @@ export const cli = async (clipboard, argv) => {
     } catch (e) {
       console.error("I found an error :(.");
       console.error(e, e.message);
+      throw e;
     }
   } else {
     console.error("I found an error :(.");
     console.error(
+      "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
+    );
+    throw new Error(
       "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
     );
   }
