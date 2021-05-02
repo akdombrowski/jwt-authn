@@ -685,26 +685,51 @@ describe("#cli()", () => {
     });
 
     context("when 'clipboard' doesn't contain a jwt", () => {
-      it("decodes the jwt", async () => {
-        const err = sandbox.spy(console, "error");
-        const spy = sandbox.spy(cli);
+      context("when it's not in proper JSON format", () => {
+        it("throws a SyntaxError", async () => {
+          const err = sandbox.spy(console, "error");
+          const spy = sandbox.spy(cli);
 
-        const clipboard = "abc.abc.abc";
-        let syntaxErr;
+          const clipboard = "abc.abc.abc";
+          let syntaxErr;
 
-        try {
-          await spy(clipboard, null);
-        } catch (e) {
           try {
-            syntaxErr = await spy.returnValues[0];
-          } catch (ex) {
-            expect(ex instanceof SyntaxError).to.be.true;
+            await spy(clipboard, null);
+          } catch (e) {
+            try {
+              syntaxErr = await spy.returnValues[0];
+            } catch (ex) {
+              expect(ex instanceof SyntaxError).to.be.true;
+            }
           }
-        }
 
-        expect(err.calledWith("Need at least one '.'"));
-        expect(err.calledWith("I found an error :("));
-        expect(spy.called).to.be.true;
+          expect(err.calledWith("I found an error :(")).to.be.true;
+          expect(spy.called).to.be.true;
+        });
+      });
+
+      context("when it doesn't contain a '.'", () => {
+        it("throws an error", async () => {
+          const err = sandbox.spy(console, "error");
+          const spy = sandbox.spy(cli);
+
+          const clipboard = "abc";
+          let dotErr;
+
+          try {
+            await spy(clipboard, null);
+          } catch (e) {
+            try {
+              dotErr = await spy.returnValues[0];
+            } catch (ex) {
+              expect(ex instanceof Error).to.be.true;
+              expect(ex.message).to.equal("Need at least one '.'");
+            }
+          }
+
+          expect(err.calledWith("I found an error :(")).to.be.true;
+          expect(spy.called).to.be.true;
+        });
       });
     });
   });

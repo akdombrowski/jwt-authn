@@ -4,9 +4,8 @@ import { jwtDecode } from "../lib";
 import clipboardy from "clipboardy";
 
 const decode = async (jwt) => {
-  let decoded;
   try {
-    decoded = await jwtDecode(jwt);
+    const decoded = await jwtDecode(jwt);
     return decoded;
   } catch (e) {
     throw e;
