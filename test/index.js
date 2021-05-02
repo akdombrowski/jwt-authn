@@ -686,24 +686,24 @@ describe("#cli()", () => {
 
     context("when 'clipboard' doesn't contain a jwt", () => {
       it("decodes the jwt", async () => {
-        const log = sandbox.spy(console, "log");
         const err = sandbox.spy(console, "error");
         const spy = sandbox.spy(cli);
 
         const clipboard = "abc.abc.abc";
+        let syntaxErr;
 
         try {
           await spy(clipboard, null);
         } catch (e) {
           try {
-            const syntaxErr = await spy.returnValues[0];
+            syntaxErr = await spy.returnValues[0];
           } catch (ex) {
             expect(ex instanceof SyntaxError).to.be.true;
           }
         }
 
         expect(err.calledWith("Need at least one '.'"));
-        expect(err.calledWith("I found an error :(."));
+        expect(err.calledWith("I found an error :("));
         expect(spy.called).to.be.true;
       });
     });

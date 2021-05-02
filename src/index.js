@@ -153,12 +153,11 @@ export const rs256JWKSign = (headerPayload, privateKey) => {
       if (e instanceof TypeError) {
         secret = privateKey;
       } else {
-        console.error("I found an error :(.");
         console.error(e.message, e);
+        throw e;
       }
     }
   } else {
-    console.error("I found an error :(.");
     console.error("RSA-SHA256 not found");
     throw new Error("RSA-SHA256 isn't available in the current system.");
   }
@@ -384,12 +383,24 @@ export const createHeaderPayload = (header, payload) => {
 export const base64URLEncode = (jsonObject) => {
   if (Buffer.isEncoding("base64url")) {
     // not a string. convert to string
-    const stringifyHeader = JSON.stringify(jsonObject);
+    const stringify = JSON.stringify(jsonObject);
     // headerBase64URL = base64url.encode(stringifyHeader);
-    const payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
-      "base64url"
-    );
-    return payloadBase64URL;
+    const base64URLify = Buffer.from(stringify, "ascii").toString("base64url");
+    return base64URLify;
+  } else if (window) {
+    const b64c =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; // base64 dictionary
+    const b64u =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"; // base64url dictionary
+    const btoa = window.btoa();
+
+    const stringify = JSON.stringify(jsonObject);
+    const base64urlify = btoa(stringify);
+    // Remove trailing "="
+    let s = base64urlify.split("=")[0];
+    s = s.replace("+", "-");
+    s = s.replace("/", "_");
+    return s;
   }
 
   throw new Error("Error: Base64URL encoding isn't available");
@@ -435,7 +446,6 @@ export const parseToJSON = (input) => {
  */
 export const jwtEncode = (header, payload, key, options) => {
   let headerBase64URL;
-  let payloadBase64URL;
   let jsonHeader = header;
 
   if (Buffer.isEncoding("base64url")) {
