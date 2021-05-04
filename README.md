@@ -13,7 +13,9 @@
 
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys).
+jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only Node >=15.x as a requirement!
+
+Now with command line support!
 
 *[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
 
@@ -61,6 +63,7 @@ Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.
 npm install jwt-authn
 ```
 
+
 ```Shell
 yarn add jwt-authn
 ```
@@ -69,6 +72,17 @@ Or from a cdn:
 ```
 https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
 ```
+
+If using for the command line support (or it'll only be available in the current directory's node_modules folder):
+
+```Shell
+npm install -g jwt-authn
+```
+
+```Shell
+yarn global install jwt-authn
+```
+
 
 <br>
 
