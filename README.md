@@ -28,6 +28,7 @@ Now with command line support!
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
+    - [⬆ CLI support for JWT Decoding](#-cli-support-for-jwt-decoding)
     - [⬆ Decoding a JWT](#-decoding-a-jwt)
       - [⬆ **jwtDecode(jwt)**](#-jwtdecodejwt)
     - [⬆ Encoding a JWT](#-encoding-a-jwt)
@@ -108,6 +109,34 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
     JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
        BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
+<br>
+
+---
+
+### [⬆](#index) CLI support for JWT Decoding
+
+<br>
+
+Running just jwt-authn will try to decode whatever is in your clipboard.
+```Shell
+# Decodes what's in your clipboard.
+jwt-authn
+```
+
+Alternatively, you can run jwt-authn with the clipboard option.
+```Shell
+jwt-authn -c
+```
+
+```Shell
+jwt-authn --clipboard
+```
+
+or to decode the input
+```Shell
+jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+```
+
 <br>
 
 ---
