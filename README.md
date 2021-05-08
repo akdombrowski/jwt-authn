@@ -7,11 +7,16 @@
 ![GitHub Repo stars](https://img.shields.io/github/stars/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 ![GitHub forks](https://img.shields.io/github/forks/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 ![GitHub watchers](https://img.shields.io/github/watchers/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
+[![](https://data.jsdelivr.com/v1/package/npm/jwt-authn/badge)](https://www.jsdelivr.com/package/npm/jwt-authn)
+
+[![Rate on Openbase](https://badges.openbase.com/js/rating/jwt-authn.svg)](https://openbase.com/js/jwt-authn?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
 
 # jwt-authn
 
+jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only Node >=15.x as a requirement!
 
-jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). No package dependencies! Its only dependency is NodeJS itself.
+Now with command line support!
+
 
 
 *[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
@@ -25,6 +30,7 @@ jwt-authn is an npm package for dealing with JSON Web Tokens. Encoding, decoding
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
+    - [⬆ CLI support for JWT Decoding](#-cli-support-for-jwt-decoding)
     - [⬆ Decoding a JWT](#-decoding-a-jwt)
       - [⬆ **jwtDecode(jwt)**](#-jwtdecodejwt)
     - [⬆ Encoding a JWT](#-encoding-a-jwt)
@@ -60,9 +66,26 @@ Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.
 npm install jwt-authn
 ```
 
+
 ```Shell
 yarn add jwt-authn
 ```
+
+Or from a cdn:
+```
+https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
+```
+
+If using for the command line support (or it'll only be available in the current directory's node_modules folder):
+
+```Shell
+npm install -g jwt-authn
+```
+
+```Shell
+yarn global install jwt-authn
+```
+
 
 <br>
 
@@ -88,6 +111,34 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
     JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
        BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
+<br>
+
+---
+
+### [⬆](#index) CLI support for JWT Decoding
+
+<br>
+
+Running just jwt-authn will try to decode whatever is in your clipboard.
+```Shell
+# Decodes what's in your clipboard.
+jwt-authn
+```
+
+Alternatively, you can run jwt-authn with the clipboard option.
+```Shell
+jwt-authn -c
+```
+
+```Shell
+jwt-authn --clipboard
+```
+
+or to decode the input
+```Shell
+jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+```
+
 <br>
 
 ---

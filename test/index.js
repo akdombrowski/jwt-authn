@@ -11,6 +11,9 @@ import {
   createHeaderPayload,
 } from "../src/index.js";
 import crypto from "crypto";
+import cli, { HELP_TEXT } from "../cli/index.js";
+import sinon from "sinon";
+import { spawn } from "child_process";
 
 const expect = chai.expect;
 chai.config.includeStack = true;
@@ -376,7 +379,7 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
             // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
             expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
             done();
-          }).timeout(3000);
+          }).timeout(10000);
         });
       });
     });
@@ -609,6 +612,123 @@ describe("Signing and Verification", () => {
               expect(sig).to.equal(expectedSig);
             });
           });
+        });
+      });
+    });
+  });
+});
+
+describe("#cli()", () => {
+  let sandbox;
+  before(() => {
+    sandbox = sinon.createSandbox();
+  });
+  beforeEach(() => {
+    sandbox.restore();
+  });
+
+  describe("using help", () => {
+    context("when argument is -h", () => {
+      it("shows the help screen", () => {
+        const log = sandbox.spy(console, "log");
+        // Mock process.argv
+        const processArgv = [0, 0, "-h"];
+        cli(null, [0, 0, "-h"]);
+        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+      });
+    });
+
+    context("when argument is --help", () => {
+      it("shows the help screen", () => {
+        const log = sandbox.spy(console, "log");
+        // Mock process.argv
+        const processArgv = [0, 0, "-h"];
+        cli(null, [0, 0, "-h"]);
+        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+      });
+    });
+  });
+
+  describe("mock using clipboard", () => {
+    context("when 'clipboard' contains a jwt", () => {
+      it("decodes the jwt", async () => {
+        const log = sandbox.spy(console, "log");
+        const myCli = cli;
+        const spy = sandbox.spy(myCli);
+
+        const clipboard =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        const expectedOutput = {
+          header: { alg: "HS256", typ: "JWT" },
+          payload: { sub: "1234567890", name: "John Doe", iat: 1516239022 },
+          signature: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        };
+        const cliOutput = await spy(clipboard, null);
+
+        expect(
+          spy.calledOnceWith(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          )
+        ).to.be.true;
+        expect(log.calledWith("Decoding: ")).to.be.true;
+        expect(
+          log.calledWith(
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          )
+        ).to.be.true;
+        expect(
+          log.getCall(2).firstArg,
+          "decoded jwt was logged to the console"
+        ).to.be.deep.equal(expectedOutput);
+        expect(expectedOutput).to.be.deep.equal(cliOutput);
+      });
+    });
+
+    context("when 'clipboard' doesn't contain a jwt", () => {
+      context("when it's not in proper JSON format", () => {
+        it("throws a SyntaxError", async () => {
+          const err = sandbox.spy(console, "error");
+          const spy = sandbox.spy(cli);
+
+          const clipboard = "abc.abc.abc";
+          let syntaxErr;
+
+          try {
+            await spy(clipboard, null);
+          } catch (e) {
+            try {
+              syntaxErr = await spy.returnValues[0];
+            } catch (ex) {
+              expect(ex instanceof SyntaxError).to.be.true;
+            }
+          }
+
+          expect(err.calledWith("I found an error :(")).to.be.true;
+          expect(spy.called).to.be.true;
+        });
+      });
+
+      context("when it doesn't contain a '.'", () => {
+        it("throws an error", async () => {
+          const err = sandbox.spy(console, "error");
+          const spy = sandbox.spy(cli);
+
+          const clipboard = "abc";
+          let dotErr;
+
+          try {
+            await spy(clipboard, null);
+          } catch (e) {
+            try {
+              dotErr = await spy.returnValues[0];
+            } catch (ex) {
+              expect(ex instanceof Error).to.be.true;
+              expect(ex.message).to.equal("Need at least one '.'");
+            }
+          }
+
+          expect(err.calledWith("I found an error :(")).to.be.true;
+          expect(spy.called).to.be.true;
         });
       });
     });

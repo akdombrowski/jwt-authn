@@ -28,8 +28,8 @@ export const jwtDecode = (jwt) => {
       "utf8"
     );
     if (!base64URLDecodedHeader) {
-      console.err("base64URLDecodedHeader");
-      console.err(base64URLDecodedHeader);
+      console.error("base64URLDecodedHeader");
+      console.error(base64URLDecodedHeader);
       throw new Error("Header isn't base64url encoded");
     }
 
@@ -75,11 +75,24 @@ export const jwtDecode = (jwt) => {
       };
     }
 
-    throw new Error("Not using compact serialization (JWS).");
+    throw new SyntaxError("Not using compact serialization (JWS).");
   } catch (e) {
-    console.error(e.message, e);
-    return { header: null, payload: null, signature: null };
+    // debugging(e);
+    throw e;
   }
+};
+
+const debugging = (e) => {
+  // debugging
+  console.error(e.message, e);
+  console.error("e instanceof SyntaxError");
+  console.error(e instanceof SyntaxError);
+  console.error(e.message);
+  console.error(e.name);
+  console.error(e.fileName);
+  console.error(e.lineNumber);
+  console.error(e.columnNumber);
+  console.error(e.stack);
 };
 
 /**
@@ -141,6 +154,7 @@ export const rs256JWKSign = (headerPayload, privateKey) => {
         secret = privateKey;
       } else {
         console.error(e.message, e);
+        throw e;
       }
     }
   } else {
@@ -369,12 +383,24 @@ export const createHeaderPayload = (header, payload) => {
 export const base64URLEncode = (jsonObject) => {
   if (Buffer.isEncoding("base64url")) {
     // not a string. convert to string
-    const stringifyHeader = JSON.stringify(jsonObject);
+    const stringify = JSON.stringify(jsonObject);
     // headerBase64URL = base64url.encode(stringifyHeader);
-    const payloadBase64URL = Buffer.from(stringifyHeader, "ascii").toString(
-      "base64url"
-    );
-    return payloadBase64URL;
+    const base64URLify = Buffer.from(stringify, "ascii").toString("base64url");
+    return base64URLify;
+  } else if (window) {
+    const b64c =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; // base64 dictionary
+    const b64u =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"; // base64url dictionary
+    const btoa = window.btoa();
+
+    const stringify = JSON.stringify(jsonObject);
+    const base64urlify = btoa(stringify);
+    // Remove trailing "="
+    let s = base64urlify.split("=")[0];
+    s = s.replace("+", "-");
+    s = s.replace("/", "_");
+    return s;
   }
 
   throw new Error("Error: Base64URL encoding isn't available");
@@ -420,7 +446,6 @@ export const parseToJSON = (input) => {
  */
 export const jwtEncode = (header, payload, key, options) => {
   let headerBase64URL;
-  let payloadBase64URL;
   let jsonHeader = header;
 
   if (Buffer.isEncoding("base64url")) {
