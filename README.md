@@ -17,9 +17,11 @@ jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, de
 
 Now with command line support!
 
+
+
 *[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
 
-**If you get a base64url encoding not found error, it's likely you're using NodeJS version <15.x
+**If you get a base64url encoding not found error, it's likely you're using NodeJS version < 15.x
 
 
 ## Index
