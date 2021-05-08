@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-import { jwtDecode } from "../lib";
+import { jwtDecode, base64URLEncode } from "../lib";
 import clipboardy from "clipboardy";
+
+const GENERIC_ERROR_CODE = 1;
 
 const decode = async (jwt) => {
   try {
@@ -52,11 +54,26 @@ export const cli = async (clipboard, argv) => {
         throw e;
       }
     } else {
-      console.error("I found an error :(.");
+      console.error("I found an error :(");
       console.error(
         "Nothing in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard"
       );
     }
+  } else if (arg2 === "-b" || arg2 === "--base64url") {
+    if (!arg2) {
+      console.error("I found an error :(");
+      console.error("No argument passed in to encode.");
+      return GENERIC_ERROR_CODE;
+    }
+
+    try {
+      return base64URLEncode(arg2);
+    } catch (e) {
+      console.error("I found an error :(");
+      console.error("base64url encoding failed:", e.message);
+    }
+
+    return GENERIC_ERROR_CODE;
   } else if (arg2) {
     try {
       const decoded = jwtDecode(arg2);
@@ -77,7 +94,7 @@ export const cli = async (clipboard, argv) => {
       "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
     );
   }
-  return 1;
+  return GENERIC_ERROR_CODE;
 };
 
 // read from clipboard
