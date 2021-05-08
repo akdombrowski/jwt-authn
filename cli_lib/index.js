@@ -18,22 +18,30 @@ var _clipboardy = _interopRequireDefault(require("clipboardy"));
 
 var decode = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(jwt) {
+    var decoded;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
+            _context.prev = 0;
+            _context.next = 3;
             return (0, _lib.jwtDecode)(jwt);
 
-          case 2:
-            return _context.abrupt("return", _context.sent);
-
           case 3:
+            decoded = _context.sent;
+            return _context.abrupt("return", decoded);
+
+          case 7:
+            _context.prev = 7;
+            _context.t0 = _context["catch"](0);
+            throw _context.t0;
+
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[0, 7]]);
   }));
 
   return function decode(_x) {
@@ -96,11 +104,11 @@ var cli = /*#__PURE__*/function () {
           case 18:
             _context2.prev = 18;
             _context2.t0 = _context2["catch"](8);
-            console.error("I found an error :(.");
+            console.error("I found an error :(");
             console.error("Couldn't decode what was in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
             console.error("what's on your clipboard? ");
             console.error(clipboard);
-            console.error(_context2.t0, _context2.t0.message);
+            throw _context2.t0;
 
           case 25:
             _context2.next = 29;
@@ -111,12 +119,12 @@ var cli = /*#__PURE__*/function () {
             console.error("Nothing in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
 
           case 29:
-            _context2.next = 47;
+            _context2.next = 49;
             break;
 
           case 31:
             if (!arg2) {
-              _context2.next = 45;
+              _context2.next = 46;
               break;
             }
 
@@ -131,19 +139,21 @@ var cli = /*#__PURE__*/function () {
             _context2.t1 = _context2["catch"](32);
             console.error("I found an error :(.");
             console.error(_context2.t1, _context2.t1.message);
+            throw _context2.t1;
 
-          case 43:
-            _context2.next = 47;
+          case 44:
+            _context2.next = 49;
             break;
 
-          case 45:
+          case 46:
             console.error("I found an error :(.");
             console.error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
+            throw new Error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
 
-          case 47:
+          case 49:
             return _context2.abrupt("return", 1);
 
-          case 48:
+          case 50:
           case "end":
             return _context2.stop();
         }
