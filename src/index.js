@@ -353,7 +353,7 @@ export const createHeaderPayload = (header, payload) => {
       headerBase64URL = Buffer.from(header, "ascii").toString("base64url");
     } else {
       const jsonHeader = parseToJSON(header);
-      headerBase64URL = base64URLEncode(jsonHeader);
+      headerBase64URL = base64URLEncode(JSON.stringify(jsonHeader));
     }
 
     if (typeof payload === "string") {
@@ -361,7 +361,7 @@ export const createHeaderPayload = (header, payload) => {
       payloadBase64URL = Buffer.from(payload, "ascii").toString("base64url");
     } else {
       const jsonPayload = parseToJSON(payload);
-      payloadBase64URL = base64URLEncode(jsonPayload);
+      payloadBase64URL = base64URLEncode(JSON.stringify(jsonPayload));
     }
 
     const headerPayload = `${headerBase64URL}.${payloadBase64URL}`;
@@ -377,16 +377,15 @@ export const createHeaderPayload = (header, payload) => {
  *   Uses JSON stringify to convert jsonObject input.
  *
  * @export
- * @param {*} jsonObject The header or payload (or anything) in JSON object fromat.
+ * @param {*} input A string literal to be base64url encoded.
  * @returns The base64URL encoding of the input.
  */
-export const base64URLEncode = (jsonObject) => {
+export const base64URLEncode = (input) => {
   if (Buffer.isEncoding("base64url")) {
-    // not a string. convert to string
-    const stringify = JSON.stringify(jsonObject);
-    // headerBase64URL = base64url.encode(stringifyHeader);
-    const base64URLify = Buffer.from(stringify, "ascii").toString("base64url");
-    return base64URLify;
+    const buf = Buffer.from(input, "ascii");
+    const base64URLified = buf.toString("base64url");
+
+    return base64URLified;
   } else if (window) {
     const b64c =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; // base64 dictionary
@@ -394,13 +393,13 @@ export const base64URLEncode = (jsonObject) => {
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"; // base64url dictionary
     const btoa = window.btoa();
 
-    const stringify = JSON.stringify(jsonObject);
-    const base64urlify = btoa(stringify);
+    const base64ified = btoa(input);
     // Remove trailing "="
-    let s = base64urlify.split("=")[0];
-    s = s.replace("+", "-");
-    s = s.replace("/", "_");
-    return s;
+    let base64URLified = base64ified.split("=")[0];
+    base64URLified = base64URLified.replace("+", "-");
+    base64URLified = base64URLified.replace("/", "_");
+
+    return base64URLified;
   }
 
   throw new Error("Error: Base64URL encoding isn't available");

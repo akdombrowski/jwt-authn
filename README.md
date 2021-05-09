@@ -8,9 +8,8 @@
 ![GitHub forks](https://img.shields.io/github/forks/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 ![GitHub watchers](https://img.shields.io/github/watchers/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 [![](https://data.jsdelivr.com/v1/package/npm/jwt-authn/badge)](https://www.jsdelivr.com/package/npm/jwt-authn)
-
 [![Rate on Openbase](https://badges.openbase.com/js/rating/jwt-authn.svg)](https://openbase.com/js/jwt-authn?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
-
+[link to npm](https://www.npmjs.com/package/jwt-authn)
 # jwt-authn
 
 jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only Node >=15.x as a requirement!
@@ -30,28 +29,28 @@ Now with command line support!
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
-    - [⬆ CLI support for JWT Decoding](#-cli-support-for-jwt-decoding)
-    - [⬆ Decoding a JWT](#-decoding-a-jwt)
-      - [⬆ **jwtDecode(jwt)**](#-jwtdecodejwt)
-    - [⬆ Encoding a JWT](#-encoding-a-jwt)
-      - [⬆ **jwtEncode(header, payload, key[, options])**](#-jwtencodeheader-payload-key-options)
-    - [⬆ Signing](#-signing)
-      - [⬆ **rs256PEMSign(headerPayload, privateKey, passphrase)**](#-rs256pemsignheaderpayload-privatekey-passphrase)
-      - [⬆ **rs256JWKSign(headerPayload, privateKey)**](#-rs256jwksignheaderpayload-privatekey)
-      - [⬆ **hs256Sign(headerPayload, key)**](#-hs256signheaderpayload-key)
-    - [⬆ Verifying a signature](#-verifying-a-signature)
-      - [⬆ **rs256JWKVerify(jwt, publicKey)**](#-rs256jwkverifyjwt-publickey)
-      - [⬆ **rs256PEMVerify(jwt, publicKey)**](#-rs256pemverifyjwt-publickey)
-      - [⬆ **hs256Verify(jwt, passphrase, passphraseEncoding)**](#-hs256verifyjwt-passphrase-passphraseencoding)
-    - [⬆ Utility Methods](#-utility-methods)
-      - [⬆ **createHeaderPayload(header, payload)**](#-createheaderpayloadheader-payload)
-      - [⬆ **base64URLEncode(json)**](#-base64urlencodejson)
-  - [⬆ Appendix](#-appendix)
-    - [⬆ What is a JWT?](#-what-is-a-jwt)
-    - [⬆ Generating RSA256 private and public key pair](#-generating-rsa256-private-and-public-key-pair)
-    - [⬆ Changing public key generated with ssh-keygen (the above command) into PEM format](#-changing-public-key-generated-with-ssh-keygen-the-above-command-into-pem-format)
-  - [⬆ Contributing](#-contributing)
-  - [⬆ License](#-license)
+    - [⬆CLI support for JWT Decoding](#cli-support-for-jwt-decoding)
+    - [⬆Decoding a JWT](#decoding-a-jwt)
+      - [⬆**jwtDecode(jwt)**](#jwtdecodejwt)
+    - [⬆Encoding a JWT](#encoding-a-jwt)
+      - [[⬆**jwtEncode(header, payload, key[, options])**](#index)](#jwtencodeheader-payload-key-options)
+    - [⬆Signing](#signing)
+      - [⬆**rs256PEMSign(headerPayload, privateKey, passphrase)**](#rs256pemsignheaderpayload-privatekey-passphrase)
+      - [⬆**rs256JWKSign(headerPayload, privateKey)**](#rs256jwksignheaderpayload-privatekey)
+      - [⬆**hs256Sign(headerPayload, key)**](#hs256signheaderpayload-key)
+    - [⬆Verifying a signature](#verifying-a-signature)
+      - [⬆**rs256JWKVerify(jwt, publicKey)**](#rs256jwkverifyjwt-publickey)
+      - [⬆**rs256PEMVerify(jwt, publicKey)**](#rs256pemverifyjwt-publickey)
+      - [⬆**hs256Verify(jwt, passphrase, passphraseEncoding)**](#hs256verifyjwt-passphrase-passphraseencoding)
+    - [⬆Utility Methods](#utility-methods)
+      - [⬆**createHeaderPayload(header, payload)**](#createheaderpayloadheader-payload)
+      - [⬆**base64URLEncode(json)**](#base64urlencodejson)
+  - [⬆Appendix](#appendix)
+    - [⬆What is a JWT?](#what-is-a-jwt)
+    - [⬆Generating RSA256 private and public key pair](#generating-rsa256-private-and-public-key-pair)
+    - [⬆Changing public key generated with ssh-keygen (the above command) into PEM format](#changing-public-key-generated-with-ssh-keygen-the-above-command-into-pem-format)
+  - [⬆Contributing](#contributing)
+  - [⬆License](#license)
 
 <br>
 
@@ -115,7 +114,7 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
 
 ---
 
-### [⬆](#index) CLI support for JWT Decoding
+### [⬆CLI support for JWT Decoding](#index)
 
 <br>
 
@@ -143,11 +142,11 @@ jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiO
 
 ---
 
-### [⬆](#index) Decoding a JWT
+### [⬆Decoding a JWT](#index)
 
 <br>
 
-#### [⬆](#index) **jwtDecode(jwt)**
+#### [⬆**jwtDecode(jwt)**](#index)
 
 *Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
@@ -176,11 +175,11 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 
 ---
 
-### [⬆](#index) Encoding a JWT
+### [⬆Encoding a JWT](#index)
 
 <br>
 
-#### [⬆](#index) **jwtEncode(header, payload, key[, options])**
+#### [⬆**jwtEncode(header, payload, key[, options])**](#index)
 
 
 where *options* contains:
@@ -209,11 +208,11 @@ jwt.jwtEncode(
 
 ---
 
-### [⬆](#index) Signing
+### [⬆Signing](#index)
 
 <br>
 
-#### [⬆](#index) **rs256PEMSign(headerPayload, privateKey, passphrase)**
+#### [⬆**rs256PEMSign(headerPayload, privateKey, passphrase)**](#index)
 
 * headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
 
@@ -298,7 +297,7 @@ const sig = rs256PEMSign(headerPayload, privateKey);
 
 <br>
 
-#### [⬆](#index) **rs256JWKSign(headerPayload, privateKey)**
+#### [⬆**rs256JWKSign(headerPayload, privateKey)**](#index)
 
 * headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
 
@@ -343,7 +342,7 @@ const sig = rs256JWKSign(headerPayload, privateKey);
 
 <br>
 
-#### [⬆](#index) **hs256Sign(headerPayload, key)**
+#### [⬆**hs256Sign(headerPayload, key)**](#index)
 
 * headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
 * key: The signing key or passphrase.
@@ -376,11 +375,11 @@ const sig = hs256Sign(headerPayload, passphrase);
 
 ---
 
-### [⬆](#index) Verifying a signature
+### [⬆Verifying a signature](#index)
 
 <br>
 
-#### [⬆](#index) **rs256JWKVerify(jwt, publicKey)**
+#### [⬆**rs256JWKVerify(jwt, publicKey)**](#index)
 
 * jwt: the signed JWT (JSON Web Token) that you're trying to verify.
 * publicKey: the public key used to verify the signature of the JWT.
@@ -401,7 +400,7 @@ rs256JWKVerify(encoded, {
 
 <br>
 
-#### [⬆](#index) **rs256PEMVerify(jwt, publicKey)**
+#### [⬆**rs256PEMVerify(jwt, publicKey)**](#index)
 
 * jwt: the signed JWT (JSON Web Token) that you're trying to verify.
 * publicKey: the public key used to verify the signature of the JWT.
@@ -434,7 +433,7 @@ rs256PEMVerify(
 
 <br>
 
-#### [⬆](#index) **hs256Verify(jwt, passphrase, passphraseEncoding)**
+#### [⬆**hs256Verify(jwt, passphrase, passphraseEncoding)**](#index)
 * jwt: the signed JWT (JSON Web Token) that you're trying to verify.
 * passphrase: the passphrase used when signing with HMAC (HS256).
 * passphraseEncoding: (optional) if specified and available, the encoding is used to read the passphrase. Otherwise, base64url encoding is assumed.
@@ -455,9 +454,9 @@ hs256Verify(encoded, passphrase)
 <br>
 
 ---
-### [⬆](#index) Utility Methods
+### [⬆Utility Methods](#index)
 
-#### [⬆](#index) **createHeaderPayload(header, payload)**
+#### [⬆**createHeaderPayload(header, payload)**](#index)
 * header: the decoded JWT header either in JSON object or a string literal in json format.
 * payload: the decoded JWT payload either in JSON object or a string literal in json format.
 
@@ -481,7 +480,7 @@ createHeaderPayload(header, payload);
 
 <br>
 
-#### [⬆](#index) **base64URLEncode(json)**
+#### [⬆**base64URLEncode(json)**](#index)
 * json: the input in JSON object format.
 
 Use to create the base64url encoding of the the input.
@@ -508,11 +507,11 @@ base64URLEncode(payload);
 
 ---
 
-## [⬆](#index) Appendix
+## [⬆Appendix](#index)
 
 <br>
 
-### [⬆](#index) What is a JWT?
+### [⬆What is a JWT?](#index)
 A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information across the internet. The cryptographic mechanisms of a JWS provide integrity protection as well.
 
 Resources:
@@ -526,7 +525,7 @@ Resources:
 <br>
 <br>
 
-### [⬆](#index) Generating RSA256 private and public key pair
+### [⬆Generating RSA256 private and public key pair](#index)
 ```javascript
 import crypto from "crypto";
 
@@ -558,7 +557,7 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 <br>
 
 
-### [⬆](#index) Changing public key generated with ssh-keygen (the above command) into PEM format
+### [⬆Changing public key generated with ssh-keygen (the above command) into PEM format](#index)
 
 *You need to do this to use it as the public key to verify a signed JWT.
 ```bash
@@ -577,7 +576,7 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 ---
 
-## [⬆](#index) Contributing
+## [⬆Contributing](#index)
 
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -589,7 +588,7 @@ Please make sure to update tests as appropriate.
 
 ---
 
-## [⬆](#index) License
+## [⬆License](#index)
 ![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
 
 [MIT-Modern-Variant](https://spdx.org/licenses/MIT-Modern-Variant.html)

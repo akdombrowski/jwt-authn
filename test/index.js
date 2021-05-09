@@ -9,6 +9,7 @@ import {
   rs256PEMSign,
   rs256JWKSign,
   createHeaderPayload,
+  base64URLEncode,
 } from "../src/index.js";
 import crypto from "crypto";
 import cli, { HELP_TEXT } from "../cli/index.js";
@@ -618,6 +619,58 @@ describe("Signing and Verification", () => {
   });
 });
 
+describe("#base64URLEncode()", () => {
+  context("when string literal is used", () => {
+    it("correctly base64url encodes the input", () => {
+      const rndBytes = crypto.randomBytes(128);
+      const rndBytesHexString = rndBytes.toString("hex");
+      const base64URLEncoded = base64URLEncode(rndBytesHexString);
+      const base64URLEncodedFromBuffer = base64URLEncode(rndBytes);
+      const bufferTransformed = Buffer.from(
+        rndBytesHexString,
+        "ascii"
+      ).toString("base64url");
+      const bufferTransformedFromBuffer = Buffer.from(
+        rndBytes,
+        "ascii"
+      ).toString("base64url");
+      expect(
+        base64URLEncoded,
+        "base64URLEncode returns the same thing as transforming with Buffer"
+      ).to.be.equal(bufferTransformed);
+      expect(
+        base64URLEncodedFromBuffer,
+        "encodes from Buffer object"
+      ).to.be.equal(bufferTransformedFromBuffer);
+    });
+  });
+
+  context("when Buffer is used", () => {
+    it("correctly base64url encodes the input", () => {
+      const rndBytes = crypto.randomBytes(128);
+      const rndBytesHexString = rndBytes.toString("hex");
+      const base64URLEncoded = base64URLEncode(rndBytesHexString);
+      const base64URLEncodedFromBuffer = base64URLEncode(rndBytes);
+      const bufferTransformed = Buffer.from(
+        rndBytesHexString,
+        "ascii"
+      ).toString("base64url");
+      const bufferTransformedFromBuffer = Buffer.from(
+        rndBytes,
+        "ascii"
+      ).toString("base64url");
+      expect(
+        base64URLEncoded,
+        "base64URLEncode returns the same thing as transforming with Buffer"
+      ).to.be.equal(bufferTransformed);
+      expect(
+        base64URLEncodedFromBuffer,
+        "encodes from Buffer object"
+      ).to.be.equal(bufferTransformedFromBuffer);
+    });
+  });
+});
+
 describe("#cli()", () => {
   let sandbox;
   before(() => {
@@ -730,6 +783,117 @@ describe("#cli()", () => {
           expect(err.calledWith("I found an error :(")).to.be.true;
           expect(spy.called).to.be.true;
         });
+      });
+    });
+  });
+
+  describe("#base64urlEncode()", () => {
+    context("when first given argument is -b", () => {
+      it("properly base64url encodes the input", async () => {
+        const log = sandbox.spy(console, "log");
+        const spy = sandbox.spy(cli);
+
+        const b64u =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+        const rndBytes = crypto.randomBytes(128);
+        const rndBytesHexString = rndBytes.toString("hex");
+
+        // Mock process.argv
+        const processArgv = [0, 0, "-b", rndBytesHexString];
+
+        // call the command line function. it's an async function so wait for
+        // result.
+        const cliOut = await spy(null, processArgv);
+
+        const base64urlified = base64URLEncode(rndBytesHexString);
+        const bufferTransform = Buffer.from(
+          rndBytesHexString,
+          "ascii"
+        ).toString("base64url");
+
+        // Only called cli function once
+        expect(spy.calledOnce, "cli function should be called once").to.be.true;
+        expect(
+          spy.calledOnceWith(null, processArgv),
+          "cli should be called with -b and a string: " + processArgv
+        ).to.be.true;
+
+        // Expect return value of cli function to be equal to using Buffer's transformation
+        expect(
+          cliOut,
+          "cli output is equal to Buffer's conversion to a base64url string"
+        ).to.be.equal(bufferTransform);
+
+        // Expect return value of cli function to be equal to directly calling base64URLEncode
+        expect(
+          cliOut,
+          "cli output is equal to using the base64URLEncode function"
+        ).to.be.equal(base64urlified);
+
+        // Cli outputs to console
+        expect(
+          log.calledOnceWith(cliOut),
+          "the encoded string was output to the console"
+        ).to.be.true;
+
+        // Make sure it's not just base64 encoded
+        expect(cliOut.includes("+"), "no + symbols").to.be.false;
+        expect(cliOut.includes("/"), "no / symbols").to.be.false;
+
+        // Make sure all characters are part of the base64url char set
+        for (let i = 0; i < cliOut.length; i++) {
+          expect(b64u.includes(cliOut.charAt(i))).to.be.true;
+        }
+      });
+    });
+
+    context("when first given argument is --base64url", () => {
+      it("properly base64url encodes the input", async () => {
+        const log = sandbox.spy(console, "log");
+        const spy = sandbox.spy(cli);
+
+        const b64u =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+        const rndBytes = crypto.randomBytes(128);
+        const rndBytesHexString = rndBytes.toString("hex");
+
+        // Mock process.argv
+        const processArgv = [0, 0, "-b", rndBytesHexString];
+
+        // call the command line function. it's an async function so wait for
+        // result.
+        const cliOut = await spy(null, processArgv);
+
+        const base64urlified = base64URLEncode(rndBytesHexString);
+        const bufferTransform = Buffer.from(
+          rndBytesHexString,
+          "ascii"
+        ).toString("base64url");
+
+        expect(spy.calledOnce, "cli function should be called once").to.be.true;
+        expect(
+          spy.calledWith(null, processArgv),
+          "cli should be called with -b and a string: " + processArgv
+        ).to.be.true;
+        expect(
+          cliOut,
+          "cli output is equal to Buffer's conversion to a base64url string"
+        ).to.be.equal(bufferTransform);
+        expect(
+          cliOut,
+          "cli output is equal to using the base64URLEncode function"
+        ).to.be.equal(base64urlified);
+        expect(
+          log.calledWith(cliOut),
+          "the encoded string was output to the console"
+        ).to.be.true;
+        expect(cliOut.includes("+"), "no + symbols").to.be.false;
+        expect(cliOut.includes("/"), "no / symbols").to.be.false;
+
+        // Make sure all characters are part of the base64url char set
+        for (let i = 0; i < cliOut.length; i++) {
+          expect(b64u.includes(cliOut.charAt(i))).to.be.true;
+        }
       });
     });
   });

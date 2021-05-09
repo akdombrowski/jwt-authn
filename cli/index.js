@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-import { jwtDecode } from "../lib";
+import { jwtDecode, base64URLEncode } from "../lib";
 import clipboardy from "clipboardy";
+
+const GENERIC_ERROR_CODE = 1;
 
 const decode = async (jwt) => {
   try {
@@ -21,8 +23,10 @@ or call command with JWT as first argument\n\
 export const cli = async (clipboard, argv) => {
   // read passed in argument
   let arg2;
+  let arg3;
   if (argv) {
     arg2 = argv[2];
+    arg3 = argv[3];
   }
 
   if (arg2 == "-h" || arg2 === "--help") {
@@ -52,10 +56,29 @@ export const cli = async (clipboard, argv) => {
         throw e;
       }
     } else {
-      console.error("I found an error :(.");
+      console.error("I found an error :(");
       console.error(
-        "Nothing in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard"
+        "Nothing in your clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard"
       );
+      return GENERIC_ERROR_CODE;
+    }
+  } else if (arg2 === "-b" || arg2 === "--base64url") {
+    if (!arg3) {
+      console.error("I found an error :(");
+      console.error("No argument passed in to encode.");
+      return GENERIC_ERROR_CODE;
+    }
+
+    try {
+      const bases64urlified = base64URLEncode(arg3);
+
+      console.log(bases64urlified);
+
+      return bases64urlified;
+    } catch (e) {
+      console.error("I found an error :(");
+      console.error("base64url encoding failed:", e.message);
+      throw e;
     }
   } else if (arg2) {
     try {
@@ -77,7 +100,6 @@ export const cli = async (clipboard, argv) => {
       "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
     );
   }
-  return 1;
 };
 
 // read from clipboard
