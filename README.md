@@ -29,7 +29,9 @@ Now with command line support!
   - [⬆Usage](#usage)
     - [⬆Installation:](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
-    - [⬆CLI support for JWT Decoding](#cli-support-for-jwt-decoding)
+    - [⬆CLI support (command line)](#cli-support-command-line)
+      - [⬆CLI JWT Decoding](#cli-jwt-decoding)
+      - [⬆CLI Base64URL Encoding](#cli-base64url-encoding)
     - [⬆Decoding a JWT](#decoding-a-jwt)
       - [⬆**jwtDecode(jwt)**](#jwtdecodejwt)
     - [⬆Encoding a JWT](#encoding-a-jwt)
@@ -114,7 +116,11 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
 
 ---
 
-### [⬆CLI support for JWT Decoding](#index)
+### [⬆CLI support (command line)](#index)
+
+<br>
+
+#### [⬆CLI JWT Decoding](#index)
 
 <br>
 
@@ -136,6 +142,28 @@ jwt-authn --clipboard
 or to decode the input
 ```Shell
 jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+```
+
+<br>
+
+#### [⬆CLI Base64URL Encoding](#index)
+
+<br>
+
+Use the -b flag and a string to base64url encode the string
+```shell
+jwt-authn -b "hello"
+
+# expected output
+# aGVsbG8
+```
+
+Or use the --base64url flag and a string to base64url encode the string
+```shell
+jwt-authn --base64url "hello"
+
+# expected output
+# aGVsbG8
 ```
 
 <br>
