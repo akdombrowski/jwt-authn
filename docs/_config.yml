@@ -60,7 +60,7 @@ plugins:
 
 author:
   name   : "Anthony Dombrowski"
-  avatar : "/assets/images/bio-photo.jpg"
+  avatar : "/assets/images/anthony.jpg"
   bio    : "Anthony Dombrowski is a developer/marketer/product manager."
   links:
     - label: "Website"
