@@ -2,12 +2,10 @@
 title: "Full Documentation"
 last_modified_at: 2021-09-26T14:01:02-05:00
 categories:
-  - Blog
+  - documentation
 tags:
-  - Post Formats
-  - readability
-  - standard
-  - full documentation
+  - documentation
+  - full-documentation
   - docs
 ---
 
@@ -80,7 +78,7 @@ Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.
 npm install jwt-authn
 ```
 
-
+Or with yarn:
 ```Shell
 yarn add jwt-authn
 ```
@@ -90,12 +88,14 @@ Or from a cdn:
 https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
 ```
 
-If using for the command line support (or it'll only be available in the current directory's node_modules folder):
+If using for the command line support (don't forget the global flag or it'll only be available in the current directory's node_modules folder):
 
 ```Shell
 npm install -g jwt-authn
 ```
 
+
+Or with yarn:
 ```Shell
 yarn global install jwt-authn
 ```
