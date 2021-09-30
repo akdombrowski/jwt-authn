@@ -1,12 +1,11 @@
 ---
-title: "Accepted Form of JWTs"
+title: "Decoding JWTs"
 categories:
   - documentation
 tags:
   - docs
   - jwt
-  - form
-  - accepted
+  - decode
 ---
 ![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/jwt-authn?style=for-the-badge&logo=npm)
@@ -22,25 +21,34 @@ tags:
 [link to npm](https://www.npmjs.com/package/jwt-authn)
 # jwt-authn
 
-## Accepted Form of JWTs
+## Decoding a JWT
 
 [Full Documentation]({{ site.baseurl }}{% link _posts/2021-09-25-full-documentation.md %})
 
-**This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+<br>
 
-*[hint: read the two vertical bars/pipes "||" as AND operators.](https://tools.ietf.org/html/rfc7515#section-1.1)
+### **jwtDecode(jwt)**
 
-```
-BASE64URL(UTF8(JWS Protected Header)) || '.' ||
-BASE64URL(JWS Payload) || '.' ||
-BASE64URL(JWS Signature)
+*Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
-Ex:
-eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+```javascript
+// Decoding
+import * as jwtAuthn from "jwt-authn";
 
-  where:
-    JWS Protected Header: '{"typ":"JWT",\r\n "alg":"HS256"}'
-    JWS Payload: '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}'
-    JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
-       BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+
+/*
+* Output is an object that looks like this:
+*
+* {
+*   header: { alg: "RS256" },
+*   payload: {
+*     iss: "joe",
+*     exp: 1300819380,
+*     "http://example.com/is_root": true,
+*   },
+*   signature: "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw",
+* };
+*
+*/
 ```

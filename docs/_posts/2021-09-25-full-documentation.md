@@ -567,6 +567,9 @@ Resources:
 <br>
 
 ### [⬆Generating RSA256 private and public key pair](#index)
+
+**with javascript**
+
 ```javascript
 import crypto from "crypto";
 

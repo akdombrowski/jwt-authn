@@ -4,6 +4,7 @@ categories:
   - documentation
 tags:
   - docs
+  - installation
 ---
 
 ![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
@@ -20,7 +21,9 @@ tags:
 [link to npm](https://www.npmjs.com/package/jwt-authn)
 # jwt-authn
 
-### [⬆Installation:](#index)
+## Installation
+
+[Full Documentation]({{ site.baseurl }}{% link _posts/2021-09-25-full-documentation.md %})
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
 

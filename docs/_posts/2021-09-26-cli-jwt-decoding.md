@@ -6,6 +6,7 @@ tags:
   - docs
   - jwt
   - decoding
+  - cli
 ---
 ![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/jwt-authn?style=for-the-badge&logo=npm)
@@ -21,7 +22,9 @@ tags:
 [link to npm](https://www.npmjs.com/package/jwt-authn)
 # jwt-authn
 
-## CLI JWT Decoding
+## CLI - JWT Decoding
+
+[Full Documentation]({{ site.baseurl }}{% link _posts/2021-09-25-full-documentation.md %})
 
 <br>
 
