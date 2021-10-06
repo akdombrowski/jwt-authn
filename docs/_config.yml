@@ -34,8 +34,14 @@ paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: America/Chicago # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-head_scripts:
-  - ./googleAnalyticsScript.html
+analytics:
+  provider: "google"
+  google:
+    tracking_id: "G-MDXQKHJCNL"
+    anonymize_ip: true
+
+# head_scripts:
+#   - ./googleAnalyticsScript.html
 
 include:
   - _pages
