@@ -22,7 +22,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   jwt-authn is an npm package for decoding, encoding, verifying, and signing JWTs.
 twitter_username: akatsdombrowski
 github_username: akdombrowski
-minimal_mistakes_skin: neon
+minimal_mistakes_skin: dark
 search: true
 
 # Build settings
@@ -33,6 +33,9 @@ permalink: /:categories/:title/
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
 timezone: America/Chicago # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+head_scripts:
+  - ./googleAnalyticsScript.html
 
 include:
   - _pages
