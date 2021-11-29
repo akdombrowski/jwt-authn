@@ -7,7 +7,12 @@ tags:
   - documentation
   - full-documentation
   - docs
+excerpt_separator: <!--more-->
 ---
+
+Read the full documentation for jwt-authn.
+<!--more-->
+
 
 ![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/jwt-authn?style=for-the-badge&logo=npm)

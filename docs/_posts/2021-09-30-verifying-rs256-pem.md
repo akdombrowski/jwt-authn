@@ -8,7 +8,12 @@ tags:
   - verify
   - rs256
   - pem
+excerpt_separator: <!--more-->
 ---
+
+Learn how to verify a signed JWT with a RS256 PEM key.
+<!--more-->
+
 ![npm](https://img.shields.io/npm/v/jwt-authn?style=for-the-badge&logo=npm)
 ![npm bundle size](https://img.shields.io/bundlephobia/min/jwt-authn?style=for-the-badge&logo=npm)
 ![codesize](https://img.shields.io/github/languages/code-size/akdombrowski/jwt-authn?&style=for-the-badge&logo=github)
