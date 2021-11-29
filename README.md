@@ -27,7 +27,7 @@ Now with command line support!
 - [jwt-authn](#jwt-authn)
   - [Index](#index)
   - [⬆Usage](#usage)
-    - [⬆Installation:](#installation)
+    - [⬆Installation](#installation)
     - [⬆Accepted Form of JWTs](#accepted-form-of-jwts)
     - [⬆CLI support (command line)](#cli-support-command-line)
       - [⬆CLI JWT Decoding](#cli-jwt-decoding)
@@ -59,7 +59,7 @@ Now with command line support!
 ## [⬆Usage](#index)
 
 ---
-### [⬆Installation:](#index)
+### [⬆Installation](#index)
 
 Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
 
