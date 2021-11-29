@@ -24,6 +24,8 @@ url: >- # the base hostname & protocol for your site e.g.
   "https://akdombrowski.github.io"
 baseurl: >- # the subpath of your site, e.g.
   "/jwt-authn"
+repository: >- # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+  "akdombrowski/jwt-authn"
 twitter_username: akatsdombrowski
 github_username: akdombrowski
 minimal_mistakes_skin: dark
