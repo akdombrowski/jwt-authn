@@ -27,6 +27,7 @@ baseurl: >- # the subpath of your site, e.g.
   /jwt-authn
 twitter_username: akatsdombrowski
 github_username: akdombrowski
+github: [metadata]
 minimal_mistakes_skin: dark
 search: true
 
