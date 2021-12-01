@@ -22,7 +22,7 @@ email:
 description: >- # this means to ignore newlines until "baseurl:"
   jwt-authn is an npm package for decoding, encoding, verifying, and signing JWTs.
 url: "https://www.jwtauthn.com"
-baseurl: /jwt-authn
+baseurl:
 twitter_username: akatsdombrowski
 github_username: akdombrowski
 repository: "akdombrowski/jwt-authn"
