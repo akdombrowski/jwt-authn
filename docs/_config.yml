@@ -112,6 +112,8 @@ defaults:
       comments: true
       share: true
       related: true
+      toc: true
+      toc_icon: "list-alt"
   # _pages
   - scope:
       path: "_pages"
@@ -119,6 +121,7 @@ defaults:
     values:
       layout: single
       author_profile: true
+      toc: true
 
 category_archive:
   type: liquid
