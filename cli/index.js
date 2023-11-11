@@ -59,9 +59,7 @@ export const cli = async (clipboard, argv) => {
       }
     } else {
       console.error("I found an error :(");
-      console.error(
-        "Nothing in your clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard"
-      );
+      console.error("Didn't find anything in your clipboard.");
       return GENERIC_ERROR_CODE;
     }
   } else if (arg2 === "-b" || arg2 === "--base64url") {
@@ -80,7 +78,6 @@ export const cli = async (clipboard, argv) => {
     } catch (e) {
       console.error("I found an error :(");
       console.error("base64url encoding failed:", e.message);
-      throw new Error("Failed to base64url encode", { cause: e });
     }
   } else if (arg2) {
     try {
@@ -92,14 +89,10 @@ export const cli = async (clipboard, argv) => {
       console.error("I found an error :(.");
       // console.error(e, e.message);
       console.error(e.message);
-      // throw new Error("JWT decoding error", { cause: e });
     }
   } else {
     console.error("I found an error :(.");
     console.error(
-      "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
-    );
-    throw new Error(
       "Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard"
     );
   }
