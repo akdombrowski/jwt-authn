@@ -84,6 +84,6 @@
   },
   "bin": "./cli_lib/index.js",
   "dependencies": {
-    "clipboardy": "^2.3.0"
+    "clipboardy": "^4.0.0"
   }
 }
