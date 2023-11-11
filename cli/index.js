@@ -39,10 +39,10 @@ export const cli = async (clipboard, argv) => {
       // Great, there's something in the clipboard. Let's try to decode it as a
       // JWT.
       try {
-        const decoded = await decode(clipboard);
         // Show what we found in the clipboard
         console.log("Decoding: ");
         console.log(clipboard);
+        const decoded = await decode(clipboard);
         // Show the decoded jwt.
         console.log(decoded);
         return decoded;
