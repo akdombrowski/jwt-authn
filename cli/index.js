@@ -49,7 +49,7 @@ export const cli = async (clipboard, argv) => {
       } catch (e) {
         console.error("I found an error :(");
         console.error(
-          "Couldn't decode what was in your clipboard. Try copying the JWT again."
+          "Couldn't decode what was in your clipboard. You might try copying the JWT again."
         );
         console.error("What's the problem? ");
         console.error(" ", e.message);
