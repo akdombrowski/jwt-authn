@@ -6,7 +6,8 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run babelify && npm run minify",
-    "test": "cross-env NODE_ENV=test nyc mocha test",
+    "test": "cross-env NODE_ENV=test nyc mocha test -R spec",
+    "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
     "babelify": "babel ./src/index.js -d ./lib/ && babel ./cli/index.js -d ./cli_lib/",
     "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
   },
@@ -63,6 +64,7 @@
     "chai": "^4.3.4",
     "core-js": "^3.10.0",
     "cross-env": "^7.0.3",
+    "esm": "^3.2.25",
     "minify": "^10.0.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",

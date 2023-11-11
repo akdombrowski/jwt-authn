@@ -19,12 +19,12 @@ import { spawn } from "child_process";
 const expect = chai.expect;
 chai.config.includeStack = true;
 
-describe("JWT decoding", () => {
-  describe("#jwtDecode()", () => {
+describe("JWT decoding", function () {
+  describe("#jwtDecode()", function () {
     // specification for decoding
-    context("when when alg is HS256", () => {
-      context("when using JSON.stringify() on output", () => {
-        it("decodes from encoded jwt", () => {
+    context("when when alg is HS256", function () {
+      context("when using JSON.stringify() on output", function () {
+        it("decodes from encoded jwt", function () {
           const jwt =
             "eyJhbGciOiJIUzI1NiIsImN0eSI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNjAzMzc2MDExfQ.ixWwz6G_3K0y57BHRYpEh6yxMjxdekYgRQ2sOPCBF-Q";
           const decoded = jwtDecode(jwt);
@@ -38,16 +38,16 @@ describe("JWT decoding", () => {
       });
 
       // specification for decoding
-      context("when using JSON.stringify() on output", () => {
-        it("decodes from encoded jwt", () => {
+      context("when using JSON.stringify() on output", function () {
+        it("decodes from encoded jwt", function () {
           const jwt =
             "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
           const decoded = jwtDecode(jwt);
           const expectedJWT = {
             header: { typ: "JWT", alg: "HS256" },
             payload: {
-              iss: "joe",
-              exp: 1300819380,
+              "iss": "joe",
+              "exp": 1300819380,
               "http://example.com/is_root": true,
             },
             signature: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
@@ -57,17 +57,17 @@ describe("JWT decoding", () => {
       });
 
       // specification for decoding
-      context("when using plain output", () => {
-        context("checks deep equal on json object output", () => {
-          it("decodes from encoded jwt.", () => {
+      context("when using plain output", function () {
+        context("checks deep equal on json object output", function () {
+          it("decodes from encoded jwt.", function () {
             const jwt =
               "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
             const decoded = jwtDecode(jwt);
             const expectedJWT = {
               header: { typ: "JWT", alg: "HS256" },
               payload: {
-                iss: "joe",
-                exp: 1300819380,
+                "iss": "joe",
+                "exp": 1300819380,
                 "http://example.com/is_root": true,
               },
               signature: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
@@ -78,19 +78,19 @@ describe("JWT decoding", () => {
       });
     });
 
-    context("when alg is rs256.", () => {
+    context("when alg is rs256.", function () {
       // specification for decoding
-      context("when using plain output", () => {
-        context("when using deep equal on json object output", () => {
-          it("decodes from encoded jwt.", () => {
+      context("when using plain output", function () {
+        context("when using deep equal on json object output", function () {
+          it("decodes from encoded jwt.", function () {
             const jwt =
               "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
             const decoded = jwtDecode(jwt);
             const expectedJWT = {
               header: { alg: "RS256" },
               payload: {
-                iss: "joe",
-                exp: 1300819380,
+                "iss": "joe",
+                "exp": 1300819380,
                 "http://example.com/is_root": true,
               },
               signature:
@@ -103,15 +103,15 @@ describe("JWT decoding", () => {
 
       // specification for decoding
       context("when using JSON.stringify on output", function () {
-        it("decodes from encoded jwt.", () => {
+        it("decodes from encoded jwt.", function () {
           const jwt =
             "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw";
           const decoded = jwtDecode(jwt);
           const expectedJWT = {
             header: { alg: "RS256" },
             payload: {
-              iss: "joe",
-              exp: 1300819380,
+              "iss": "joe",
+              "exp": 1300819380,
               "http://example.com/is_root": true,
             },
             signature:
@@ -124,12 +124,12 @@ describe("JWT decoding", () => {
   });
 });
 
-describe("JWT encoding", () => {
-  describe("#jwtEncode()", () => {
-    context("when alg is HS256", () => {
+describe("JWT encoding", function () {
+  describe("#jwtEncode()", function () {
+    context("when alg is HS256", function () {
       // specification for jwt encoding
-      context("when string literals are used", () => {
-        it("encodes a jwt.", () => {
+      context("when string literals are used", function () {
+        it("encodes a jwt.", function () {
           const decodedHeader = '{"typ":"JWT",\r\n "alg":"HS256"}';
           const decodedPayload =
             '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}';
@@ -145,12 +145,12 @@ describe("JWT encoding", () => {
       });
 
       // specification for jwt encoding
-      context("when JSON objects are used", () => {
-        it("encodes a jwt.", () => {
+      context("when JSON objects are used", function () {
+        it("encodes a jwt.", function () {
           const decodedHeader = { typ: "JWT", alg: "HS256" };
           const decodedPayload = {
-            iss: "joe",
-            exp: 1300819380,
+            "iss": "joe",
+            "exp": 1300819380,
             "http://example.com/is_root": true,
           };
           const passphrase =
@@ -167,10 +167,10 @@ describe("JWT encoding", () => {
       });
     });
     // specification for jwt encoding
-    context("when alg is RS256", () => {
-      context("when string literals are used", () => {
-        context("and jwk is string literal", () => {
-          it("encodes a jwt.", () => {
+    context("when alg is RS256", function () {
+      context("when string literals are used", function () {
+        context("and jwk is string literal", function () {
+          it("encodes a jwt.", function () {
             const decodedHeader = '{"alg":"RS256"}';
             const decodedPayload =
               '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}';
@@ -192,13 +192,13 @@ describe("JWT encoding", () => {
         });
       });
 
-      context("when JSON objects are used", () => {
-        context("and key is pem string", () => {
-          it("encodes a jwt. and verifies with public key", () => {
+      context("when JSON objects are used", function () {
+        context("and key is pem string", function () {
+          it("encodes a jwt. and verifies with public key", function () {
             const decodedHeader = { alg: "RS256" };
             const decodedPayload = {
-              iss: "joe",
-              exp: 1300819380,
+              "iss": "joe",
+              "exp": 1300819380,
               "http://example.com/is_root": true,
             };
             const privateKey =
@@ -288,32 +288,25 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
         });
       });
 
-      context("when JSON objects are used", () => {
-        context("and jwk is object", () => {
-          it("encodes a jwt. and verifies with public key", () => {
+      context("when JSON objects are used", function () {
+        context("and jwk is object", function () {
+          it("encodes a jwt. and verifies with public key", function () {
             const decodedHeader = { alg: "RS256" };
             const decodedPayload = {
-              iss: "joe",
-              exp: 1300819380,
+              "iss": "joe",
+              "exp": 1300819380,
               "http://example.com/is_root": true,
             };
             const privateKey = {
               kty: "RSA",
-              n:
-                "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+              n: "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
               e: "AQAB",
-              d:
-                "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
-              p:
-                "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
-              q:
-                "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
-              dp:
-                "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
-              dq:
-                "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
-              qi:
-                "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
+              d: "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
+              p: "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
+              q: "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
+              dp: "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
+              dq: "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
+              qi: "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
             };
             const options = { keyFormat: "jwk" };
 
@@ -332,8 +325,7 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
             expect(
               rs256JWKVerify(encoded, {
                 kty: "RSA",
-                n:
-                  "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+                n: "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
                 e: "AQAB",
               })
             ).to.be.true;
@@ -341,45 +333,59 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
         });
       });
 
-      context("when JSON objects are used", () => {
-        context("and public and private keys are generated", () => {
-          it("encodes a jwt. and verifies with public key", (done) => {
+      context("when JSON objects are used", function () {
+        context("and public and private keys are generated", function () {
+          context("encodes a jwt. and verifies with public key", (done) => {
             const decodedHeader = '{"alg":"RS256"}';
             const decodedPayload = {
-              iss: "joe",
-              exp: 1300819380,
+              "iss": "joe",
+              "exp": 1300819380,
               "http://example.com/is_root": true,
             };
-            const { publicKey, privateKey } = crypto.generateKeyPairSync(
-              "rsa",
-              {
-                modulusLength: 4096,
-                publicKeyEncoding: {
-                  type: "spki",
-                  format: "pem",
-                },
-                privateKeyEncoding: {
-                  type: "pkcs8",
-                  format: "pem",
-                  cipher: "aes-256-cbc",
-                  passphrase: "top secret",
-                },
+            context(
+              "creates an asymmetric RSA key pair in PEM format and passphrase encyprtion on the private key",
+              function () {
+                const { publicKey, privateKey } = crypto.generateKeyPairSync(
+                  "rsa",
+                  {
+                    modulusLength: 4096,
+                    publicKeyEncoding: {
+                      type: "spki",
+                      format: "pem",
+                    },
+                    privateKeyEncoding: {
+                      type: "pkcs8",
+                      format: "pem",
+                      cipher: "aes-256-cbc",
+                      passphrase: "top secret",
+                    },
+                  }
+                );
+
+                // expect(privateKey, "missing key property").to.have.property(
+                //   "key"
+                // );
+
+                it("encodes a jwt using the previously created private key in PEM format and using a passphrase for private key encryption", function () {
+                  const options = {
+                    keyFormat: "pem",
+                    passphrase: "top secret",
+                  };
+
+                  const encoded = jwtEncode(
+                    decodedHeader,
+                    decodedPayload,
+                    privateKey,
+                    options
+                  );
+
+                  // Check if the encoded JWT is equal to what we expect
+                  // expect(encoded).to.equal(expectedJWT);
+                  // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
+                  expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
+                });
               }
             );
-            const options = { keyFormat: "pem", passphrase: "top secret" };
-
-            const encoded = jwtEncode(
-              decodedHeader,
-              decodedPayload,
-              privateKey,
-              options
-            );
-
-            // Check if the encoded JWT is equal to what we expect
-            // expect(encoded).to.equal(expectedJWT);
-            // Check that we can verify our JWT using the public key that's paired with the private key we used to sign the JWT.
-            expect(rs256PEMVerify(encoded, publicKey)).to.be.true;
-            done();
           }).timeout(10000);
         });
       });
@@ -387,15 +393,15 @@ g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\n-----END RSA PRIVA
   });
 });
 
-describe("#jwtEncode() and #jwtDecode()", () => {
-  describe("JWT encoding then decoding", () => {
-    context("when alg is HS256", () => {
-      context("when deep equal used", () => {
-        it("the decoding is equal when encoding then re-decoding", () => {
+describe("#jwtEncode() and #jwtDecode()", function () {
+  describe("JWT encoding then decoding", function () {
+    context("when alg is HS256", function () {
+      context("when deep equal used", function () {
+        it("the decoding is equal when encoding then re-decoding", function () {
           const decodedHeader = { typ: "JWT", alg: "HS256" };
           const decodedPayload = {
-            iss: "joe",
-            exp: 1300819380,
+            "iss": "joe",
+            "exp": 1300819380,
             "http://example.com/is_root": true,
           };
           const passphrase =
@@ -424,14 +430,14 @@ describe("#jwtEncode() and #jwtDecode()", () => {
     });
   });
 
-  describe("JWT decoding then encoding", () => {
-    context("when alg is HS256", () => {
-      context("when deep equal used", () => {
-        it("the encoding is equal when decoding then re-encoding", () => {
+  describe("JWT decoding then encoding", function () {
+    context("when alg is HS256", function () {
+      context("when deep equal used", function () {
+        it("the encoding is equal when decoding then re-encoding", function () {
           const decodedHeader = { typ: "JWT", alg: "HS256" };
           const decodedPayload = {
-            iss: "joe",
-            exp: 1300819380,
+            "iss": "joe",
+            "exp": 1300819380,
             "http://example.com/is_root": true,
           };
           const passphrase =
@@ -466,16 +472,16 @@ describe("#jwtEncode() and #jwtDecode()", () => {
   });
 });
 
-describe("Signing and Verification", () => {
-  describe("JWT signing", () => {
-    context("when alg is hs256", () => {
-      describe("#hs256Sign()", () => {
-        it("correctly generates a signature", () => {
+describe("Signing and Verification", function () {
+  describe("JWT signing", function () {
+    context("when alg is hs256", function () {
+      describe("#hs256Sign()", function () {
+        it("correctly generates a signature", function () {
           const expectedSig = "lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
           const decodedHeader = { typ: "JWT", alg: "HS256" };
           const decodedPayload = {
-            iss: "joe",
-            exp: 1300819380,
+            "iss": "joe",
+            "exp": 1300819380,
             "http://example.com/is_root": true,
           };
           const passphrase =
@@ -492,15 +498,15 @@ describe("Signing and Verification", () => {
       });
     });
 
-    describe("RS256 Signing", () => {
-      context("when alg is rs256", () => {
-        describe("#rs256PEMSign()", () => {
-          context("when key is in PEM format", () => {
-            it("correctly generates a signature", () => {
+    describe("RS256 Signing", function () {
+      context("when alg is rs256", function () {
+        describe("#rs256PEMSign()", function () {
+          context("when key is in PEM format", function () {
+            it("correctly generates a signature", function () {
               const decodedHeader = { alg: "RS256" };
               const decodedPayload = {
-                iss: "joe",
-                exp: 1300819380,
+                "iss": "joe",
+                "exp": 1300819380,
                 "http://example.com/is_root": true,
               };
               const privateKey =
@@ -572,32 +578,25 @@ describe("Signing and Verification", () => {
           });
         });
 
-        describe("#rs256JWKSign()", () => {
-          context("when key is in JWK format", () => {
-            it("correctly generates a signature", () => {
+        describe("#rs256JWKSign()", function () {
+          context("when key is in JWK format", function () {
+            it("correctly generates a signature", function () {
               const decodedHeader = { alg: "RS256" };
               const decodedPayload = {
-                iss: "joe",
-                exp: 1300819380,
+                "iss": "joe",
+                "exp": 1300819380,
                 "http://example.com/is_root": true,
               };
               const privateKey = {
                 kty: "RSA",
-                n:
-                  "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+                n: "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
                 e: "AQAB",
-                d:
-                  "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
-                p:
-                  "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
-                q:
-                  "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
-                dp:
-                  "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
-                dq:
-                  "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
-                qi:
-                  "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
+                d: "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
+                p: "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
+                q: "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
+                dp: "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
+                dq: "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
+                qi: "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
               };
 
               const expectedSig =
@@ -619,9 +618,9 @@ describe("Signing and Verification", () => {
   });
 });
 
-describe("#base64URLEncode()", () => {
-  context("when string literal is used", () => {
-    it("correctly base64url encodes the input", () => {
+describe("#base64URLEncode()", function () {
+  context("when string literal is used", function () {
+    it("correctly base64url encodes the input", function () {
       const rndBytes = crypto.randomBytes(128);
       const rndBytesHexString = rndBytes.toString("hex");
       const base64URLEncoded = base64URLEncode(rndBytesHexString);
@@ -645,8 +644,8 @@ describe("#base64URLEncode()", () => {
     });
   });
 
-  context("when Buffer is used", () => {
-    it("correctly base64url encodes the input", () => {
+  context("when Buffer is used", function () {
+    it("correctly base64url encodes the input", function () {
       const rndBytes = crypto.randomBytes(128);
       const rndBytesHexString = rndBytes.toString("hex");
       const base64URLEncoded = base64URLEncode(rndBytesHexString);
@@ -671,18 +670,18 @@ describe("#base64URLEncode()", () => {
   });
 });
 
-describe("#cli()", () => {
+describe("#cli()", function () {
   let sandbox;
-  before(() => {
+  before(function () {
     sandbox = sinon.createSandbox();
   });
-  beforeEach(() => {
+  beforeEach(function () {
     sandbox.restore();
   });
 
-  describe("using help", () => {
-    context("when argument is -h", () => {
-      it("shows the help screen", () => {
+  describe("using help", function () {
+    context("when argument is -h", function () {
+      it("shows the help screen", function () {
         const log = sandbox.spy(console, "log");
         // Mock process.argv
         const processArgv = [0, 0, "-h"];
@@ -691,8 +690,8 @@ describe("#cli()", () => {
       });
     });
 
-    context("when argument is --help", () => {
-      it("shows the help screen", () => {
+    context("when argument is --help", function () {
+      it("shows the help screen", function () {
         const log = sandbox.spy(console, "log");
         // Mock process.argv
         const processArgv = [0, 0, "-h"];
@@ -702,9 +701,9 @@ describe("#cli()", () => {
     });
   });
 
-  describe("mock using clipboard", () => {
-    context("when 'clipboard' contains a jwt", () => {
-      it("decodes the jwt", async () => {
+  describe("mock using clipboard", function () {
+    context("when 'clipboard' contains a jwt", function () {
+      it("decodes the jwt", async function () {
         const log = sandbox.spy(console, "log");
         const myCli = cli;
         const spy = sandbox.spy(myCli);
@@ -737,59 +736,38 @@ describe("#cli()", () => {
       });
     });
 
-    context("when 'clipboard' doesn't contain a jwt", () => {
-      context("when it's not in proper JSON format", () => {
-        it("throws a SyntaxError", async () => {
+    context("when 'clipboard' doesn't contain a jwt", function () {
+      context("when it's not an actual JWT", function () {
+        it("throws a SyntaxError", async function () {
           const err = sandbox.spy(console, "error");
-          const spy = sandbox.spy(cli);
-
           const clipboard = "abc.abc.abc";
           let syntaxErr;
 
-          try {
-            await spy(clipboard, null);
-          } catch (e) {
-            try {
-              syntaxErr = await spy.returnValues[0];
-            } catch (ex) {
-              expect(ex instanceof SyntaxError).to.be.true;
-            }
-          }
+          await cli(clipboard, null);
+          expect(err.called).to.be.true;
 
           expect(err.calledWith("I found an error :(")).to.be.true;
-          expect(spy.called).to.be.true;
         });
       });
 
-      context("when it doesn't contain a '.'", () => {
-        it("throws an error", async () => {
+      context("when it doesn't contain a '.'", function () {
+        it("logs an error: \"Need at least one '.'\"", async function () {
           const err = sandbox.spy(console, "error");
           const spy = sandbox.spy(cli);
-
           const clipboard = "abc";
-          let dotErr;
 
-          try {
-            await spy(clipboard, null);
-          } catch (e) {
-            try {
-              dotErr = await spy.returnValues[0];
-            } catch (ex) {
-              expect(ex instanceof Error).to.be.true;
-              expect(ex.message).to.equal("Need at least one '.'");
-            }
-          }
+          await spy(clipboard, null);
 
-          expect(err.calledWith("I found an error :(")).to.be.true;
           expect(spy.called).to.be.true;
+          expect(err.calledWith(" ", "Need at least one '.'")).to.be.true;
         });
       });
     });
   });
 
-  describe("#base64urlEncode()", () => {
-    context("when first given argument is -b", () => {
-      it("properly base64url encodes the input", async () => {
+  describe("#base64urlEncode()", function () {
+    context("when first given argument is -b", function () {
+      it("properly base64url encodes the input", async function () {
         const log = sandbox.spy(console, "log");
         const spy = sandbox.spy(cli);
 
@@ -847,8 +825,8 @@ describe("#cli()", () => {
       });
     });
 
-    context("when first given argument is --base64url", () => {
-      it("properly base64url encodes the input", async () => {
+    context("when first given argument is --base64url", function () {
+      it("properly base64url encodes the input", async function () {
         const log = sandbox.spy(console, "log");
         const spy = sandbox.spy(cli);
 

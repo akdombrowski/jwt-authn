@@ -191,19 +191,32 @@ export const rs256PEMSign = (headerPayload, privateKey, passphrase) => {
   try {
     pemKey = crypto.createPrivateKey({ key: privateKey, format: "pem" });
   } catch (e) {
-    if (
-      e instanceof TypeError &&
-      e.message.includes("Passphrase required for encrypted key")
-    ) {
-      if (passphrase) {
+    // if (
+    //   e instanceof TypeError &&
+    //   e.message.includes("Passphrase required for encrypted key")
+    // ) {
+    if (passphrase) {
+      try {
         pemKey = crypto.createPrivateKey({
           key: privateKey,
           format: "pem",
           passphrase: passphrase,
         });
-      } else {
-        throw new Error("Need a passphrase since private key is encrypted");
+      } catch (eWithPassphrase) {
+        throw new Error(
+          "Failed to create the private key object needed create the RS256 signature. Tried without and with a passphrase in case the ",
+          {
+            cause: eWithPassphrase,
+          }
+        );
       }
+    } else {
+      throw new Error(
+        "Can't create private key object. Possibly because the key is encrypted so a passphrase was needed but none was provided or it was malformed.",
+        {
+          cause: e,
+        }
+      );
     }
   }
   const sig = crypto.sign("sha256", Buffer.from(headerPayload), {
