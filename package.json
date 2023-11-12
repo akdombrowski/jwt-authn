@@ -3,6 +3,7 @@
   "version": "1.2.0",
   "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
   "main": "./lib",
+  "type": "module",
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run babelify && npm run minify",
@@ -53,22 +54,22 @@
   },
   "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
   "devDependencies": {
-    "@babel/cli": "^7.13.14",
-    "@babel/core": "^7.13.14",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.13.12",
-    "@babel/register": "^7.13.14",
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/register": "^7.22.15",
     "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.0.0",
+    "babel-plugin-istanbul": "^6.1.1",
     "braces": ">=3.0.2",
-    "chai": "^4.3.4",
-    "core-js": "^3.10.0",
+    "chai": "^4.3.10",
+    "core-js": "^3.33.2",
     "cross-env": "^7.0.3",
     "esm": "^3.2.25",
-    "minify": "^10.0.0",
+    "minify": "^10.5.2",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "sinon": "^15.0.0"
+    "sinon": "^17.0.1"
   },
   "nyc": {
     "require": [
@@ -84,6 +85,6 @@
   },
   "bin": "./cli_lib/index.js",
   "dependencies": {
-    "clipboardy": "^2.3.0"
+    "clipboardy": "^4.0.0"
   }
 }

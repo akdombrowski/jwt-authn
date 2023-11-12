@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { jwtDecode, base64URLEncode } from "../lib";
+import { jwtDecode, base64URLEncode } from "../src/index.js";
 import clipboardy from "clipboardy";
 
 const GENERIC_ERROR_CODE = 1;

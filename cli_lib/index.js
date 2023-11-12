@@ -37,12 +37,11 @@ var decode = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-var HELP_TEXT = "******HELP*****\n\
+var HELP_TEXT = exports.HELP_TEXT = "******HELP*****\n\
 use -c or --clipboard or call command with no arguments to decode the JWT in your clipboard\n\
 or call command with JWT as first argument\n\
 ****************";
-exports.HELP_TEXT = HELP_TEXT;
-var cli = /*#__PURE__*/function () {
+var cli = exports.cli = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(clipboard, argv) {
     var arg2, arg3, decoded, bases64urlified, _decoded;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
@@ -154,7 +153,6 @@ var cli = /*#__PURE__*/function () {
 }();
 
 // read from clipboard
-exports.cli = cli;
 var clipboard;
 try {
   clipboard = _clipboardy["default"].readSync();
@@ -165,5 +163,4 @@ try {
 // read passed in argument
 var argv = process.argv;
 cli(clipboard, argv);
-var _default = cli;
-exports["default"] = _default;
+var _default = exports["default"] = cli;
