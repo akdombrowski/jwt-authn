@@ -4,7 +4,9 @@ import {
   hs256Sign,
   createHeaderPayload,
 } from "../src/index.js";
-import { expect } from "./index.js";
+import chai from "chai";
+
+const expect = chai.expect;
 
 describe("#jwtEncode() and #jwtDecode()", function () {
   describe("JWT encoding then decoding", function () {

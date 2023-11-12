@@ -1,11 +1,8 @@
 import chai from "chai";
-import {
-  jwtDecode,
-} from "../src/index.js";
-import { spawn } from "child_process";
+import { jwtDecode } from "../src/index.js";
 
-export const expect = chai.expect;
-chai.config.includeStack = true;
+const expect = chai.expect;
+// chai.config.includeStack = true;
 
 describe("JWT decoding", function () {
   describe("#jwtDecode()", function () {
@@ -111,5 +108,3 @@ describe("JWT decoding", function () {
     });
   });
 });
-
-

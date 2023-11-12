@@ -63,21 +63,21 @@ var cli = /*#__PURE__*/function () {
           return _context2.abrupt("return", HELP_TEXT);
         case 6:
           if (!(arg2 === "-c" || arg2 === "--clipboard" || !arg2)) {
-            _context2.next = 32;
+            _context2.next = 34;
             break;
           }
           if (!clipboard) {
-            _context2.next = 27;
+            _context2.next = 29;
             break;
           }
           _context2.prev = 8;
-          _context2.next = 11;
-          return decode(clipboard);
-        case 11:
-          decoded = _context2.sent;
           // Show what we found in the clipboard
           console.log("Decoding: ");
           console.log(clipboard);
+          _context2.next = 13;
+          return decode(clipboard);
+        case 13:
+          decoded = _context2.sent;
           // Show the decoded jwt.
           console.log(decoded);
           return _context2.abrupt("return", decoded);
@@ -85,74 +85,68 @@ var cli = /*#__PURE__*/function () {
           _context2.prev = 18;
           _context2.t0 = _context2["catch"](8);
           console.error("I found an error :(");
-          console.error("Couldn't decode what was in clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
-          console.error("what's on your clipboard? ");
-          console.error(clipboard);
-          throw _context2.t0;
-        case 25:
-          _context2.next = 30;
-          break;
-        case 27:
-          console.error("I found an error :(");
-          console.error("Nothing in your clipboard. Pass in a JWT as the first argument or copy a JWT to your clipboard");
+          console.error("Couldn't decode what was in your clipboard. You might try copying the JWT again.");
+          console.error("What's the problem? ");
+          console.error(" ", _context2.t0.message);
+          console.error("What's on your clipboard? ");
+          console.error(" ", clipboard);
           return _context2.abrupt("return", GENERIC_ERROR_CODE);
-        case 30:
-          _context2.next = 68;
+        case 27:
+          _context2.next = 32;
           break;
+        case 29:
+          console.error("I found an error :(");
+          console.error("Didn't find anything in your clipboard.");
+          return _context2.abrupt("return", GENERIC_ERROR_CODE);
         case 32:
+          _context2.next = 52;
+          break;
+        case 34:
           if (!(arg2 === "-b" || arg2 === "--base64url")) {
-            _context2.next = 50;
+            _context2.next = 51;
             break;
           }
           if (arg3) {
-            _context2.next = 37;
+            _context2.next = 39;
             break;
           }
           console.error("I found an error :(");
           console.error("No argument passed in to encode.");
           return _context2.abrupt("return", GENERIC_ERROR_CODE);
-        case 37:
-          _context2.prev = 37;
+        case 39:
+          _context2.prev = 39;
           bases64urlified = (0, _lib.base64URLEncode)(arg3);
           console.log(bases64urlified);
           return _context2.abrupt("return", bases64urlified);
-        case 43:
-          _context2.prev = 43;
-          _context2.t1 = _context2["catch"](37);
+        case 45:
+          _context2.prev = 45;
+          _context2.t1 = _context2["catch"](39);
           console.error("I found an error :(");
           console.error("base64url encoding failed:", _context2.t1.message);
-          throw _context2.t1;
-        case 48:
-          _context2.next = 68;
+        case 49:
+          _context2.next = 52;
           break;
-        case 50:
-          if (!arg2) {
-            _context2.next = 65;
-            break;
+        case 51:
+          if (arg2) {
+            try {
+              _decoded = (0, _lib.jwtDecode)(arg2);
+              console.log("Decoding: \n" + arg2);
+              console.log(_decoded);
+              // return decoded;
+            } catch (e) {
+              console.error("I found an error :(.");
+              // console.error(e, e.message);
+              console.error(e.message);
+            }
+          } else {
+            console.error("I found an error :(.");
+            console.error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
           }
-          _context2.prev = 51;
-          _decoded = (0, _lib.jwtDecode)(arg2);
-          console.log("Decoding: \n" + arg2);
-          console.log(_decoded);
-          return _context2.abrupt("return", _decoded);
-        case 58:
-          _context2.prev = 58;
-          _context2.t2 = _context2["catch"](51);
-          console.error("I found an error :(.");
-          console.error(_context2.t2, _context2.t2.message);
-          throw _context2.t2;
-        case 63:
-          _context2.next = 68;
-          break;
-        case 65:
-          console.error("I found an error :(.");
-          console.error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
-          throw new Error("Nothing in clipboard and no arguments given. Pass in a JWT as the first argument or copy a JWT to your clipboard");
-        case 68:
+        case 52:
         case "end":
           return _context2.stop();
       }
-    }, _callee2, null, [[8, 18], [37, 43], [51, 58]]);
+    }, _callee2, null, [[8, 18], [39, 45]]);
   }));
   return function cli(_x2, _x3) {
     return _ref2.apply(this, arguments);

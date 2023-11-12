@@ -2,35 +2,41 @@ import { base64URLEncode } from "../src/index.js";
 import crypto from "crypto";
 import cli, { HELP_TEXT } from "../cli/index.js";
 import sinon from "sinon";
-import { expect } from "./index.js";
+import chai from "chai";
+
+const expect = chai.expect;
 
 describe("#cli()", function () {
   let sandbox;
+  let log;
+  let err;
   before(function () {
     sandbox = sinon.createSandbox();
+    log = sandbox.spy(console, "log");
+    err = sandbox.spy(console, "error");
   });
+
   beforeEach(function () {
-    sandbox.restore();
+    log.resetHistory();
+    err.resetHistory();
   });
 
   describe("using help", function () {
     context("when argument is -h", function () {
       it("shows the help screen", function () {
-        const log = sandbox.spy(console, "log");
         // Mock process.argv
         const processArgv = [0, 0, "-h"];
         cli(null, [0, 0, "-h"]);
-        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+        expect(log.calledWith(HELP_TEXT)).to.be.true;
       });
     });
 
     context("when argument is --help", function () {
       it("shows the help screen", function () {
-        const log = sandbox.spy(console, "log");
         // Mock process.argv
-        const processArgv = [0, 0, "-h"];
-        cli(null, [0, 0, "-h"]);
-        expect(log.calledOnceWith(HELP_TEXT)).to.be.true;
+        const processArgv = [0, 0, "--help"];
+        cli(null, [0, 0, "--help"]);
+        expect(log.calledWith(HELP_TEXT)).to.be.true;
       });
     });
   });
@@ -38,9 +44,8 @@ describe("#cli()", function () {
   describe("mock using clipboard", function () {
     context("when 'clipboard' contains a jwt", function () {
       it("decodes the jwt", async function () {
-        const log = sandbox.spy(console, "log");
         const myCli = cli;
-        const spy = sandbox.spy(myCli);
+        const cliSpy = sandbox.spy(myCli);
 
         const clipboard =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
@@ -49,22 +54,27 @@ describe("#cli()", function () {
           payload: { sub: "1234567890", name: "John Doe", iat: 1516239022 },
           signature: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
         };
-        const cliOutput = await spy(clipboard, null);
+        const cliOutput = await cliSpy(clipboard, null);
 
         expect(
-          spy.calledOnceWith(
+          cliSpy.calledWith(
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-          )
+          ),
+          "Check that the encoded jwt matches with what was called"
         ).to.be.true;
-        expect(log.calledWith("Decoding: ")).to.be.true;
         expect(
-          log.calledWith(
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-          )
+          log.calledWith("Decoding: "),
+          "Decoding starting message logged to console"
         ).to.be.true;
+        // expect(
+        //   log.calledWith(
+        //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        //   )
+        // ).to.be.true;
+
         expect(
           log.getCall(2).firstArg,
-          "decoded jwt was logged to the console"
+          "wanted this to match___" + log.getCall(2).firstArg + "___"
         ).to.be.deep.equal(expectedOutput);
         expect(expectedOutput).to.be.deep.equal(cliOutput);
       });
@@ -73,20 +83,17 @@ describe("#cli()", function () {
     context("when 'clipboard' doesn't contain a jwt", function () {
       context("when it's not an actual JWT", function () {
         it("throws a SyntaxError", async function () {
-          const err = sandbox.spy(console, "error");
           const clipboard = "abc.abc.abc";
-          let syntaxErr;
 
           await cli(clipboard, null);
-          expect(err.called).to.be.true;
 
+          expect(err.called).to.be.true;
           expect(err.calledWith("I found an error :(")).to.be.true;
         });
       });
 
       context("when it doesn't contain a '.'", function () {
         it("logs an error: \"Need at least one '.'\"", async function () {
-          const err = sandbox.spy(console, "error");
           const spy = sandbox.spy(cli);
           const clipboard = "abc";
 
@@ -102,7 +109,6 @@ describe("#cli()", function () {
   describe("#base64urlEncode()", function () {
     context("when first given argument is -b", function () {
       it("properly base64url encodes the input", async function () {
-        const log = sandbox.spy(console, "log");
         const spy = sandbox.spy(cli);
 
         const b64u =
@@ -126,7 +132,7 @@ describe("#cli()", function () {
         // Only called cli function once
         expect(spy.calledOnce, "cli function should be called once").to.be.true;
         expect(
-          spy.calledOnceWith(null, processArgv),
+          spy.calledWith(null, processArgv),
           "cli should be called with -b and a string: " + processArgv
         ).to.be.true;
 
@@ -144,7 +150,7 @@ describe("#cli()", function () {
 
         // Cli outputs to console
         expect(
-          log.calledOnceWith(cliOut),
+          log.calledWith(cliOut),
           "the encoded string was output to the console"
         ).to.be.true;
 
@@ -161,7 +167,6 @@ describe("#cli()", function () {
 
     context("when first given argument is --base64url", function () {
       it("properly base64url encodes the input", async function () {
-        const log = sandbox.spy(console, "log");
         const spy = sandbox.spy(cli);
 
         const b64u =

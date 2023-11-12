@@ -5,7 +5,9 @@ import {
   hs256Verify,
 } from "../src/index.js";
 import crypto from "crypto";
-import { expect } from "./index.js";
+import chai from "chai";
+
+const expect = chai.expect;
 
 describe("JWT encoding", function () {
   describe("#jwtEncode()", function () {

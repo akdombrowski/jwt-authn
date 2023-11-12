@@ -1,6 +1,8 @@
 import { base64URLEncode } from "../src/index.js";
 import crypto from "crypto";
-import { expect } from "./index.js";
+import chai from "chai";
+
+const expect = chai.expect;
 
 describe("#base64URLEncode()", function () {
   context("when string literal is used", function () {
