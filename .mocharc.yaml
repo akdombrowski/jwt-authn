@@ -1,5 +1,3 @@
 require:
-  # - "core-js"
-  # - "regenerator-runtime"
   - "@babel/register"
   - "test/hooks.js"
