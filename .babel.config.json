@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/plugin-transform-runtime",
+    "@istanbuljs/nyc-config-babel"
+  ],
+  "targets": {
+    "node": 15,
+    "esmodules": true
+  },
+  "ignore": ["./lib/index.min.js", "./cli/index.min.js"],
+  "sourceType": "module",
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  }
+}

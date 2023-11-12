@@ -2,14 +2,24 @@
   "name": "jwt-authn",
   "version": "1.2.0",
   "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
-  "main": "./lib",
+  "author": "Anthony Dombrowski",
+  "license": "MIT-Modern-Variant",
+  "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
+  "bugs": {
+    "url": "https://github.com/akdombrowski/jwt-authn/issues"
+  },
+  "main": "./lib/index.js",
+  "bin": {
+    "jwt": "./cli_lib/index.js"
+  },
   "type": "module",
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run babelify && npm run minify",
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
-    "babelify": "babel ./src/index.js -d ./lib/ && babel ./cli/index.js -d ./cli_lib/",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "babelify": "babel src -d lib && babel cli -d cli_lib",
     "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
   },
   "repository": {
@@ -47,23 +57,20 @@
     "payload",
     "base64url"
   ],
-  "author": "Anthony Dombrowski",
-  "license": "MIT-Modern-Variant",
-  "bugs": {
-    "url": "https://github.com/akdombrowski/jwt-authn/issues"
+  "engines": {
+    "node": ">=15.0"
   },
-  "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
   "devDependencies": {
     "@babel/cli": "^7.23.0",
     "@babel/core": "^7.23.3",
     "@babel/plugin-transform-runtime": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@babel/register": "^7.22.15",
-    "@istanbuljs/nyc-config-babel": "^3.0.0",
     "babel-plugin-istanbul": "^6.1.1",
     "braces": ">=3.0.2",
     "chai": "^4.3.10",
     "core-js": "^3.33.2",
+    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "esm": "^3.2.25",
     "minify": "^10.5.2",
@@ -71,20 +78,8 @@
     "nyc": "^15.1.0",
     "sinon": "^17.0.1"
   },
-  "nyc": {
-    "require": [
-      "@babel/register"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
-  },
-  "engines": {
-    "node": ">=15.0"
-  },
-  "bin": "./cli_lib/index.js",
   "dependencies": {
+    "@babel/runtime": "^7.23.2",
     "clipboardy": "^4.0.0"
   }
 }

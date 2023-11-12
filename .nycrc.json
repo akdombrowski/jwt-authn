@@ -1,0 +1,6 @@
+{
+  "reporter": ["lcov", "html", "json", "json-summary", "text"],
+  "require": ["@babel/register"],
+  "sourceMap": false,
+  "instrument": false
+}

@@ -3,10 +3,14 @@ import {
   jwtEncode,
   hs256Sign,
   createHeaderPayload,
-} from "../src/index.js";
-import chai from "chai";
-
-const expect = chai.expect;
+} from "../lib/index.js";
+// import {
+//   jwtDecode,
+//   jwtEncode,
+//   hs256Sign,
+//   createHeaderPayload,
+// } from "../src/index.js";
+import { expect } from "chai";
 
 describe("#jwtEncode() and #jwtDecode()", function () {
   describe("JWT encoding then decoding", function () {
