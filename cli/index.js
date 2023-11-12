@@ -3,7 +3,7 @@
 import { jwtDecode, base64URLEncode } from "../lib";
 import clipboardy from "clipboardy";
 
-const GENERIC_ERROR_CODE = 1;
+const GENERIC_ERROR_CODE = -1;
 
 const decode = async (jwt) => {
   try {
