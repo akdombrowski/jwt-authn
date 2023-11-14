@@ -15,12 +15,13 @@
   "type": "module",
   "scripts": {
     "prepare": "npm run build",
-    "build": "npm run babelify && npm run minify",
+    "build": "npm run babelify",
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "babelify": "babel src -d lib && babel cli -d cli_lib",
-    "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
+    "babelify": "babel ./src/index.js -d lib && babel ./cli/index.js -d cli_lib",
+    "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js",
+    "tersify": "terser ./src/index.js -f quote_style=2 -o ./src/index.min.js -c -m --sourcemap && terser ./cli/index.js -f quote_style=2 -o ./cli/index.min.js -c -m --sourcemap && terser ./cli_lib/index.js -f quote_style=2 -o ./cli_lib/index.min.js -c -m --sourcemap && terser ./lib/index.js -f quote_style=2 -o ./lib/index.min.js -c -m --sourcemap"
   },
   "repository": {
     "type": "git",
@@ -70,13 +71,13 @@
     "braces": ">=3.0.2",
     "chai": "^4.3.10",
     "core-js": "^3.33.2",
-    "coveralls": "^3.1.1",
     "cross-env": "^7.0.3",
     "esm": "^3.2.25",
     "minify": "^10.5.2",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "sinon": "^17.0.1"
+    "sinon": "^17.0.1",
+    "terser": "^5.24.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.23.2",
