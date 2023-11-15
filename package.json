@@ -1,7 +1,7 @@
 {
   "name": "jwt-authn",
   "version": "1.2.0",
-  "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
+  "description": "JWT decoder, encoder, and more with only Node >=15.x and clipboardy as dependencies.",
   "author": "Anthony Dombrowski",
   "license": "MIT-Modern-Variant",
   "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
@@ -19,7 +19,7 @@
     "test": "cross-env NODE_ENV=test nyc mocha test",
     "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "babelify": "babel ./src/index.js -d lib && babel ./cli/index.js -d cli_lib",
+    "babelify": "babel ./src/index.js -o ./lib/index.js && babel ./cli/index.js -o ./cli_lib/index.js",
     "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js",
     "tersify": "terser ./src/index.js -f quote_style=2 -o ./src/index.min.js -c -m --sourcemap && terser ./cli/index.js -f quote_style=2 -o ./cli/index.min.js -c -m --sourcemap && terser ./cli_lib/index.js -f quote_style=2 -o ./cli_lib/index.min.js -c -m --sourcemap && terser ./lib/index.js -f quote_style=2 -o ./lib/index.min.js -c -m --sourcemap"
   },
@@ -67,6 +67,7 @@
     "@babel/plugin-transform-runtime": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@babel/register": "^7.22.15",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
     "babel-plugin-istanbul": "^6.1.1",
     "braces": ">=3.0.2",
     "chai": "^4.3.10",

@@ -1,10 +1,7 @@
 import chai from "chai";
-// import { jwtDecode } from "../src/index.js";
-import { jwtDecode } from "../lib/index.js";
+import { jwtDecode } from "../src/index.js";
+// import { jwtDecode } from "../lib/index.js";
 import { expect } from "chai";
-// const expect = require("chai").expect;
-// const expect = chai.expect;
-// chai.config.includeStack = true;
 
 describe("JWT decoding", function () {
   describe("#jwtDecode()", function () {

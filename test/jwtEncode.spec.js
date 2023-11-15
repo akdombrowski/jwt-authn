@@ -1,15 +1,15 @@
-// import {
-//   jwtEncode,
-//   rs256PEMVerify,
-//   rs256JWKVerify,
-//   hs256Verify,
-// } from "../src/index.js";
 import {
   jwtEncode,
   rs256PEMVerify,
   rs256JWKVerify,
   hs256Verify,
-} from "../lib/index.js";
+} from "../src/index.js";
+// import {
+//   jwtEncode,
+//   rs256PEMVerify,
+//   rs256JWKVerify,
+//   hs256Verify,
+// } from "../lib/index.js";
 import crypto from "crypto";
 import { expect } from "chai";
 

@@ -1,15 +1,15 @@
-import {
-  jwtDecode,
-  jwtEncode,
-  hs256Sign,
-  createHeaderPayload,
-} from "../lib/index.js";
 // import {
 //   jwtDecode,
 //   jwtEncode,
 //   hs256Sign,
 //   createHeaderPayload,
-// } from "../src/index.js";
+// } from "../lib/index.js";
+import {
+  jwtDecode,
+  jwtEncode,
+  hs256Sign,
+  createHeaderPayload,
+} from "../src/index.js";
 import { expect } from "chai";
 
 describe("#jwtEncode() and #jwtDecode()", function () {

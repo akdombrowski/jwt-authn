@@ -1,6 +1,7 @@
 {
   "reporter": ["lcov", "html", "json", "json-summary", "text"],
   "require": ["@babel/register"],
+  "extends": "@istanbuljs/nyc-config-babel",
   "sourceMap": false,
   "instrument": false
 }

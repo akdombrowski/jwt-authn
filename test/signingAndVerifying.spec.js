@@ -1,15 +1,15 @@
-// import {
-//   hs256Sign,
-//   rs256PEMSign,
-//   rs256JWKSign,
-//   createHeaderPayload,
-// } from "../src/index.js";
 import {
   hs256Sign,
   rs256PEMSign,
   rs256JWKSign,
   createHeaderPayload,
-} from "../lib/index.js";
+} from "../src/index.js";
+// import {
+//   hs256Sign,
+//   rs256PEMSign,
+//   rs256JWKSign,
+//   createHeaderPayload,
+// } from "../lib/index.js";
 import { expect } from "chai";
 
 describe("Signing and Verification", function () {

@@ -1,9 +1,5 @@
 {
-  "presets": [
-    "@babel/preset-env",
-    "@babel/plugin-transform-runtime",
-    "@istanbuljs/nyc-config-babel"
-  ],
+  "presets": ["@babel/preset-env"],
   "targets": {
     "node": 15,
     "esmodules": true
@@ -14,5 +10,6 @@
     "test": {
       "plugins": ["istanbul"]
     }
-  }
+  },
+  "minified": true
 }
