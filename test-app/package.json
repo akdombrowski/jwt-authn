@@ -1,0 +1,11 @@
+{
+  "name": "test-app",
+  "version": "0.0.1",
+  "description": "small app/script to test jwt-authn package as a user of the package",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Anthony Dombrowski",
+  "license": "MIT"
+}

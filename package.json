@@ -12,11 +12,11 @@
   "bin": {
     "jwt": "./cli_lib/index.js"
   },
-  "type": "module",
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run babelify",
-    "test": "cross-env NODE_ENV=test nyc mocha test",
+    "test": "cross-env NODE_ENV=test mocha",
+    "nycest": "nyc npm run test",
     "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "babelify": "babel ./src/index.js -o ./lib/index.js && babel ./cli/index.js -o ./cli_lib/index.js",
