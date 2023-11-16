@@ -8,13 +8,18 @@
   "bugs": {
     "url": "https://github.com/akdombrowski/jwt-authn/issues"
   },
-  "main": "./lib/index.js",
+  "main": "./lib/index.min.js",
   "bin": {
-    "jwt": "./cli_lib/index.js"
+    "jwt": "./cli_lib/index.min.js"
   },
+  "files": [
+    "./src/index.min.js",
+    "./cli_lib/index.min.js",
+    "./lib/index.min.js"
+  ],
   "scripts": {
     "prepare": "npm run build",
-    "build": "npm run babelify",
+    "build": "npm run babelify && tersify",
     "test": "cross-env NODE_ENV=test npm run nycest",
     "nycest": "nyc mocha test",
     "mocha": "mocha test",
