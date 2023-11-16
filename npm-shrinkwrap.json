@@ -12,7 +12,7 @@
         "clipboardy": "^4.0.0"
       },
       "bin": {
-        "jwt": "cli_lib/index.js"
+        "jwt": "cli_lib/index.min.js"
       },
       "devDependencies": {
         "@babel/cli": "^7.23.0",
