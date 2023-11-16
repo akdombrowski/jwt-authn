@@ -9,7 +9,6 @@
 ![GitHub watchers](https://img.shields.io/github/watchers/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 [![](https://data.jsdelivr.com/v1/package/npm/jwt-authn/badge)](https://www.jsdelivr.com/package/npm/jwt-authn)
 
-
 [link to npm](https://www.npmjs.com/package/jwt-authn)
 
 # jwt-authn
@@ -17,19 +16,16 @@
 jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding,
 decoding, verifying, signing, and more coming. It includes support for the RS256
 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only
-Node >=16.20.2 as a requirement and 1 dependency ([clipboardy](https://github.com/sindresorhus/clipboardy#readme) to read from a
+Node >=18.18.2 as a requirement and 1 dependency
+([clipboardy](https://github.com/sindresorhus/clipboardy#readme) to read from a
 user's clipboard when using cli mode)!
 
 Now with command line support!
 
-
-
-*[Must be on Node >= 15.x](https://nodejs.org/en/about/releases/)
-
-**If you get a base64url encoding not found error, it's likely you're using NodeJS version < 15.x
-
+\*[Must be on Node >= 18.18.2](https://nodejs.org/en/about/releases/)
 
 ## Index
+
 - [jwt-authn](#jwt-authn)
   - [Index](#index)
   - [⬆Usage](#usage)
@@ -41,7 +37,7 @@ Now with command line support!
     - [⬆Decoding a JWT](#decoding-a-jwt)
       - [⬆**jwtDecode(jwt)**](#jwtdecodejwt)
     - [⬆Encoding a JWT](#encoding-a-jwt)
-      - [⬆**jwtEncode(header, payload, key\[, options\])**](#jwtencodeheader-payload-key-options)
+      - [⬆**jwtEncode(header, payload, key[, options])**](#jwtencodeheader-payload-key-options)
     - [⬆Signing](#signing)
       - [⬆**rs256PEMSign(headerPayload, privateKey, passphrase)**](#rs256pemsignheaderpayload-privatekey-passphrase)
       - [⬆**rs256JWKSign(headerPayload, privateKey)**](#rs256jwksignheaderpayload-privatekey)
@@ -65,25 +61,28 @@ Now with command line support!
 ## [⬆Usage](#index)
 
 ---
+
 ### [⬆Installation:](#index)
 
-Use the package manager [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) to install jwt-authn.
+Use the package manager [npm](https://www.npmjs.com/) or
+[yarn](https://yarnpkg.com/) to install jwt-authn.
 
 ```Shell
 npm install jwt-authn
 ```
-
 
 ```Shell
 yarn add jwt-authn
 ```
 
 Or from a cdn:
+
 ```
 https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
 ```
 
-If using for the command line support (or it'll only be available in the current directory's node_modules folder):
+If using for the command line support (or it'll only be available in the current
+directory's node_modules folder):
 
 ```Shell
 npm install -g jwt-authn
@@ -93,16 +92,16 @@ npm install -g jwt-authn
 yarn global install jwt-authn
 ```
 
-
 <br>
 
 ---
 
 ### [⬆Accepted Form of JWTs](#index)
 
-**This package is for dealing with JWTs of the form [JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
+**This package is for dealing with JWTs of the form
+[JWS JSON Compact Serialization](https://tools.ietf.org/html/rfc7515#section-7.1):**
 
-*[hint: read the two vertical bars/pipes "||" as AND operators.](https://tools.ietf.org/html/rfc7515#section-1.1)
+\*[hint: read the two vertical bars/pipes "||" as AND operators.](https://tools.ietf.org/html/rfc7515#section-1.1)
 
 ```
 BASE64URL(UTF8(JWS Protected Header)) || '.' ||
@@ -118,6 +117,7 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
     JWS Signature: HS256(ASCII(BASE64URL(UTF8(JWS Protected Header)) || '.' ||
        BASE64URL(JWS Payload))) = dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
+
 <br>
 
 ---
@@ -131,12 +131,14 @@ eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTk
 <br>
 
 Running just jwt-authn will try to decode whatever is in your clipboard.
+
 ```Shell
 # Decodes what's in your clipboard.
 jwt-authn
 ```
 
 Alternatively, you can run jwt-authn with the clipboard option.
+
 ```Shell
 jwt-authn -c
 ```
@@ -146,6 +148,7 @@ jwt-authn --clipboard
 ```
 
 or to decode the input
+
 ```Shell
 jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 ```
@@ -157,6 +160,7 @@ jwt-authn eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiO
 <br>
 
 Use the -b flag and a string to base64url encode the string
+
 ```shell
 jwt-authn -b "hello"
 
@@ -165,6 +169,7 @@ jwt-authn -b "hello"
 ```
 
 Or use the --base64url flag and a string to base64url encode the string
+
 ```shell
 jwt-authn --base64url "hello"
 
@@ -182,29 +187,33 @@ jwt-authn --base64url "hello"
 
 #### [⬆**jwtDecode(jwt)**](#index)
 
-*Decoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
+\*Decoding example taken from
+[RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.2).
 
 ```javascript
 // Decoding
 import * as jwtAuthn from "jwt-authn";
 
-jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
+jwtAuthn.jwtDecode(
+  "eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+);
 
 /*
-* Output is an object that looks like this:
-*
-* {
-*   header: { alg: "RS256" },
-*   payload: {
-*     iss: "joe",
-*     exp: 1300819380,
-*     "http://example.com/is_root": true,
-*   },
-*   signature: "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw",
-* };
-*
-*/
+ * Output is an object that looks like this:
+ *
+ * {
+ *   header: { alg: "RS256" },
+ *   payload: {
+ *     iss: "joe",
+ *     exp: 1300819380,
+ *     "http://example.com/is_root": true,
+ *   },
+ *   signature: "cC4hiUPoj9Eetdgtv3hF80EGrhuB__dzERat0XF9g2VtQgr9PJbu3XOiZj5RZmh7AAuHIm4Bh-0Qc_lF5YKt_O8W2Fp5jujGbds9uJdbF9CUAr7t1dnZcAcQjbKBYNX4BAynRFdiuB--f_nZLgrnbyTyWzO75vRK5h6xBArLIARNPvkSjtQBMHlb1L07Qe7K0GarZRmB_eSN9383LcOLn6_dO--xi12jzDwusC-eOkHWEsqtFZESc6BfI7noOPqvhJ1phCnvWh6IeYI2w9QOYEUipUTI8np6LbgGY9Fs98rqVt5AXLIhWkWywlVmtVrBp0igcN_IoypGlUPQGe77Rw",
+ * };
+ *
+ */
 ```
+
 <br>
 
 ---
@@ -215,15 +224,13 @@ jwtAuthn.jwtDecode("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0
 
 #### [⬆**jwtEncode(header, payload, key[, options])**](#index)
 
-
-where *options* contains:
+where _options_ contains:
 
 - keyFormat - format of the rs256 private key
 - passphrase - if using an encrypted private key, passphrase is also required
 
-
-*Encoding example taken from [RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.1).
-
+\*Encoding example taken from
+[RFC 7515 JSON Web Signature (JWS)](https://tools.ietf.org/html/rfc7515#appendix-A.1.1).
 
 ```javascript
 import * as jwtAuthn from "jwt-authn";
@@ -231,12 +238,13 @@ import * as jwtAuthn from "jwt-authn";
 jwt.jwtEncode(
   '{"typ":"JWT",\r\n "alg":"HS256"}',
   '{"iss":"joe",\r\n "exp":1300819380,\r\n "http://example.com/is_root":true}',
-  'AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow'
+  "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow"
 );
 
 // returns
-"eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
+("eyJ0eXAiOiJKV1QiLA0KICJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk");
 ```
+
 <br>
 <br>
 
@@ -248,19 +256,21 @@ jwt.jwtEncode(
 
 #### [⬆**rs256PEMSign(headerPayload, privateKey, passphrase)**](#index)
 
-* headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
+- headerPayload: The combined base64url(header) and base64url(payload) separated
+  by a ".".
 
-* privateKey: The signing key.
+- privateKey: The signing key.
 
-* passphrase: (optional) if the privateKey is encrypted, include the passphrase used to encrypt it.
+- passphrase: (optional) if the privateKey is encrypted, include the passphrase
+  used to encrypt it.
 
 ```javascript
 import { rs256PEMSign, createHeaderPayload } from "jwt-authn";
 
 const decodedHeader = { alg: "RS256" };
 const decodedPayload = {
-  iss: "joe",
-  exp: 1300819380,
+  "iss": "joe",
+  "exp": 1300819380,
   "http://example.com/is_root": true,
 };
 
@@ -318,10 +328,7 @@ const privateKey =
   g8W+z36ROKfkVVbmEVHY1Kg9yMo7oKYZEIa5AcAZyxxDoedT0jnlBRaWLtM=\
   \n-----END RSA PRIVATE KEY-----";
 
-const headerPayload = createHeaderPayload(
-  decodedHeader,
-  decodedPayload
-);
+const headerPayload = createHeaderPayload(decodedHeader, decodedPayload);
 
 const sig = rs256PEMSign(headerPayload, privateKey);
 
@@ -333,40 +340,31 @@ const sig = rs256PEMSign(headerPayload, privateKey);
 
 #### [⬆**rs256JWKSign(headerPayload, privateKey)**](#index)
 
-* headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
+- headerPayload: The combined base64url(header) and base64url(payload) separated
+  by a ".".
 
-* privateKey: The signing key.
+- privateKey: The signing key.
 
 ```javascript
 const decodedHeader = { alg: "RS256" };
 const decodedPayload = {
-  iss: "joe",
-  exp: 1300819380,
+  "iss": "joe",
+  "exp": 1300819380,
   "http://example.com/is_root": true,
 };
 const privateKey = {
   kty: "RSA",
-  n:
-    "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
+  n: "ofgWCuLjybRlzo0tZWJjNiuSfb4p4fAkd_wWJcyQoTbji9k0l8W26mPddxHmfHQp-Vaw-4qPCJrcS2mJPMEzP1Pt0Bm4d4QlL-yRT-SFd2lZS-pCgNMsD1W_YpRPEwOWvG6b32690r2jZ47soMZo9wGzjb_7OMg0LOL-bSf63kpaSHSXndS5z5rexMdbBYUsLA9e-KXBdQOS-UTo7WTBEMa2R2CapHg665xsmtdVMTBQY4uDZlxvb3qCo5ZwKh9kG4LT6_I5IhlJH7aGhyxXFvUK-DWNmoudF8NAco9_h9iaGNj8q2ethFkMLs91kzk2PAcDTW9gb54h4FRWyuXpoQ",
   e: "AQAB",
-  d:
-    "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
-  p:
-    "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
-  q:
-    "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
-  dp:
-    "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
-  dq:
-    "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
-  qi:
-    "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
+  d: "Eq5xpGnNCivDflJsRQBXHx1hdR1k6Ulwe2JZD50LpXyWPEAeP88vLNO97IjlA7_GQ5sLKMgvfTeXZx9SE-7YwVol2NXOoAJe46sui395IW_GO-pWJ1O0BkTGoVEn2bKVRUCgu-GjBVaYLU6f3l9kJfFNS3E0QbVdxzubSu3Mkqzjkn439X0M_V51gfpRLI9JYanrC4D4qAdGcopV_0ZHHzQlBjudU2QvXt4ehNYTCBr6XCLQUShb1juUO1ZdiYoFaFQT5Tw8bGUl_x_jTj3ccPDVZFD9pIuhLhBOneufuBiB4cS98l2SR_RQyGWSeWjnczT0QU91p1DhOVRuOopznQ",
+  p: "4BzEEOtIpmVdVEZNCqS7baC4crd0pqnRH_5IB3jw3bcxGn6QLvnEtfdUdiYrqBdss1l58BQ3KhooKeQTa9AB0Hw_Py5PJdTJNPY8cQn7ouZ2KKDcmnPGBY5t7yLc1QlQ5xHdwW1VhvKn-nXqhJTBgIPgtldC-KDV5z-y2XDwGUc",
+  q: "uQPEfgmVtjL0Uyyx88GZFF1fOunH3-7cepKmtH4pxhtCoHqpWmT8YAmZxaewHgHAjLYsp1ZSe7zFYHj7C6ul7TjeLQeZD_YwD66t62wDmpe_HlB-TnBA-njbglfIsRLtXlnDzQkv5dTltRJ11BKBBypeeF6689rjcJIDEz9RWdc",
+  dp: "BwKfV3Akq5_MFZDFZCnW-wzl-CCo83WoZvnLQwCTeDv8uzluRSnm71I3QCLdhrqE2e9YkxvuxdBfpT_PI7Yz-FOKnu1R6HsJeDCjn12Sk3vmAktV2zb34MCdy7cpdTh_YVr7tss2u6vneTwrA86rZtu5Mbr1C1XsmvkxHQAdYo0",
+  dq: "h_96-mK1R_7glhsum81dZxjTnYynPbZpHziZjeeHcXYsXaaMwkOlODsWa7I9xXDoRwbKgB719rrmI2oKr6N3Do9U0ajaHF-NKJnwgjMd2w9cjz3_-kyNlxAr2v4IKhGNpmM5iIgOS1VZnOZ68m6_pbLBSp3nssTdlqvd0tIiTHU",
+  qi: "IYd7DHOhrWvxkwPQsRM2tOgrjbcrfvtQJipd-DlcxyVuuM9sQLdgjVk2oy26F0EmpScGLq2MowX7fhd_QJQ3ydy5cY7YIBi87w93IKLEdfnbJtoOPLUW0ITrJReOgo1cq9SbsxYawBgfp_gh6A5603k2-ZQwVK0JKSHuLFkuQ3U",
 };
 
-const headerPayload = createHeaderPayload(
-  decodedHeader,
-  decodedPayload
-);
+const headerPayload = createHeaderPayload(decodedHeader, decodedPayload);
 
 const sig = rs256JWKSign(headerPayload, privateKey);
 
@@ -378,25 +376,23 @@ const sig = rs256JWKSign(headerPayload, privateKey);
 
 #### [⬆**hs256Sign(headerPayload, key)**](#index)
 
-* headerPayload: The combined base64url(header) and base64url(payload) separated by a ".".
-* key: The signing key or passphrase.
+- headerPayload: The combined base64url(header) and base64url(payload) separated
+  by a ".".
+- key: The signing key or passphrase.
 
- ```javascript
+```javascript
 import { hs256Sign, createHeaderPayload } from "jwt-authn";
 
 const decodedHeader = { typ: "JWT", alg: "HS256" };
 const decodedPayload = {
-  iss: "joe",
-  exp: 1300819380,
+  "iss": "joe",
+  "exp": 1300819380,
   "http://example.com/is_root": true,
 };
 const passphrase =
   "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
 
-const headerPayload = createHeaderPayload(
-  decodedHeader,
-  decodedPayload
-);
+const headerPayload = createHeaderPayload(decodedHeader, decodedPayload);
 
 const sig = hs256Sign(headerPayload, passphrase);
 
@@ -415,13 +411,14 @@ const sig = hs256Sign(headerPayload, passphrase);
 
 #### [⬆**rs256JWKVerify(jwt, publicKey)**](#index)
 
-* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
-* publicKey: the public key used to verify the signature of the JWT.
+- jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+- publicKey: the public key used to verify the signature of the JWT.
 
 ```javascript
 import { rs256JWKVerify } from "jwt-authn";
 
-const encoded = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.el3lmx2zFYSGmoOC5sJFjV4nCFyb6_2nY5WDSv_d9L2cw857vQBhjV2xybTQz5_4IIVLxpollxyomEQpC1xwZSZoU9lrmNau2TGg1iFGjyIXrtZy-UxV0t_xSwujFlA_WNFjw6eLI00ji3EcuOiMpqPa8IOTfXijtgkCx7oVweb2IVO6ZjMcssvhA7s3ezF8YHf6ewHK74UF4o0RuKn4K1PjBbmxDu3TXMOp69IvbnCj2ku--9QI7H9DFjiNVyWWnpz3wekGZuUePAj5GkrbPgvwhVVUiTcczYy55MUaF7mPjkb7JGEk2sH4lCa1Jlvz9xgYMdYTfbwmT9Wgvq_Usg";
+const encoded =
+  "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.el3lmx2zFYSGmoOC5sJFjV4nCFyb6_2nY5WDSv_d9L2cw857vQBhjV2xybTQz5_4IIVLxpollxyomEQpC1xwZSZoU9lrmNau2TGg1iFGjyIXrtZy-UxV0t_xSwujFlA_WNFjw6eLI00ji3EcuOiMpqPa8IOTfXijtgkCx7oVweb2IVO6ZjMcssvhA7s3ezF8YHf6ewHK74UF4o0RuKn4K1PjBbmxDu3TXMOp69IvbnCj2ku--9QI7H9DFjiNVyWWnpz3wekGZuUePAj5GkrbPgvwhVVUiTcczYy55MUaF7mPjkb7JGEk2sH4lCa1Jlvz9xgYMdYTfbwmT9Wgvq_Usg";
 
 rs256JWKVerify(encoded, {
   kty: "RSA",
@@ -436,13 +433,14 @@ rs256JWKVerify(encoded, {
 
 #### [⬆**rs256PEMVerify(jwt, publicKey)**](#index)
 
-* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
-* publicKey: the public key used to verify the signature of the JWT.
+- jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+- publicKey: the public key used to verify the signature of the JWT.
 
 ```js
 import { rs256PEMVerify } from "jwt-authn";
 
-const encoded = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.UkNEGPn1I_xQg_ztCjwjzQXetpRMtuLOnGx-6lHB1UH3QE6s8kCkYJLOT1dGMuH_LCcJU41VfGoKTKvAT0ZzDu0Au7g8FL1DFj0HmflpoWsYcuKrSywvqwHL8KSJySYzbSBzNLAYOn1CxfNKRcQyVwRAXJUkZlIL2eE0LRhSwuwQdobHm_oyB4l4OhQSLVgehprGBRLyHxh2fAuyTb3dE2HBXta5YKSPVSbGIvv41KRdqoBoo3a2-GxEMjjS9W7xSjc7Pb7sOt1IJLXeFF5aULI8WsefaW5kPvcdYtGbphxK3qJItudmk_3IuQoMXAZVvLcbfsUu920-gYKKN_iWAb9VDP6WRVOOihTVi5dtFfdzJMfg7rRz2Vprly6fsIDDedERMR-4e6YNE4lmpjjkWx7Roj5xSH0EmfHIiQagwLZ4UYhTpLSYnp_y3Eh7lb7VsoNRBFj_c-26ofB3TLRKqSzJzNdzCJWTZeugYk8Rv75zyh7bGUtX_WmdgwWNKwi4df_nBltB5VZ-UzbQakmqWoZ-HrkkCXrrbooZIySzNBDJJc89rYilIlB3rLv8pu4aSXf8pBp2ii-GZYK4rONK9wPlzYgXa-wMcifUQ7j5bBB9njPITRcp6iT60bAf143vnzGaZ7IE-5GxZ3x8smnBCTqxtRU6cZ3yhXrX5dN9_BM"
+const encoded =
+  "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.UkNEGPn1I_xQg_ztCjwjzQXetpRMtuLOnGx-6lHB1UH3QE6s8kCkYJLOT1dGMuH_LCcJU41VfGoKTKvAT0ZzDu0Au7g8FL1DFj0HmflpoWsYcuKrSywvqwHL8KSJySYzbSBzNLAYOn1CxfNKRcQyVwRAXJUkZlIL2eE0LRhSwuwQdobHm_oyB4l4OhQSLVgehprGBRLyHxh2fAuyTb3dE2HBXta5YKSPVSbGIvv41KRdqoBoo3a2-GxEMjjS9W7xSjc7Pb7sOt1IJLXeFF5aULI8WsefaW5kPvcdYtGbphxK3qJItudmk_3IuQoMXAZVvLcbfsUu920-gYKKN_iWAb9VDP6WRVOOihTVi5dtFfdzJMfg7rRz2Vprly6fsIDDedERMR-4e6YNE4lmpjjkWx7Roj5xSH0EmfHIiQagwLZ4UYhTpLSYnp_y3Eh7lb7VsoNRBFj_c-26ofB3TLRKqSzJzNdzCJWTZeugYk8Rv75zyh7bGUtX_WmdgwWNKwi4df_nBltB5VZ-UzbQakmqWoZ-HrkkCXrrbooZIySzNBDJJc89rYilIlB3rLv8pu4aSXf8pBp2ii-GZYK4rONK9wPlzYgXa-wMcifUQ7j5bBB9njPITRcp6iT60bAf143vnzGaZ7IE-5GxZ3x8smnBCTqxtRU6cZ3yhXrX5dN9_BM";
 
 rs256PEMVerify(
   encoded,
@@ -468,18 +466,22 @@ rs256PEMVerify(
 <br>
 
 #### [⬆**hs256Verify(jwt, passphrase, passphraseEncoding)**](#index)
-* jwt: the signed JWT (JSON Web Token) that you're trying to verify.
-* passphrase: the passphrase used when signing with HMAC (HS256).
-* passphraseEncoding: (optional) if specified and available, the encoding is used to read the passphrase. Otherwise, base64url encoding is assumed.
+
+- jwt: the signed JWT (JSON Web Token) that you're trying to verify.
+- passphrase: the passphrase used when signing with HMAC (HS256).
+- passphraseEncoding: (optional) if specified and available, the encoding is
+  used to read the passphrase. Otherwise, base64url encoding is assumed.
 
 ```js
 import { hs256Verify } from "jwt-authn";
 
-const passphrase = "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
+const passphrase =
+  "AyM1SysPpbyDfgZld3umj1qzKObwVMkoqQ-EstJQLr_T-1qS0gZH75aKtMN3Yj0iPS4hcgUuTwjAzZr1Z9CAow";
 
-const encoded = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
+const encoded =
+  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJqb2UiLCJleHAiOjEzMDA4MTkzODAsImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ.lliDzOlRAdGUCfCHCPx_uisb6ZfZ1LRQa0OJLeYTTpY";
 
-hs256Verify(encoded, passphrase)
+hs256Verify(encoded, passphrase);
 
 // expected output: true
 ```
@@ -488,13 +490,18 @@ hs256Verify(encoded, passphrase)
 <br>
 
 ---
+
 ### [⬆Utility Methods](#index)
 
 #### [⬆**createHeaderPayload(header, payload)**](#index)
-* header: the decoded JWT header either in JSON object or a string literal in json format.
-* payload: the decoded JWT payload either in JSON object or a string literal in json format.
 
-Use this to create the header and payload combined by a ".". Useful for signing functions.
+- header: the decoded JWT header either in JSON object or a string literal in
+  json format.
+- payload: the decoded JWT payload either in JSON object or a string literal in
+  json format.
+
+Use this to create the header and payload combined by a ".". Useful for signing
+functions.
 
 ```js
 import { createHeaderPayload } from "jwt-authn";
@@ -515,7 +522,8 @@ createHeaderPayload(header, payload);
 <br>
 
 #### [⬆**base64URLEncode(json)**](#index)
-* json: the input in JSON object format.
+
+- json: the input in JSON object format.
 
 Use to create the base64url encoding of the the input.
 
@@ -523,18 +531,16 @@ Use to create the base64url encoding of the the input.
 import { base64urlEncode } from "jwt-authn";
 
 const payload = {
-  iss: "joe",
-  exp: 1300819380,
+  "iss": "joe",
+  "exp": 1300819380,
   "http://example.com/is_root": true,
-}
+};
 
 base64URLEncode(payload);
 
 // expected output:
 // eyJpc3MiOiJqb2UiLA0KICJleHAiOjEzMDA4MTkzODAsDQogImh0dHA6Ly9leGFtcGxlLmNvbS9pc19yb290Ijp0cnVlfQ
 ```
-
-
 
 <br>
 <br>
@@ -546,7 +552,12 @@ base64URLEncode(payload);
 <br>
 
 ### [⬆What is a JWT?](#index)
-A JWT (JSON Web Token), pronounced like "jot", passes along information in the form of claims. It's often used because it's url safe and compact. Its components are also in the form of JSON objects, a popular way to read information across the internet. The cryptographic mechanisms of a JWS provide integrity protection as well.
+
+A JWT (JSON Web Token), pronounced like "jot", passes along information in the
+form of claims. It's often used because it's url safe and compact. Its
+components are also in the form of JSON objects, a popular way to read
+information across the internet. The cryptographic mechanisms of a JWS provide
+integrity protection as well.
 
 Resources:
 
@@ -560,25 +571,23 @@ Resources:
 <br>
 
 ### [⬆Generating RSA256 private and public key pair](#index)
+
 ```javascript
 import crypto from "crypto";
 
-const { publicKey, privateKey } = crypto.generateKeyPairSync(
-  "rsa",
-  {
-    modulusLength: 4096,
-    publicKeyEncoding: {
-      type: "spki",
-      format: "pem",
-    },
-    privateKeyEncoding: {
-      type: "pkcs8",
-      format: "pem",
-      cipher: "aes-256-cbc",
-      passphrase: "top secret", // this creates an encrypted private key. Make sure to pass it in when trying to sign a JWT. Omit for an unencrypted private key.
-    },
-  }
-);
+const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+  modulusLength: 4096,
+  publicKeyEncoding: {
+    type: "spki",
+    format: "pem",
+  },
+  privateKeyEncoding: {
+    type: "pkcs8",
+    format: "pem",
+    cipher: "aes-256-cbc",
+    passphrase: "top secret", // this creates an encrypted private key. Make sure to pass it in when trying to sign a JWT. Omit for an unencrypted private key.
+  },
+});
 ```
 
 **or from a bash shell**
@@ -590,10 +599,10 @@ ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
 <br>
 <br>
 
-
 ### [⬆Changing public key generated with ssh-keygen (the above command) into PEM format](#index)
 
-*You need to do this to use it as the public key to verify a signed JWT.
+\*You need to do this to use it as the public key to verify a signed JWT.
+
 ```bash
 # reads from file jwtRS256.key.pub
 ssh-keygen -f jwtRS256.key.pub -e -m pem
@@ -605,6 +614,7 @@ ssh-keygen -f jwtRS256.key.pub -e -m pem
 # reads from file jwtRS256.key.pub
 openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 ```
+
 <br>
 <br>
 
@@ -612,8 +622,8 @@ openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
 
 ## [⬆Contributing](#index)
 
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to
+discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
@@ -623,6 +633,7 @@ Please make sure to update tests as appropriate.
 ---
 
 ## [⬆License](#index)
+
 ![NPM](https://img.shields.io/npm/l/jwt-authn?&style=for-the-badge&logo=npm)
 
 [MIT-Modern-Variant](https://spdx.org/licenses/MIT-Modern-Variant.html)
