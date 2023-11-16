@@ -1,0 +1,23 @@
+# Ignore for npm publish
+
+# Testing
+## testing keys
+jwt*.key*
+## test reporting
+.nycrc
+.nyc_output/
+coverage/
+## test runner and tests
+.mocharc.yaml
+test/
+## separate app to install and use package
+test-app/
+
+# helper tools
+renovate*
+wallaby*
+babel.config.json
+
+.vscode/
+
+.github/
