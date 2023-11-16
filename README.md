@@ -78,7 +78,7 @@ yarn add jwt-authn
 Or from a cdn:
 
 ```
-https://cdn.jsdelivr.net/npm/jwt-authn@1.0.39/lib
+https://cdn.jsdelivr.net/npm/jwt-authn@2.0.0/lib/index.min.js
 ```
 
 If using for the command line support (or it'll only be available in the current
