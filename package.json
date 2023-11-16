@@ -1,7 +1,7 @@
 {
   "name": "jwt-authn",
   "version": "2.0.0",
-  "description": "JWT decoder, encoder, and more with only Node >=15.x and clipboardy as dependencies.",
+  "description": "JWT decoder, encoder, and more with only Node >=16.20.2 as a requirement and clipboardy as the only dependency.",
   "author": "Anthony Dombrowski",
   "license": "MIT-Modern-Variant",
   "homepage": "https://github.com/akdombrowski/jwt-authn#readme",

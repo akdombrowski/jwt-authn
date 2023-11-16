@@ -8,11 +8,17 @@
 ![GitHub forks](https://img.shields.io/github/forks/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 ![GitHub watchers](https://img.shields.io/github/watchers/akdombrowski/jwt-authn?style=for-the-badge&logo=github)
 [![](https://data.jsdelivr.com/v1/package/npm/jwt-authn/badge)](https://www.jsdelivr.com/package/npm/jwt-authn)
-[![Rate on Openbase](https://badges.openbase.com/js/rating/jwt-authn.svg)](https://openbase.com/js/jwt-authn?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
+
+
 [link to npm](https://www.npmjs.com/package/jwt-authn)
+
 # jwt-authn
 
-jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding, decoding, verifying, signing, and more coming. It includes support for the RS256 and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only Node >=15.x as a requirement!
+jwt-authn is an npm package for dealing with JSON Web Tokens (JWT). Encoding,
+decoding, verifying, signing, and more coming. It includes support for the RS256
+and HS256 algorithms and JWK and PEM format keys (even encrypted keys). Only
+Node >=16.20.2 as a requirement and 1 dependency ([clipboardy](https://github.com/sindresorhus/clipboardy#readme) to read from a
+user's clipboard when using cli mode)!
 
 Now with command line support!
 
@@ -35,7 +41,7 @@ Now with command line support!
     - [⬆Decoding a JWT](#decoding-a-jwt)
       - [⬆**jwtDecode(jwt)**](#jwtdecodejwt)
     - [⬆Encoding a JWT](#encoding-a-jwt)
-      - [[⬆**jwtEncode(header, payload, key[, options])**](#index)](#jwtencodeheader-payload-key-options)
+      - [⬆**jwtEncode(header, payload, key\[, options\])**](#jwtencodeheader-payload-key-options)
     - [⬆Signing](#signing)
       - [⬆**rs256PEMSign(headerPayload, privateKey, passphrase)**](#rs256pemsignheaderpayload-privatekey-passphrase)
       - [⬆**rs256JWKSign(headerPayload, privateKey)**](#rs256jwksignheaderpayload-privatekey)
