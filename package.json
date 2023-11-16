@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "build": "npm run babelify && tersify",
+    "build": "npm run babelify && npm run tersify",
     "test": "cross-env NODE_ENV=test npm run nycest",
     "nycest": "nyc mocha test",
     "mocha": "mocha test",
