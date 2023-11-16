@@ -4,10 +4,14 @@ import {
   rs256JWKVerify,
   hs256Verify,
 } from "../src/index.js";
+// import {
+//   jwtEncode,
+//   rs256PEMVerify,
+//   rs256JWKVerify,
+//   hs256Verify,
+// } from "../lib/index.js";
 import crypto from "crypto";
-import chai from "chai";
-
-const expect = chai.expect;
+import { expect } from "chai";
 
 describe("JWT encoding", function () {
   describe("#jwtEncode()", function () {

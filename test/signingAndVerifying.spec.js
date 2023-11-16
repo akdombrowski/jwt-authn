@@ -4,9 +4,13 @@ import {
   rs256JWKSign,
   createHeaderPayload,
 } from "../src/index.js";
-import chai from "chai";
-
-const expect = chai.expect;
+// import {
+//   hs256Sign,
+//   rs256PEMSign,
+//   rs256JWKSign,
+//   createHeaderPayload,
+// } from "../lib/index.js";
+import { expect } from "chai";
 
 describe("Signing and Verification", function () {
   describe("JWT signing", function () {

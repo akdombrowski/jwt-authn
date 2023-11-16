@@ -1,0 +1,15 @@
+{
+  "presets": ["@babel/preset-env"],
+  "targets": {
+    "node": 15,
+    "esmodules": true
+  },
+  "ignore": ["./lib/index.min.js", "./cli/index.min.js"],
+  "sourceType": "module",
+  "env": {
+    "test": {
+      "plugins": ["istanbul"]
+    }
+  },
+  "minified": true
+}

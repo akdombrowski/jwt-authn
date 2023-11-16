@@ -1,19 +1,28 @@
 {
   "name": "jwt-authn",
   "version": "1.2.0",
-  "description": "JWT decoder, encoder, and more with only Node >=15.x as a dependency.",
-  "main": "./lib",
+  "description": "JWT decoder, encoder, and more with only Node >=15.x and clipboardy as dependencies.",
+  "author": "Anthony Dombrowski",
+  "license": "MIT-Modern-Variant",
+  "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
+  "bugs": {
+    "url": "https://github.com/akdombrowski/jwt-authn/issues"
+  },
+  "main": "./lib/index.js",
+  "bin": {
+    "jwt": "./cli_lib/index.js"
+  },
   "scripts": {
     "prepare": "npm run build",
-    "build": "npm run babelify && npm run minify",
-    "test": "cross-env NODE_ENV=test nyc mocha test",
-    "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
-    "babelify": "babel ./src/index.js -d ./lib/ && babel ./cli/index.js -d ./cli_lib/",
-    "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js"
+    "build": "npm run babelify",
+    "test": "cross-env NODE_ENV=test npm run nycest",
+    "nycest": "nyc npm run test",
+    "babelify": "babel ./src/index.js -o ./lib/index.js && babel ./cli/index.js -o ./cli_lib/index.js",
+    "tersify": "terser ./src/index.js -f quote_style=2 -o ./src/index.min.js -c -m --sourcemap && terser ./cli/index.js -f quote_style=2 -o ./cli/index.min.js -c -m --sourcemap && terser ./cli_lib/index.js -f quote_style=2 -o ./cli_lib/index.min.js -c -m --sourcemap && terser ./lib/index.js -f quote_style=2 -o ./lib/index.min.js -c -m --sourcemap"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/akdombrowski/jwt-authn.git"
+    "url": "https://github.com/akdombrowski/jwt-authn.git"
   },
   "keywords": [
     "jwt",
@@ -46,44 +55,29 @@
     "payload",
     "base64url"
   ],
-  "author": "Anthony Dombrowski",
-  "license": "MIT-Modern-Variant",
-  "bugs": {
-    "url": "https://github.com/akdombrowski/jwt-authn/issues"
-  },
-  "homepage": "https://github.com/akdombrowski/jwt-authn#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.13.14",
-    "@babel/core": "^7.13.14",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.13.12",
-    "@babel/register": "^7.13.14",
-    "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.0.0",
-    "braces": ">=3.0.2",
-    "chai": "^4.3.4",
-    "core-js": "^3.10.0",
-    "cross-env": "^7.0.3",
-    "esm": "^3.2.25",
-    "minify": "^10.0.0",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "sinon": "^15.0.0"
-  },
-  "nyc": {
-    "require": [
-      "@babel/register"
-    ],
-    "reporter": [
-      "text",
-      "lcov"
-    ]
-  },
   "engines": {
     "node": ">=15.0"
   },
-  "bin": "./cli_lib/index.js",
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-transform-runtime": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/register": "^7.22.15",
+    "@istanbuljs/nyc-config-babel": "^3.0.0",
+    "babel-plugin-istanbul": "^6.1.1",
+    "braces": ">=3.0.2",
+    "chai": "^4.3.10",
+    "core-js": "^3.33.2",
+    "cross-env": "^7.0.3",
+    "esm": "^3.2.25",
+    "minify": "^10.5.2",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "sinon": "^17.0.1",
+    "terser": "^5.24.0"
+  },
   "dependencies": {
-    "clipboardy": "^2.3.0"
+    "clipboardy": "^4.0.0"
   }
 }

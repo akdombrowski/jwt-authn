@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { jwtDecode, base64URLEncode } from "../lib";
-import clipboardy from "clipboardy";
-
-const GENERIC_ERROR_CODE = -1;
+import { jwtDecode, base64URLEncode } from "../src/index.js";
+// import clipboardy from "clipboardy";
+const clipboardy = import("clipboardy");
+const GENERIC_ERROR_CODE = 1;
 
 const decode = async (jwt) => {
   try {
