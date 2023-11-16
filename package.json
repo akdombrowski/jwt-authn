@@ -15,12 +15,9 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "npm run babelify",
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "cross-env NODE_ENV=test npm run nycest",
     "nycest": "nyc npm run test",
-    "test-no-catch": "cross-env NODE_ENV=test nyc mocha test -R spec --allow-uncaught",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "babelify": "babel ./src/index.js -o ./lib/index.js && babel ./cli/index.js -o ./cli_lib/index.js",
-    "minify": "minify ./lib/index.js > ./lib/index.min.js && minify ./cli/index.js > ./cli/index.min.js",
     "tersify": "terser ./src/index.js -f quote_style=2 -o ./src/index.min.js -c -m --sourcemap && terser ./cli/index.js -f quote_style=2 -o ./cli/index.min.js -c -m --sourcemap && terser ./cli_lib/index.js -f quote_style=2 -o ./cli_lib/index.min.js -c -m --sourcemap && terser ./lib/index.js -f quote_style=2 -o ./lib/index.min.js -c -m --sourcemap"
   },
   "repository": {
