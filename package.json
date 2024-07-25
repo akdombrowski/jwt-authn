@@ -70,7 +70,7 @@
     "@babel/preset-env": "^7.23.3",
     "@babel/register": "^7.22.15",
     "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.1.1",
+    "babel-plugin-istanbul": "^7.0.0",
     "braces": ">=3.0.2",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
