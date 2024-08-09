@@ -73,7 +73,7 @@ jobs:
         
       - run: echo "displaying root level files/dirs after build"
 
-      - name: ls
+      - name: list files from root
         run: |
               ls .
 
@@ -81,9 +81,9 @@ jobs:
         run: echo 'ls ./lib...'
       - run: |
               ls ./lib
-      - run: echo 'ls ./cli-ib...'
+      - run: echo 'ls ./cli_ib...'
       - run: |
-              ls ./cli-lib
+              ls ./cli_lib
       
       - run: echo 'starting tests...'
         
