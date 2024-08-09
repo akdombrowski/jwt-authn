@@ -1,6 +1,6 @@
 # This defines the name of the workflow as it will appear in the "Actions" tab of the GitHub repository.
 name: 'Yarn Build'
-
+run-name: ${{ github.actor }} is building with yarn 🧶
 # The `on` key lets you define the events that trigger when the workflow is run. You can define multiple events here. For more information, see "[AUTOTITLE](/actions/using-workflows/triggering-a-workflow#using-events-to-trigger-workflows)."
 on:
 # Add the `workflow_dispatch` event if you want to be able to manually run this workflow from the UI. For more information, see [`workflow_dispatch`](/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch).
@@ -37,6 +37,8 @@ jobs:
     runs-on: "ubuntu-latest"
     # The `steps` key groups together all the steps that will run as part of the `check-links` job. Each job in a workflow has its own `steps` section.
     steps:
+      - run: echo "The job was automatically triggered by a ${{ github.event_name }} event on branch \"${{ github.ref }}\"."
+      
       # The `uses` key tells the job to retrieve the action named `actions/checkout`. This is an action that checks out your repository and downloads it to the runner, allowing you to run actions against your code (such as testing tools). You must use the checkout action any time your workflow will use the repository's code or you are using an action defined in the repository.
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,18 +47,51 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x.x
-          # cache: npm
+          node-version: '20.x'
+          cache: 'yarn'
+
+      - run: echo "installing pkgs through yarn..."
 
       # The `run` key tells the job to execute a command on the runner. In this example, `npm ci` is used to install the npm software packages for the project.
       - name: Install
         # run: npm ci
         run: yarn
 
-      - name: Build
-        # run: npm ci
-        run: yarn build
+      - run: echo "packages installed!"
+      - run: echo "printing with yarn info..."
 
+      - name: Yarn Info
+        run: yarn info
+
+      # intentional blank line in output
+      - run: echo ""
+      
+      - run: echo "running 'yarn build'..."
+      
+      - name: Yarn Build
+        run: yarn build
+        
+      - run: echo "displaying root level files/dirs after build"
+
+      - name: ls
+        run: |
+              ls .
+
+      - name: Checking for build files
+        run: echo 'ls ./lib...'
+      - run: |
+              ls ./lib
+      - run: echo 'ls ./cli-ib...'
+      - run: |
+              ls ./cli-lib
+      
+      - run: echo 'starting tests...'
+        
+      - name: Yarn Test
+        run: yarn test
+        
+      - run: echo 'tests finished (and hopefully passed)!'
+      
       # This step uses the `trilom/file-changes-action` action to gather all the changed files. This example is pinned to a specific version of the action, using the `a6ca26c14274c33b15e6499323aac178af06ad4b` SHA.
       # 
       # In this example, this step creates the file "${{ env.HOME }}/files.json", among others.
