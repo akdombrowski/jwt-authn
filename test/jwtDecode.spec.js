@@ -1,6 +1,4 @@
-import chai from "chai";
 import { jwtDecode } from "../src/index.js";
-// import { jwtDecode } from "../lib/index.js";
 import { expect } from "chai";
 
 describe("JWT decoding", function () {

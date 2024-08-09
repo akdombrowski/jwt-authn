@@ -1,4 +1,3 @@
-// import { base64URLEncode } from "../lib/index.js";
 import { base64URLEncode } from "../src/index.js";
 import crypto from "crypto";
 import { expect } from "chai";

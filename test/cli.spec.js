@@ -1,10 +1,8 @@
 import { base64URLEncode } from "../src/index.js";
-// import { base64URLEncode } from "../lib/index.js";
 import crypto from "crypto";
 import cli, { HELP_TEXT } from "../cli/index.js";
 import sinon from "sinon";
-// import { expect } from "chai";
-const expect = require("chai").expect;
+import { expect } from "chai";
 
 describe("#cli()", function () {
   let sandbox;

@@ -12,15 +12,16 @@
   "bin": {
     "jwt": "cli_lib/index.min.js"
   },
+  "type": "module",
   "files": [
     "./src/index.min.js",
     "./cli_lib/index.min.js",
     "./lib/index.min.js"
   ],
   "scripts": {
-    "prepare": "npm run build",
-    "build": "npm run babelify && npm run tersify",
-    "test": "cross-env NODE_ENV=test npm run nycest",
+    "prepare": "yarn build",
+    "build": "yarn babelify && yarn tersify",
+    "test": "cross-env NODE_ENV=test yarn run nycest",
     "nycest": "nyc mocha test",
     "mocha": "mocha test",
     "babelify": "babel ./src/index.js -o ./lib/index.js && babel ./cli/index.js -o ./cli_lib/index.js",
@@ -65,21 +66,22 @@
     "node": ">=15.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.3",
-    "@babel/preset-env": "^7.23.3",
-    "@babel/register": "^7.22.15",
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/register": "^7.24.6",
     "@istanbuljs/nyc-config-babel": "^3.0.0",
-    "babel-plugin-istanbul": "^6.1.1",
-    "braces": ">=3.0.2",
-    "chai": "^4.3.10",
+    "babel-plugin-istanbul": "^7.0.0",
+    "braces": ">=3.0.3",
+    "chai": "*",
     "cross-env": "^7.0.3",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
-    "sinon": "^17.0.1",
-    "terser": "^5.24.0"
+    "mocha": "*",
+    "nyc": "^17.0.0",
+    "sinon": "^18.0.0",
+    "terser": "^5.31.5"
   },
   "dependencies": {
     "clipboardy": "^4.0.0"
-  }
+  },
+  "packageManager": "yarn@4.4.0"
 }
