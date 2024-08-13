@@ -50,29 +50,17 @@ jobs:
           node-version: '20.x'
           cache: 'yarn'
 
-      - run: echo "installing pkgs through yarn..."
-
       # The `run` key tells the job to execute a command on the runner. In this example, `npm ci` is used to install the npm software packages for the project.
       - name: Install
         # run: npm ci
         run: yarn
 
-      - run: echo "packages installed!"
-      - run: echo "printing with yarn info..."
-
       - name: Yarn Info
         run: yarn info
 
-      # intentional blank line in output
-      - run: echo ""
-      
-      - run: echo "running 'yarn build'..."
-      
       - name: Yarn Build
         run: yarn build
         
-      - run: echo "displaying root level files/dirs after build"
-
       - name: list files from root
         run: |
               ls .
@@ -85,12 +73,8 @@ jobs:
       - run: |
               ls ./cli_lib
       
-      - run: echo 'starting tests...'
-        
       - name: Yarn Test
         run: yarn test
-        
-      - run: echo 'tests finished (and hopefully passed)!'
       
       # This step uses the `trilom/file-changes-action` action to gather all the changed files. This example is pinned to a specific version of the action, using the `a6ca26c14274c33b15e6499323aac178af06ad4b` SHA.
       # 
