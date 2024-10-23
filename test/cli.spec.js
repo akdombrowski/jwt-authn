@@ -90,7 +90,7 @@ describe("#cli()", function () {
         });
       });
 
-      context("when it doesn't contain a '.'", function () {
+      context("when input doesn't contain a '.'", function () {
         it("logs an error: \"Need at least one '.'\"", async function () {
           const spy = sandbox.spy(cli);
           const clipboard = "abc";
