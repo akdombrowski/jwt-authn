@@ -5,19 +5,18 @@ import sinon from "sinon";
 import { expect } from "chai";
 
 describe("#cli()", function () {
-  let sandbox;
   let log;
   let err;
-  before(function () {
-    sandbox = sinon.createSandbox();
-    log = sandbox.spy(console, "log");
-    err = sandbox.spy(console, "error");
-  });
 
   beforeEach(function () {
-    log.resetHistory();
-    err.resetHistory();
+    log = sinon.spy(console, "log");
+    err = sinon.spy(console, "error");
   });
+
+  afterEach(function () {
+    // doesn't seem to want to cleanup from hooks.js
+    sinon.restore();
+  })
 
   describe("using help", function () {
     context("when argument is -h", function () {
@@ -43,7 +42,7 @@ describe("#cli()", function () {
     context("when 'clipboard' contains a jwt", function () {
       it("decodes the jwt", async function () {
         const myCli = cli;
-        const cliSpy = sandbox.spy(myCli);
+        const cliSpy = sinon.spy(myCli);
 
         const clipboard =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
@@ -92,7 +91,7 @@ describe("#cli()", function () {
 
       context("when input doesn't contain a '.'", function () {
         it("logs an error: \"Need at least one '.'\"", async function () {
-          const spy = sandbox.spy(cli);
+          const spy = sinon.spy(cli);
           const clipboard = "abc";
 
           await spy(clipboard, null);
@@ -107,7 +106,7 @@ describe("#cli()", function () {
   describe("#base64urlEncode()", function () {
     context("when first given argument is -b", function () {
       it("properly base64url encodes the input", async function () {
-        const spy = sandbox.spy(cli);
+        const spy = sinon.spy(cli);
 
         const b64u =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
@@ -165,7 +164,7 @@ describe("#cli()", function () {
 
     context("when first given argument is --base64url", function () {
       it("properly base64url encodes the input", async function () {
-        const spy = sandbox.spy(cli);
+        const spy = sinon.spy(cli);
 
         const b64u =
           "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";

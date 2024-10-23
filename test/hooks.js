@@ -1,9 +1,9 @@
-import { restore } from "sinon";
+// import sinon from "sinon";
 
 // Restores the default sandbox after every test
 const mochaHooks = {
   afterEach() {
-    restore();
+    sinon.restore();
   },
 };
 
