@@ -1,6 +1,6 @@
 {
   "name": "jwt-authn",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "JWT decoder, encoder, and more with only Node >=18.18.2 as a requirement and clipboardy as the only dependency.",
   "author": "Anthony Dombrowski",
   "license": "MIT",
@@ -63,7 +63,7 @@
     "base64url"
   ],
   "engines": {
-    "node": ">=15.0"
+    "node": ">=18.18.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.28.0",
