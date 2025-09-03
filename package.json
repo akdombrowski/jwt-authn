@@ -1,6 +1,6 @@
 {
   "name": "jwt-authn",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "JWT decoder, encoder, and more with only Node >=18.18.2 as a requirement and clipboardy as the only dependency.",
   "author": "Anthony Dombrowski",
   "license": "MIT",
@@ -19,7 +19,6 @@
     "./lib/index.min.js"
   ],
   "scripts": {
-    "prepare": "yarn build",
     "build": "yarn babelify && yarn tersify",
     "test": "cross-env NODE_ENV=test yarn run nycest",
     "nycest": "nyc mocha test",
@@ -63,7 +62,7 @@
     "base64url"
   ],
   "engines": {
-    "node": ">=15.0"
+    "node": ">=22"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.9",
@@ -83,5 +82,5 @@
   "dependencies": {
     "clipboardy": "^4.0.0"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.9.4"
 }
