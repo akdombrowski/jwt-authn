@@ -1,12 +1,12 @@
 {
   "name": "jwt-authn",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "jwt-authn",
-      "version": "2.2.0",
+      "version": "3.0.0",
       "license": "MIT",
       "dependencies": {
         "clipboardy": "^4.0.0"
@@ -30,7 +30,7 @@
         "terser": "^5.36.0"
       },
       "engines": {
-        "node": ">=15.0"
+        "node": ">=22"
       }
     },
     "node_modules/@ampproject/remapping": {
